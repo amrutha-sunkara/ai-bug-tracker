@@ -3,7 +3,7 @@ import axios from "axios";
 
 const api = axios.create({
 
-    baseURL: https://bug-tracker-ai-backend.onrender.com,
+    baseURL: "https://bug-tracker-ai-backend.onrender.com",
 
 });
 
