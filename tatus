@@ -1,0 +1,228 @@
+[33mcommit 83da89036f58fd8d4af6a6a50485a1e65c9f2116[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author:     amrutha-sunkara <sunkaraamrutha311@gmail.com>
+AuthorDate: Wed Aug 5 16:59:15 2026 +0530
+Commit:     amrutha-sunkara <sunkaraamrutha311@gmail.com>
+CommitDate: Wed Aug 5 16:59:15 2026 +0530
+
+    Initial commit - Bug Tracker AI
+
+[1mdiff --git a/.gitignore b/.gitignore[m
+[1mnew file mode 100644[m
+[1mindex 0000000..aa64e0a[m
+[1m--- /dev/null[m
+[1m+++ b/.gitignore[m
+[36m@@ -0,0 +1,29 @@[m
+[32m+[m[32m# Environment variables[m
+[32m+[m[32m.env[m
+[32m+[m[32mbackend/.env[m
+[32m+[m
+[32m+[m[32m# Python cache[m
+[32m+[m[32m__pycache__/[m
+[32m+[m[32m*.pyc[m
+[32m+[m
+[32m+[m[32m# Virtual environments[m
+[32m+[m[32mbackend/venv/[m
+[32m+[m[32mvenv/[m
+[32m+[m[32menv/[m
+[32m+[m
+[32m+[m[32m# Flask[m
+[32m+[m[32minstance/[m
+[32m+[m
+[32m+[m[32m# Frontend dependencies[m
+[32m+[m[32mfrontend/node_modules/[m
+[32m+[m
+[32m+[m[32m# Build files[m
+[32m+[m[32mfrontend/dist/[m
+[32m+[m[32mfrontend/dist-ssr/[m
+[32m+[m
+[32m+[m[32m# Editor files[m
+[32m+[m[32m.vscode/[m
+[32m+[m[32m.idea/[m
+[32m+[m
+[32m+[m[32m# OS files[m
+[32m+[m[32m.DS_Store[m
+\ No newline at end of file[m
+[1mdiff --git a/backend/app.py b/backend/app.py[m
+[1mnew file mode 100644[m
+[1mindex 0000000..d450fb4[m
+[1m--- /dev/null[m
+[1m+++ b/backend/app.py[m
+[36m@@ -0,0 +1,600 @@[m
+[32m+[m[32mfrom flask import Flask, request[m
+[32m+[m[32mfrom flask_cors import CORS[m
+[32m+[m[32mfrom flask_jwt_extended import JWTManager[m
+[32m+[m[32mfrom flask_mysqldb import MySQL[m
+[32m+[m[32mfrom dotenv import load_dotenv[m
+[32m+[m[32mfrom google import genai[m
+[32m+[m[32mfrom google.genai import types[m
+[32m+[m[32mfrom werkzeug.security import generate_password_hash, check_password_hash[m
+[32m+[m[32mimport os[m
+[32m+[m[32mfrom datetime import timedelta[m
+[32m+[m
+[32m+[m[32mfrom config import mysql[m
+[32m+[m
+[32m+[m[32m# Load Environment Variables[m
+[32m+[m[32mload_dotenv()[m
+[32m+[m
+[32m+[m[32m# Create Flask App[m
+[32m+[m[32mapp = Flask(__name__)[m
+[32m+[m
+[32m+[m[32m# Enable CORS[m
+[32m+[m[32mCORS(app)[m
+[32m+[m
+[32m+[m[32m# Secret Keys[m
+[32m+[m[32mapp.config["SECRET_KEY"] = os.getenv("SECRET_KEY")[m
+[32m+[m[32mapp.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")[m
+[32m+[m[32mapp.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=7)[m
+[32m+[m[32m# MySQL Configuration[m
+[32m+[m[32mapp.config["MYSQL_HOST"] = os.getenv("MYSQL_HOST")[m
+[32m+[m[32mapp.config["MYSQL_USER"] = os.getenv("MYSQL_USER")[m
+[32m+[m[32mapp.config["MYSQL_PASSWORD"] = os.getenv("MYSQL_PASSWORD")[m
+[32m+[m[32mapp.config["MYSQL_DB"] = os.getenv("MYSQL_DB")[m
+[32m+[m[32mmysql.init_app(app)[m
+[32m+[m
+[32m+[m[32m# JWT[m
+[32m+[m[32mjwt = JWTManager(app)[m
+[32m+[m[32m@jwt.unauthorized_loader[m
+[32m+[m[32mdef unauthorized_callback(reason):[m
+[32m+[m[32m    print("JWT Unauthorized:", reason)[m
+[32m+[m[32m    return {"message": reason}, 401[m
+[32m+[m
+[32m+[m[32m@jwt.invalid_token_loader[m
+[32m+[m[32mdef invalid_token_callback(reason):[m
+[32m+[m[32m    print("JWT Invalid:", reason)[m
+[32m+[m[32m    return {"message": reason}, 401[m
+[32m+[m
+[32m+[m[32m@jwt.expired_token_loader[m
+[32m+[m[32mdef expired_token_callback(jwt_header, jwt_payload):[m
+[32m+[m[32m    print("JWT Expired")[m
+[32m+[m[32m    return {"message": "Token expired"}, 401[m
+[32m+[m
+[32m+[m[32m# Gemini AI[m
+[32m+[m[32mclient = genai.Client([m
+[32m+[m[32m    api_key=os.getenv("GEMINI_API_KEY")[m
+[32m+[m[32m)[m
+[32m+[m
+[32m+[m[32m# Test Route[m
+[32m+[m[32m@app.route("/")[m
+[32m+[m[32mdef home():[m
+[32m+[m[32m    return {[m
+[32m+[m[32m        "message": "Bug Tracker API Running Successfully"[m
+[32m+[m[32m    }[m
+[32m+[m[32m@app.route("/api/register", methods=["POST"])[m
+[32m+[m[32mdef register():[m
+[32m+[m
+[32m+[m[32m    data = request.get_json()[m
+[32m+[m
+[32m+[m[32m    username = data.get("username")[m
+[32m+[m[32m    email = data.get("email")[m
+[32m+[m[32m    password = data.get("password")[m
+[32m+[m[32m    role = data.get("role")[m
+[32m+[m
+[32m+[m[32m    cur = mysql.connection.cursor()[m
+[32m+[m
+[32m+[m[32m    cur.execute([m
+[32m+[m[32m        "SELECT * FROM users WHERE email=%s",[m
+[32m+[m[32m        (email,)[m
+[32m+[m[32m    )[m
+[32m+[m
+[32m+[m[32m    existing_user = cur.fetchone()[m
+[32m+[m
+[32m+[m[32m    if existing_user:[m
+[32m+[m[32m        cur.close()[m
+[32m+[m[32m        return {[m
+[32m+[m[32m            "message": "Email already exists"[m
+[32m+[m[32m        }, 400[m
+[32m+[m
+[32m+[m[32m    hashed_password = generate_password_hash(password)[m
+[32m+[m
+[32m+[m[32m    cur.execute([m
+[32m+[m[32m        """[m
+[32m+[m[32m        INSERT INTO users(username,email,password,role)[m
+[32m+[m[32m        VALUES(%s,%s,%s,%s)[m
+[32m+[m[32m        """,[m
+[32m+[m[32m        ([m
+[32m+[m[32m            username,[m
+[32m+[m[32m            email,[m
+[32m+[m[32m            hashed_password,[m
+[32m+[m[32m            role[m
+[32m+[m[32m        )[m
+[32m+[m[32m    )[m
+[32m+[m
+[32m+[m[32m    mysql.connection.commit()[m
+[32m+[m
+[32m+[m[32m    cur.close()[m
+[32m+[m
+[32m+[m[32m    return {[m
+[32m+[m[32m        "message": "Registration Successful"[m
+[32m+[m[32m    }, 201[m
+[32m+[m[32mfrom flask_jwt_extended import create_access_token[m
+[32m+[m
+[32m+[m[32m@app.route("/api/login", methods=["POST"])[m
+[32m+[m[32mdef login():[m
+[32m+[m
+[32m+[m[32m    data = request.get_json()[m
+[32m+[m
+[32m+[m[32m    email = data.get("email")[m
+[32m+[m[32m    password = data.get("password")[m
+[32m+[m
+[32m+[m[32m    cur = mysql.connection.cursor()[m
+[32m+[m
+[32m+[m[32m    cur.execute([m
+[32m+[m[32m        "SELECT * FROM users WHERE email=%s",[m
+[32m+[m[32m        (email,)[m
+[32m+[m[32m    )[m
+[32m+[m
+[32m+[m[32m    user = cur.fetchone()[m
+[32m+[m
+[32m+[m[32m    cur.close()[m
+[32m+[m
+[32m+[m[32m    if not user:[m
+[32m+[m[32m        return {[m
+[32m+[m[32m            "message": "Invalid Email"[m
+[32m+[m[32m        }, 401[m
+[32m+[m
+[32m+[m[32m    if not check_password_hash(user[3], password):[m
+[32m+[m
+[32m+[m[32m        return {[m
+[32m+[m[32m            "message": "Invalid Password"[m
+[32m+[m[32m        }, 401[m
+[32m+[m
+[32m+[m[41m    [m
+[32m+[m[32m    access_token = create_access_token([m
+[32m+[m[32m    identity=email,[m
+[32m+[m[32m    expires_delta=timedelta(hours=7)[m
+[32m+[m[32m)[m
+[32m+[m[32m    return {[m
+[32m+[m[32m        "message": "Login Successful",[m
+[32m+[m[32m        "token": access_token,[m
+[32m+[m[32m        "username": user[1],[m
+[32m+[m[32m        "email": user[2],[m
+[32m+[m[32m        "role": user[4][m
+[32m+[m[32m    }, 200[m
+[32m+[m[32mfrom flask_jwt_extended import jwt_required[m
+[32m+[m
+[32m+[m[32m@app.route("/api/dashboard", methods=["GET"])[m
+[32m+[m[32m@jwt_required()[m
+[32m+[m[32mdef dashboard():[m
+[32m+[m
+[32m+[m[32m    cur = mysql.connection.cursor()[m
+[32m+[m
+[32m+[m[32m    # Total Users[m
+[32m+[m[32m    cur.execute("SELECT COUNT(*) FROM users")[m
+[32m+[m[32m    total_users = cur.fetchone()[0][m
+[32m+[m
+[32m+[m[32m    # Total Projects[m
+[32m+[m[32m    cur.execute("SELECT COUNT(*) FROM projects")[m
+[32m+[m[32m    total_projects = cur.fetchone()[0][m
+[32m+[m
+[32m+[m[32m    # Total Bugs[m
+[32m+[m[32m    cur.execute("SELECT COUNT(*) FROM bugs")[m
+[32m+[m[32m    total_bugs = cur.fetchone()[0][m
+[32m+[m
+[32m+[m[32m    # Open Bugs[m
+[32m+[m[32m    cur.execute("SELECT COUNT(*) FROM bugs WHERE status='Open'")[m
+[32m+[m[32m    open_bugs = cur.fetchone()[0][m
+[32m+[m
+[32m+[m[32m    # Closed Bugs[m
+[32m+[m[32m    cur.execute("SELECT COU

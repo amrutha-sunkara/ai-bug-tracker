@@ -31,57 +31,58 @@ const [role,setRole]=useState("Developer");
 
 
 
-const handleSubmit=async(e)=>{
+const handleSubmit = async (e) => {
+
+    e.preventDefault();
 
 
-e.preventDefault();
+    try {
 
 
-try{
+        const response = await api.post("/api/register", {
+
+            username,
+            email,
+            password,
+            role
+
+        });
 
 
-const response=await api.post("/register",{
 
-username,
-email,
-password,
-role
-
-});
+        alert(response.data.message);
 
 
-alert(response.data.message);
+
+        setUsername("");
+
+        setEmail("");
+
+        setPassword("");
+
+        setRole("Developer");
 
 
-setUsername("");
 
-setEmail("");
-
-setPassword("");
-
-setRole("Developer");
+    }
 
 
-}
-
-catch(error){
+    catch(error) {
 
 
-alert(
+        alert(
 
-error.response?.data?.message ||
+            error.response?.data?.message ||
 
-"Registration Failed"
+            "Registration Failed"
 
-);
+        );
 
 
-}
-
+    }
 
 
 };
-
 
 
 

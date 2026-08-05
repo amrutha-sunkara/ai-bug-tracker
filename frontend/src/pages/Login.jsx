@@ -28,81 +28,62 @@ const [message,setMessage]=useState("");
 
 
 
-const handleLogin=async(e)=>{
+const handleLogin = async (e) => {
+
+    e.preventDefault();
+
+    try {
+
+        const response = await api.post("/api/login", {
+            email,
+            password
+        });
 
 
-e.preventDefault();
+        localStorage.clear();
 
 
-try{
+        localStorage.setItem(
+            "token",
+            response.data.token
+        );
 
 
-const response=await api.post("/login",{
-
-email,
-password
-
-});
+        localStorage.setItem(
+            "username",
+            response.data.username
+        );
 
 
-
-localStorage.clear();
-
-
-
-localStorage.setItem(
-"token",
-response.data.token
-);
+        localStorage.setItem(
+            "email",
+            response.data.email
+        );
 
 
-localStorage.setItem(
-"username",
-response.data.username
-);
+        localStorage.setItem(
+            "role",
+            response.data.role || "Developer"
+        );
 
 
-localStorage.setItem(
-"email",
-response.data.email
-);
+        navigate("/dashboard");
 
 
-localStorage.setItem(
-"role",
-response.data.role || "Developer"
-);
+    }
+
+    catch(error) {
 
 
-
-navigate("/dashboard");
-
-
-
-}
-
-catch(error){
+        setMessage(
+            error.response?.data?.message ||
+            "Invalid Email or Password"
+        );
 
 
-setMessage(
-
-error.response?.data?.message ||
-
-"Invalid Email or Password"
-
-);
-
-
-}
-
+    }
 
 };
-
-
-
-
-
-
 return(
 
 <>
