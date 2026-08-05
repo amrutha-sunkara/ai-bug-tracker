@@ -5,7 +5,6 @@ import api from "../services/api";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 
-
 import {
     Users,
     FolderKanban,
@@ -30,9 +29,7 @@ import {
 
 
 
-
-
-function Dashboard() {
+function Dashboard(){
 
 
 const [data,setData]=useState({
@@ -46,7 +43,6 @@ const [data,setData]=useState({
 });
 
 
-
 const [charts,setCharts]=useState({
 
     status:[],
@@ -56,14 +52,18 @@ const [charts,setCharts]=useState({
 });
 
 
+const [loading,setLoading]=useState(true);
+
+
+
 
 
 
 useEffect(()=>{
 
-    fetchDashboard();
+fetchDashboard();
 
-    fetchCharts();
+fetchCharts();
 
 },[]);
 
@@ -79,7 +79,7 @@ const fetchDashboard=async()=>{
 try{
 
 
-const response=await api.get("/dashboard");
+const response = await api.get("/api/dashboard");
 
 
 setData(response.data);
@@ -87,14 +87,28 @@ setData(response.data);
 
 }
 
+
 catch(error){
 
-console.log(error);
+
+console.log(
+"Dashboard Error:",
+error.response?.data || error.message
+);
+
+
+}
+
+finally{
+
+setLoading(false);
 
 }
 
 
 };
+
+
 
 
 
@@ -108,7 +122,7 @@ const fetchCharts=async()=>{
 try{
 
 
-const response=await api.get("/dashboard/charts");
+const response = await api.get("/api/dashboard/charts");
 
 
 setCharts(response.data);
@@ -116,15 +130,61 @@ setCharts(response.data);
 
 }
 
+
 catch(error){
 
-console.log(error);
+
+console.log(
+"Charts Error:",
+error.response?.data || error.message
+);
+
 
 }
 
 
 };
 
+
+
+
+
+
+
+
+if(loading){
+
+
+return(
+
+<div className="
+min-h-screen
+flex
+items-center
+justify-center
+bg-gray-100
+dark:bg-slate-950
+">
+
+
+<h1 className="
+text-2xl
+font-bold
+dark:text-white
+">
+
+Loading Dashboard...
+
+</h1>
+
+
+</div>
+
+
+);
+
+
+}
 
 
 
@@ -144,14 +204,12 @@ color:"text-blue-500"
 },
 
 
-
 {
 title:"Projects",
 value:data.total_projects,
 icon:<FolderKanban size={40}/>,
 color:"text-yellow-500"
 },
-
 
 
 {
@@ -162,14 +220,12 @@ color:"text-red-500"
 },
 
 
-
 {
 title:"Open Bugs",
 value:data.open_bugs,
 icon:<AlertCircle size={40}/>,
 color:"text-orange-500"
 },
-
 
 
 {
@@ -188,13 +244,15 @@ color:"text-green-500"
 
 
 
-
-
-
 return(
 
 
-<div className="flex min-h-screen bg-gray-100 dark:bg-slate-950">
+<div className="
+flex
+min-h-screen
+bg-gray-100
+dark:bg-slate-950
+">
 
 
 <Sidebar/>
@@ -217,10 +275,11 @@ return(
 
 
 
+
 <h1 className="
-text-4xl 
-font-bold 
-text-gray-800 
+text-4xl
+font-bold
+text-gray-800
 dark:text-white
 ">
 
@@ -231,8 +290,10 @@ Dashboard
 
 
 
+
 <p className="
-mt-2 mb-8
+mt-2
+mb-8
 text-gray-600
 dark:text-gray-300
 ">
@@ -247,17 +308,11 @@ Welcome back, {localStorage.getItem("username")}
 
 
 
-
-
-{/* Statistics Cards */}
-
-
-
 <div className="
-grid 
-grid-cols-1 
-md:grid-cols-2 
-lg:grid-cols-5 
+grid
+grid-cols-1
+md:grid-cols-2
+lg:grid-cols-5
 gap-6
 mb-10
 ">
@@ -267,7 +322,6 @@ mb-10
 {
 
 cards.map((card,index)=>(
-
 
 
 <div
@@ -282,11 +336,10 @@ shadow-lg
 p-6
 transition
 hover:-translate-y-2
-duration-300
 "
 
->
 
+>
 
 
 <div className="
@@ -294,8 +347,6 @@ flex
 justify-between
 items-center
 ">
-
-
 
 
 
@@ -313,7 +364,6 @@ font-medium
 </h2>
 
 
-
 <p className="
 text-4xl
 font-bold
@@ -325,6 +375,7 @@ dark:text-white
 {card.value}
 
 </p>
+
 
 
 </div>
@@ -342,14 +393,11 @@ dark:text-white
 
 
 
-
-
 </div>
 
 
 
 </div>
-
 
 
 ))
@@ -360,17 +408,7 @@ dark:text-white
 
 
 </div>
-
-
-
-
-
-
-
-
-
-{/* Charts */}
-
+{/* Charts Section */}
 
 
 <div className="
@@ -379,7 +417,6 @@ grid-cols-1
 lg:grid-cols-2
 gap-8
 ">
-
 
 
 
@@ -409,6 +446,9 @@ Bug Status
 
 
 
+{
+
+charts.status.length > 0 ?
 
 
 <PieChart width={400} height={300}>
@@ -456,8 +496,24 @@ charts.status.map((entry,index)=>(
 </PieChart>
 
 
+:
+
+<p className="
+text-gray-500
+dark:text-gray-400
+">
+
+No bug data available
+
+</p>
+
+
+}
+
+
 
 </div>
+
 
 
 
@@ -476,7 +532,6 @@ p-6
 ">
 
 
-
 <h2 className="
 text-2xl
 font-bold
@@ -491,6 +546,11 @@ Bug Priority
 
 
 
+{
+
+charts.priority.length > 0 ?
+
+
 
 <BarChart
 
@@ -501,7 +561,6 @@ height={300}
 data={charts.priority}
 
 >
-
 
 
 <CartesianGrid/>
@@ -529,6 +588,25 @@ fill="#2563eb"
 </BarChart>
 
 
+:
+
+
+<p className="
+text-gray-500
+dark:text-gray-400
+">
+
+No priority data available
+
+</p>
+
+
+
+}
+
+
+
+</div>
 
 
 
@@ -538,19 +616,11 @@ fill="#2563eb"
 
 
 
-</div>
 
 
 
 
-
-
-
-
-
-{/* Developer workload */}
-
-
+{/* Developer Workload */}
 
 
 
@@ -562,7 +632,6 @@ rounded-xl
 shadow-lg
 p-6
 ">
-
 
 
 <h2 className="
@@ -578,6 +647,12 @@ Developer Workload
 </h2>
 
 
+
+
+
+{
+
+charts.developers.length > 0 ?
 
 
 
@@ -613,13 +688,32 @@ fill="#16a34a"
 />
 
 
+
 </BarChart>
 
+
+
+:
+
+
+<p className="
+text-gray-500
+dark:text-gray-400
+">
+
+No developer data available
+
+</p>
+
+
+
+}
 
 
 
 
 </div>
+
 
 
 
@@ -640,7 +734,6 @@ fill="#16a34a"
 
 
 }
-
 
 
 export default Dashboard;

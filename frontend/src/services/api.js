@@ -1,58 +1,74 @@
 import axios from "axios";
 
+
 const api = axios.create({
 
-    baseURL: "https://bug-tracker-ai-backend.onrender.com",
+    baseURL: "http://127.0.0.1:5000",
 
 });
 
 
+// Attach JWT token automatically
+
 api.interceptors.request.use(
 
-(config)=>{
+    (config) => {
 
-    const token = localStorage.getItem("token");
+        const token = localStorage.getItem("token");
 
-    if(token){
+        if (token) {
 
-        config.headers.Authorization = 
-        `Bearer ${token}`;
+            config.headers.Authorization = 
+            `Bearer ${token}`;
+
+        }
+
+        return config;
+
+    },
+
+    (error) => {
+
+        return Promise.reject(error);
 
     }
-
-    return config;
-
-},
-
-(error)=>{
-
-    return Promise.reject(error);
-
-}
 
 );
 
 
+// Handle expired token automatically
+
 api.interceptors.response.use(
 
-(response)=>{
+    (response) => {
 
-    return response;
+        return response;
 
-},
+    },
 
-(error)=>{
+    (error) => {
 
-    if(error.response?.status === 401){
+        if (error.response) {
 
-        localStorage.clear();
-        window.location.href="/login";
+            const status = error.response.status;
+
+            if (status === 401) {
+
+                console.log(
+                    "Session expired. Please login again."
+                );
+
+                localStorage.clear();
+
+                window.location.href = "/login";
+
+            }
+
+        }
+
+        return Promise.reject(error);
 
     }
-
-    return Promise.reject(error);
-
-}
 
 );
 

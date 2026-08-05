@@ -9,33 +9,25 @@ import toast from "react-hot-toast";
 
 function CreateProject(){
 
-
 const [projectName,setProjectName]=useState("");
-
 const [description,setDescription]=useState("");
 const [loading,setLoading]=useState(false);
 
 
-
-
-
-
-const handleSubmit=async(e)=>{
+const handleSubmit = async(e)=>{
 
 e.preventDefault();
 
-
 try{
-
 
 setLoading(true);
 
 
-const response=await api.post("/projects",{
+const response = await api.post("/api/projects",{
 
-project_name:projectName,
+project_name: projectName,
 
-description:description
+description: description
 
 });
 
@@ -52,13 +44,17 @@ setProjectName("");
 setDescription("");
 
 
-}
 
+}
 
 catch(error){
 
 
+console.log(error.response?.data);
+
+
 toast.error(
+error.response?.data?.message ||
 "❌ Unable to create project"
 );
 
@@ -73,17 +69,11 @@ setLoading(false);
 }
 
 
-
 };
 
 
 
-
-
-
 return(
-
-
 
 <div className="
 flex
@@ -93,25 +83,13 @@ dark:bg-slate-950
 ">
 
 
-
-
-
 <Sidebar/>
-
-
-
-
 
 
 <div className="flex-1">
 
 
-
 <Navbar/>
-
-
-
-
 
 
 <div className="
@@ -121,25 +99,13 @@ justify-center
 ">
 
 
-
-
-
-
-
 <div className="
 w-full
 max-w-2xl
 ">
 
 
-
-
-
-<div className="
-mb-8
-">
-
-
+<div className="mb-8">
 
 
 <h1 className="
@@ -154,8 +120,6 @@ Create Project
 </h1>
 
 
-
-
 <p className="
 text-gray-600
 dark:text-gray-400
@@ -167,12 +131,7 @@ Create and manage a new software project
 </p>
 
 
-
 </div>
-
-
-
-
 
 
 
@@ -195,11 +154,6 @@ space-y-6
 >
 
 
-
-
-
-
-
 <div>
 
 
@@ -218,7 +172,6 @@ dark:text-gray-300
 
 
 <input
-
 
 type="text"
 
@@ -243,16 +196,10 @@ outline-none
 
 required
 
-
 />
 
 
 </div>
-
-
-
-
-
 
 
 
@@ -274,9 +221,7 @@ dark:text-gray-300
 
 
 
-
 <textarea
-
 
 rows="6"
 
@@ -301,18 +246,10 @@ outline-none
 
 required
 
-
 />
 
 
-
 </div>
-
-
-
-
-
-
 
 
 
@@ -337,7 +274,9 @@ transition
 
 {
 
-loading ?
+loading
+
+?
 
 "Creating Project..."
 
@@ -352,48 +291,25 @@ loading ?
 
 
 
-
-
-
 </form>
 
 
 
-
-
+</div>
 
 
 </div>
 
 
-
-
-
-
-
 </div>
 
 
-
-
-
-
 </div>
-
-
-
-
-
-
-</div>
-
-
 
 );
 
 
 }
-
 
 
 export default CreateProject;

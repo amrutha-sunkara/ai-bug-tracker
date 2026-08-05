@@ -7,15 +7,11 @@ import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 
 
-
 function ViewProjects(){
-
 
 const [projects,setProjects]=useState([]);
 
 const navigate=useNavigate();
-
-
 
 
 
@@ -29,23 +25,21 @@ getProjects();
 
 
 
-
 const getProjects=async()=>{
-
 
 try{
 
-
-const response=await api.get("/projects");
+const response = await api.get("/api/projects");
 
 setProjects(response.data.projects || []);
-
 
 }
 
 catch(error){
 
-console.log(error);
+console.log(
+error.response?.data || error.message
+);
 
 }
 
@@ -58,10 +52,7 @@ console.log(error);
 
 
 
-
-
 return(
-
 
 <div className="
 flex
@@ -69,7 +60,6 @@ min-h-screen
 bg-gray-100
 dark:bg-slate-950
 ">
-
 
 
 <Sidebar/>
@@ -93,7 +83,6 @@ dark:bg-slate-950
 
 
 
-
 <h1 className="
 text-3xl
 font-bold
@@ -105,6 +94,7 @@ dark:text-white
 Projects
 
 </h1>
+
 
 
 <p className="
@@ -138,12 +128,10 @@ gap-6
 
 {
 
-projects.length>0 ?
-
+projects.length > 0 ?
 
 
 projects.map((project)=>(
-
 
 
 <div
@@ -167,6 +155,7 @@ hover:-translate-y-1
 transition
 "
 
+
 >
 
 
@@ -178,6 +167,7 @@ justify-between
 items-center
 mb-4
 ">
+
 
 
 <div className="
@@ -198,6 +188,7 @@ text-2xl
 
 
 
+
 <span className="
 text-sm
 text-gray-500
@@ -211,6 +202,7 @@ ID #{project.project_id}
 
 
 </div>
+
 
 
 
@@ -257,6 +249,14 @@ line-clamp-3
 
 <button
 
+onClick={(e)=>{
+
+e.stopPropagation();
+
+navigate(`/project/${project.project_id}`);
+
+}}
+
 className="
 mt-6
 w-full
@@ -283,9 +283,6 @@ View Details
 
 
 ))
-
-
-
 
 
 :
@@ -318,12 +315,6 @@ No projects available
 
 
 
-</div>
-
-
-
-
-
 
 
 </div>
@@ -333,6 +324,14 @@ No projects available
 
 
 
+
+</div>
+
+
+
+
+
+
 </div>
 
 
@@ -340,14 +339,12 @@ No projects available
 
 
 </div>
-
 
 
 );
 
 
 }
-
 
 
 export default ViewProjects;

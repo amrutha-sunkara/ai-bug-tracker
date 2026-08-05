@@ -5,11 +5,13 @@ import api from "../services/api";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import toast from "react-hot-toast";
+
+
 function ReportBug(){
+
 const [projects,setProjects]=useState([]);
 
 const [users,setUsers]=useState([]);
-
 
 const [title,setTitle]=useState("");
 
@@ -22,10 +24,8 @@ const [projectId,setProjectId]=useState("");
 const [assignedTo,setAssignedTo]=useState("");
 
 const [aiReport,setAiReport]=useState("");
+
 const [aiLoading,setAiLoading]=useState(false);
-
-
-
 
 
 
@@ -41,21 +41,14 @@ fetchUsers();
 
 
 
-
-
-
-
-const fetchProjects=async()=>{
-
+const fetchProjects = async()=>{
 
 try{
 
-
-const response=await api.get("/projects");
+const response = await api.get("/api/projects");
 
 setProjects(response.data.projects || []);
 
-
 }
 
 catch(error){
@@ -64,26 +57,19 @@ console.log(error);
 
 }
 
-
-
 };
 
 
 
 
 
-
-
-const fetchUsers=async()=>{
-
+const fetchUsers = async()=>{
 
 try{
 
-
-const response=await api.get("/users");
+const response = await api.get("/api/users");
 
 setUsers(response.data.users || []);
-
 
 }
 
@@ -93,8 +79,6 @@ console.log(error);
 
 }
 
-
-
 };
 
 
@@ -102,23 +86,16 @@ console.log(error);
 
 
 
-
-
-
-
-const generateAIReport=async()=>{
+const generateAIReport = async()=>{
 
 
 if(!description){
 
-toast.error(
-"Please enter bug description"
-);
+toast.error("Please enter bug description");
 
 return;
 
 }
-
 
 
 try{
@@ -133,7 +110,7 @@ setAiReport(
 
 
 
-const response=await api.post("/improve_bug",{
+const response = await api.post("/api/improve_bug",{
 
 description
 
@@ -152,10 +129,13 @@ toast.success(
 );
 
 
-
 }
 
+
 catch(error){
+
+
+console.log(error.response?.data);
 
 
 toast.error(
@@ -173,7 +153,6 @@ setAiLoading(false);
 
 
 }
-
 
 
 };
@@ -210,12 +189,10 @@ return;
 
 
 
-
-
 try{
 
 
-const response = await api.post("/bugs",{
+await api.post("/api/bugs",{
 
 
 title,
@@ -224,19 +201,18 @@ description: aiReport || description,
 
 priority,
 
-project_id:projectId,
+project_id: projectId,
 
-assigned_to:assignedTo
+assigned_to: assignedTo
 
 
 });
 
 
 
-
-toast.success("🐞 Bug reported successfully!");
-
-
+toast.success(
+"🐞 Bug reported successfully!"
+);
 
 
 
@@ -257,11 +233,10 @@ setPriority("Medium");
 }
 
 
-
 catch(error){
 
 
-console.log(error.response);
+console.log(error.response?.data);
 
 
 
@@ -274,23 +249,11 @@ error.response?.data?.message ||
 );
 
 
-
 }
 
 
-
 };
-
-
-
-
-
-
-
-
 return(
-
-
 
 <div className="
 flex
@@ -300,34 +263,16 @@ dark:bg-slate-950
 ">
 
 
-
-
-
-
 <Sidebar/>
-
-
-
-
 
 
 <div className="flex-1">
 
 
-
 <Navbar/>
 
 
-
-
-
-
 <div className="p-8">
-
-
-
-
-
 
 
 <h1 className="
@@ -343,7 +288,6 @@ mb-2
 </h1>
 
 
-
 <p className="
 text-gray-600
 dark:text-gray-400
@@ -353,11 +297,6 @@ mb-8
 Create bug reports and improve them using Gemini AI
 
 </p>
-
-
-
-
-
 
 
 
@@ -382,18 +321,11 @@ space-y-6
 
 
 
-
-
-
-
 <div className="
 grid
 md:grid-cols-2
 gap-6
 ">
-
-
-
 
 
 
@@ -412,7 +344,6 @@ Bug Title
 
 
 <input
-
 
 value={title}
 
@@ -433,16 +364,10 @@ dark:text-white
 
 required
 
-
 />
 
 
-
 </div>
-
-
-
-
 
 
 
@@ -463,7 +388,6 @@ Priority
 
 
 <select
-
 
 value={priority}
 
@@ -498,8 +422,6 @@ dark:text-white
 
 
 
-
-
 </div>
 
 
@@ -508,10 +430,7 @@ dark:text-white
 
 
 
-
-
 <select
-
 
 value={projectId}
 
@@ -527,7 +446,6 @@ dark:border-slate-700
 dark:text-white
 "
 
-
 required
 
 >
@@ -540,11 +458,9 @@ Select Project
 </option>
 
 
-
 {
 
 projects.map(project=>(
-
 
 <option
 
@@ -554,18 +470,13 @@ value={project.project_id}
 
 >
 
-
 {project.project_name}
-
 
 </option>
 
-
 ))
 
-
 }
-
 
 
 </select>
@@ -576,11 +487,7 @@ value={project.project_id}
 
 
 
-
-
-
 <select
-
 
 value={assignedTo}
 
@@ -598,7 +505,6 @@ dark:text-white
 
 required
 
-
 >
 
 
@@ -609,11 +515,9 @@ Assign Developer
 </option>
 
 
-
 {
 
 users.map(user=>(
-
 
 <option
 
@@ -623,18 +527,14 @@ value={user.user_id}
 
 >
 
-
 {user.username}
-
 
 </option>
 
 
 ))
 
-
 }
-
 
 
 </select>
@@ -645,11 +545,7 @@ value={user.user_id}
 
 
 
-
-
-
 <textarea
-
 
 rows="5"
 
@@ -669,21 +565,13 @@ dark:border-slate-700
 dark:text-white
 "
 
-
 required
-
 
 />
 
 
 
 
-
-
-
-
-
-{/* AI SECTION */}
 
 
 
@@ -706,6 +594,7 @@ mb-3
 ✨ Gemini AI Assistant
 
 </h2>
+
 
 
 <p className="mb-4 opacity-90">
@@ -740,7 +629,9 @@ transition
 
 {
 
-aiLoading ?
+aiLoading
+
+?
 
 "🤖 Gemini is thinking..."
 
@@ -754,7 +645,6 @@ aiLoading ?
 </button>
 
 
-
 </div>
 
 
@@ -764,10 +654,7 @@ aiLoading ?
 
 
 
-
-
 <textarea
-
 
 rows="10"
 
@@ -796,12 +683,7 @@ dark:text-white
 
 
 
-
-
-
-
 <button
-
 
 className="
 w-full
@@ -816,16 +698,11 @@ transition
 hover:scale-[1.02]
 "
 
-
 >
 
 🚀 Submit Bug
 
-
 </button>
-
-
-
 
 
 
@@ -835,36 +712,19 @@ hover:scale-[1.02]
 
 
 
-
-
-
-
+</div>
 
 
 </div>
 
 
-
-
-
-
 </div>
-
-
-
-
-
-
-
-</div>
-
 
 
 );
 
 
 }
-
 
 
 export default ReportBug;

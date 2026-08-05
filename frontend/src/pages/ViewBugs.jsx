@@ -36,26 +36,21 @@ fetchBugs();
 
 
 
-const fetchBugs=async()=>{
-
+const fetchBugs = async()=>{
 
 try{
 
-
-const response=await api.get("/bugs");
+const response = await api.get("/api/bugs");
 
 setBugs(response.data.bugs || []);
-
 
 }
 
 catch(error){
 
-console.log(error);
+console.log(error.response?.data);
 
 }
-
-
 
 };
 
@@ -63,33 +58,25 @@ console.log(error);
 
 
 
-
-
-
-const updateStatus=async(id,status)=>{
-
+const updateStatus = async(id,status)=>{
 
 try{
 
-
-await api.put(`/bugs/${id}`,{
+await api.put(`/api/bugs/${id}`,{
 
 status
 
 });
 
-
 fetchBugs();
-
 
 }
 
 catch(error){
 
-console.log(error);
+console.log(error.response?.data);
 
 }
-
 
 };
 
@@ -98,37 +85,23 @@ console.log(error);
 
 
 
-
-
-const deleteBug=async(id)=>{
-
+const deleteBug = async(id)=>{
 
 try{
 
-
-await api.delete(`/bugs/${id}`);
-
+await api.delete(`/api/bugs/${id}`);
 
 fetchBugs();
-
-
 
 }
 
 catch(error){
 
-console.log(error);
+console.log(error.response?.data);
 
 }
 
-
 };
-
-
-
-
-
-
 
 
 
