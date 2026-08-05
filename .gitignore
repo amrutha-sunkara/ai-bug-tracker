@@ -1,0 +1,29 @@
+# Environment variables
+.env
+backend/.env
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environments
+backend/venv/
+venv/
+env/
+
+# Flask
+instance/
+
+# Frontend dependencies
+frontend/node_modules/
+
+# Build files
+frontend/dist/
+frontend/dist-ssr/
+
+# Editor files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store

@@ -1,0 +1,646 @@
+import { useEffect, useState } from "react";
+
+import api from "../services/api";
+
+import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar";
+
+
+import {
+    Users,
+    FolderKanban,
+    Bug,
+    AlertCircle,
+    CheckCircle
+} from "lucide-react";
+
+
+import {
+    PieChart,
+    Pie,
+    Cell,
+    Tooltip,
+    Legend,
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid
+} from "recharts";
+
+
+
+
+
+function Dashboard() {
+
+
+const [data,setData]=useState({
+
+    total_users:0,
+    total_projects:0,
+    total_bugs:0,
+    open_bugs:0,
+    closed_bugs:0
+
+});
+
+
+
+const [charts,setCharts]=useState({
+
+    status:[],
+    priority:[],
+    developers:[]
+
+});
+
+
+
+
+
+useEffect(()=>{
+
+    fetchDashboard();
+
+    fetchCharts();
+
+},[]);
+
+
+
+
+
+
+
+const fetchDashboard=async()=>{
+
+
+try{
+
+
+const response=await api.get("/dashboard");
+
+
+setData(response.data);
+
+
+}
+
+catch(error){
+
+console.log(error);
+
+}
+
+
+};
+
+
+
+
+
+
+
+const fetchCharts=async()=>{
+
+
+try{
+
+
+const response=await api.get("/dashboard/charts");
+
+
+setCharts(response.data);
+
+
+}
+
+catch(error){
+
+console.log(error);
+
+}
+
+
+};
+
+
+
+
+
+
+
+
+
+const cards=[
+
+
+{
+title:"Users",
+value:data.total_users,
+icon:<Users size={40}/>,
+color:"text-blue-500"
+},
+
+
+
+{
+title:"Projects",
+value:data.total_projects,
+icon:<FolderKanban size={40}/>,
+color:"text-yellow-500"
+},
+
+
+
+{
+title:"Total Bugs",
+value:data.total_bugs,
+icon:<Bug size={40}/>,
+color:"text-red-500"
+},
+
+
+
+{
+title:"Open Bugs",
+value:data.open_bugs,
+icon:<AlertCircle size={40}/>,
+color:"text-orange-500"
+},
+
+
+
+{
+title:"Closed Bugs",
+value:data.closed_bugs,
+icon:<CheckCircle size={40}/>,
+color:"text-green-500"
+}
+
+
+
+];
+
+
+
+
+
+
+
+
+
+return(
+
+
+<div className="flex min-h-screen bg-gray-100 dark:bg-slate-950">
+
+
+<Sidebar/>
+
+
+
+
+<div className="flex-1">
+
+
+<Navbar/>
+
+
+
+
+
+<div className="p-8">
+
+
+
+
+
+<h1 className="
+text-4xl 
+font-bold 
+text-gray-800 
+dark:text-white
+">
+
+Dashboard
+
+</h1>
+
+
+
+
+<p className="
+mt-2 mb-8
+text-gray-600
+dark:text-gray-300
+">
+
+Welcome back, {localStorage.getItem("username")}
+
+</p>
+
+
+
+
+
+
+
+
+
+{/* Statistics Cards */}
+
+
+
+<div className="
+grid 
+grid-cols-1 
+md:grid-cols-2 
+lg:grid-cols-5 
+gap-6
+mb-10
+">
+
+
+
+{
+
+cards.map((card,index)=>(
+
+
+
+<div
+
+key={index}
+
+className="
+bg-white
+dark:bg-slate-900
+rounded-xl
+shadow-lg
+p-6
+transition
+hover:-translate-y-2
+duration-300
+"
+
+>
+
+
+
+<div className="
+flex
+justify-between
+items-center
+">
+
+
+
+
+
+<div>
+
+
+<h2 className="
+text-gray-500
+dark:text-gray-400
+font-medium
+">
+
+{card.title}
+
+</h2>
+
+
+
+<p className="
+text-4xl
+font-bold
+mt-3
+text-gray-800
+dark:text-white
+">
+
+{card.value}
+
+</p>
+
+
+</div>
+
+
+
+
+
+<div className={card.color}>
+
+{card.icon}
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+
+))
+
+
+}
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+{/* Charts */}
+
+
+
+<div className="
+grid
+grid-cols-1
+lg:grid-cols-2
+gap-8
+">
+
+
+
+
+
+
+
+<div className="
+bg-white
+dark:bg-slate-900
+rounded-xl
+shadow-lg
+p-6
+">
+
+
+<h2 className="
+text-2xl
+font-bold
+mb-5
+text-gray-800
+dark:text-white
+">
+
+Bug Status
+
+</h2>
+
+
+
+
+
+<PieChart width={400} height={300}>
+
+
+<Pie
+
+data={charts.status}
+
+dataKey="value"
+
+nameKey="name"
+
+cx="50%"
+
+cy="50%"
+
+outerRadius={100}
+
+label
+
+
+>
+
+
+{
+
+charts.status.map((entry,index)=>(
+
+<Cell key={index}/>
+
+))
+
+}
+
+
+</Pie>
+
+
+<Tooltip/>
+
+<Legend/>
+
+
+</PieChart>
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<div className="
+bg-white
+dark:bg-slate-900
+rounded-xl
+shadow-lg
+p-6
+">
+
+
+
+<h2 className="
+text-2xl
+font-bold
+mb-5
+text-gray-800
+dark:text-white
+">
+
+Bug Priority
+
+</h2>
+
+
+
+
+<BarChart
+
+width={450}
+
+height={300}
+
+data={charts.priority}
+
+>
+
+
+
+<CartesianGrid/>
+
+
+<XAxis dataKey="name"/>
+
+
+<YAxis/>
+
+
+<Tooltip/>
+
+
+<Bar
+
+dataKey="value"
+
+fill="#2563eb"
+
+/>
+
+
+
+</BarChart>
+
+
+
+
+
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+{/* Developer workload */}
+
+
+
+
+
+<div className="
+mt-8
+bg-white
+dark:bg-slate-900
+rounded-xl
+shadow-lg
+p-6
+">
+
+
+
+<h2 className="
+text-2xl
+font-bold
+mb-5
+text-gray-800
+dark:text-white
+">
+
+Developer Workload
+
+</h2>
+
+
+
+
+
+<BarChart
+
+width={700}
+
+height={350}
+
+data={charts.developers}
+
+>
+
+
+<CartesianGrid/>
+
+
+<XAxis dataKey="name"/>
+
+
+<YAxis/>
+
+
+<Tooltip/>
+
+
+<Bar
+
+dataKey="value"
+
+fill="#16a34a"
+
+/>
+
+
+</BarChart>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+);
+
+
+}
+
+
+
+export default Dashboard;
