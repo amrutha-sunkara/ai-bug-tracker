@@ -39,7 +39,7 @@ const fetchDetails=async()=>{
 try{
 
 
-const response=await api.get(`/projects/${id}`);
+const response=await api.get(`/api/projects/${id}`);
 
 
 setProject(response.data.project);
