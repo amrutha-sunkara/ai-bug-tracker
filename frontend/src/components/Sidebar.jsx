@@ -3,51 +3,61 @@ import { NavLink } from "react-router-dom";
 
 
 function Sidebar(){
+  
+    const role = localStorage.getItem("role");
 
 
+const menu = [
 
-const menu=[
+    {
+        name:"Dashboard",
+        path:"/dashboard",
+        icon:"📊",
+        roles:["Manager","Tester","Developer"]
+    },
 
+    {
+        name:"Create Project",
+        path:"/create-project",
+        icon:"📁",
+        roles:["Manager"]
+    },
 
-{
-name:"Dashboard",
-path:"/dashboard",
-icon:"📊"
+    {
+        name:"Projects",
+        path:"/view-projects",
+        icon:"🗂️",
+        roles:["Manager","Tester","Developer"]
+    },
+
+    {
+        name:"Report Bug",
+        path:"/report-bug",
+        icon:"🤖",
+        roles:["Manager","Tester"]
+    },
+
+    {
+        name:"Bug Management",
+        path:"/view-bugs",
+        icon:"🐞",
+        roles:["Manager","Tester","Developer"]
+    },
+    {
+    name:"Sprint Management",
+    path:"/sprint-management",
+    icon:"🏃",
+    roles:["Manager","Tester","Developer"]
 },
 
-
-{
-name:"Create Project",
-path:"/create-project",
-icon:"📁"
-},
-
-
-{
-name:"Projects",
-path:"/view-projects",
-icon:"🗂️"
-},
-
-
-{
-name:"Report Bug",
-path:"/report-bug",
-icon:"🤖"
-},
-
-
-{
-name:"Bug Management",
-path:"/view-bugs",
-icon:"🐞"
-}
-
-
+    {
+        name:"AI Resolution Assistance",
+        path:"/ai-resolution",
+        icon:"🤖",
+        roles:["Manager","Tester","Developer"]
+    }
 
 ];
-
-
 
 
 
@@ -130,7 +140,9 @@ space-y-3
 
 {
 
-menu.map((item)=>(
+ menu
+        .filter((item) => item.roles.includes(role))
+        .map((item)=>(
 
 
 <NavLink

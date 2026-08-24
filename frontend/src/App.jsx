@@ -18,8 +18,8 @@ import ViewBugs from "./pages/ViewBugs";
 import ProjectDetails from "./pages/ProjectDetails";
 
 import ProtectedRoute from "./components/ProtectedRoute";
-
-
+import AIResolution from "./pages/AIResolution";
+import SprintManagement from "./pages/SprintManagement";
 
 function App() {
 
@@ -77,134 +77,92 @@ element={<Register />}
 
 
 
-
 {/* Protected Routes */}
 
-
-
 <Route
-
-path="/dashboard"
-
-element={
-
-<ProtectedRoute>
-
-<Dashboard />
-
-</ProtectedRoute>
-
-}
-
+    path="/dashboard"
+    element={
+        <ProtectedRoute
+            allowedRoles={["Tester", "Developer", "Manager"]}
+        >
+            <Dashboard />
+        </ProtectedRoute>
+    }
 />
 
-
-
-
-
-
 <Route
-
-path="/create-project"
-
-element={
-
-<ProtectedRoute>
-
-<CreateProject />
-
-</ProtectedRoute>
-
-}
-
+    path="/create-project"
+    element={
+        <ProtectedRoute
+            allowedRoles={["Manager"]}
+        >
+            <CreateProject />
+        </ProtectedRoute>
+    }
 />
 
-
-
-
-
-
 <Route
-
-path="/view-projects"
-
-element={
-
-<ProtectedRoute>
-
-<ViewProjects />
-
-</ProtectedRoute>
-
-}
-
+    path="/view-projects"
+    element={
+        <ProtectedRoute
+            allowedRoles={["Tester", "Developer", "Manager"]}
+        >
+            <ViewProjects />
+        </ProtectedRoute>
+    }
 />
 
-
-
-
-
-
-
 <Route
-
-path="/report-bug"
-
-element={
-
-<ProtectedRoute>
-
-<ReportBug />
-
-</ProtectedRoute>
-
-}
-
+    path="/report-bug"
+    element={
+        <ProtectedRoute
+            allowedRoles={["Tester", "Manager"]}
+        >
+            <ReportBug />
+        </ProtectedRoute>
+    }
 />
 
-
-
-
-
-
-
 <Route
-
-path="/view-bugs"
-
-element={
-
-<ProtectedRoute>
-
-<ViewBugs />
-
-</ProtectedRoute>
-
-}
-
+    path="/view-bugs"
+    element={
+        <ProtectedRoute
+            allowedRoles={["Tester", "Developer", "Manager"]}
+        >
+            <ViewBugs />
+        </ProtectedRoute>
+    }
 />
-
-
-
-
-
-
-
-
 <Route
-
-path="/project/:id"
-
-element={
-
-<ProtectedRoute>
-
-<ProjectDetails />
-
-</ProtectedRoute>
-
-}
-
+    path="/sprint-management"
+    element={
+        <ProtectedRoute
+            allowedRoles={["Tester", "Developer", "Manager"]}
+        >
+            <SprintManagement />
+        </ProtectedRoute>
+    }
+/>
+<Route
+  path="/ai-resolution"
+  element={
+    <ProtectedRoute
+      allowedRoles={["Tester", "Developer", "Manager"]}
+    >
+      <AIResolution />
+    </ProtectedRoute>
+  }
+/>
+<Route
+    path="/project/:id"
+    element={
+        <ProtectedRoute
+            allowedRoles={["Tester", "Developer", "Manager"]}
+        >
+            <ProjectDetails />
+        </ProtectedRoute>
+        
+    }
 />
 
 
