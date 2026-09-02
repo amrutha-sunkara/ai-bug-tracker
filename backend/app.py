@@ -18,12 +18,29 @@ from datetime import timedelta
 from config import mysql
 from werkzeug.utils import secure_filename
 from pinecone import Pinecone
+from flasgger import Swagger
 
 # Load Environment Variables
 load_dotenv()
 
 # Create Flask App
 app = Flask(__name__)
+swagger = Swagger(app, template={
+    "swagger": "2.0",
+    "info": {
+        "title": "Bug Tracker API",
+        "description": "REST API documentation for the AI Bug Tracker",
+        "version": "1.0.0"
+    },
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header",
+            "description": "Enter: Bearer <JWT token>"
+        }
+    }
+})
 UPLOAD_FOLDER = "uploads"
 
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
@@ -91,20 +108,30 @@ def require_role(allowed_roles):
     return True, None, None
 
 # Gemini AI
-client = genai.Client(
-    api_key=os.getenv("GEMINI_API_KEY")
-)
+client = None
 def generate_embedding(text):
+    gemini_api_key = os.getenv("GEMINI_API_KEY")
+
+    if not gemini_api_key:
+        raise ValueError("GEMINI_API_KEY is not configured")
+
+    client = genai.Client(api_key=gemini_api_key)
+
     response = client.models.embed_content(
         model="gemini-embedding-001",
         contents=text,
-        config=types.EmbedContentConfig(
-            output_dimensionality=768
-        )
+        config=types.EmbedContentConfig(output_dimensionality=768)
     )
 
     return response.embeddings[0].values
 def generate_ai_response(prompt):
+    gemini_api_key = os.getenv("GEMINI_API_KEY")
+
+    if not gemini_api_key:
+        raise ValueError("GEMINI_API_KEY is not configured")
+
+    client = genai.Client(api_key=gemini_api_key)
+
     response = client.models.generate_content(
         model="gemini-2.5-flash",
         contents=prompt
@@ -257,10 +284,42 @@ def register():
         "message": "Registration Successful"
     }, 201
 from flask_jwt_extended import create_access_token
-
+def error_response(message, status_code):
+    return {
+        "error": message,
+        "status": status_code
+    }, status_code
 @app.route("/api/login", methods=["POST"])
 def login():
-
+    """
+    Login User
+    ---
+    tags:
+      - Authentication
+    consumes:
+      - application/json
+    parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          required:
+            - email
+            - password
+          properties:
+            email:
+              type: string
+              example: user@example.com
+            password:
+              type: string
+              example: password123
+    responses:
+      200:
+        description: Login successful
+      401:
+        description: Invalid email or password
+    """
     data = request.get_json()
 
     email = data.get("email")
@@ -305,6 +364,21 @@ from flask_jwt_extended import jwt_required
 @app.route("/api/dashboard", methods=["GET"])
 @jwt_required()
 def dashboard():
+    """
+    Get Dashboard Summary
+    ---
+    tags:
+      - Dashboard
+    security:
+      - Bearer: []
+    responses:
+      200:
+        description: Dashboard statistics retrieved successfully
+      401:
+        description: Authentication required
+      403:
+        description: Access denied
+    """
 
     allowed, error, status_code = require_role(
         ["Tester", "Developer", "Manager"]
@@ -331,6 +405,18 @@ def dashboard():
     cur.execute("SELECT COUNT(*) FROM bugs WHERE status='Open'")
     open_bugs = cur.fetchone()[0]
 
+    # In Progress Bugs
+    cur.execute("SELECT COUNT(*) FROM bugs WHERE status='In Progress'")
+    in_progress_bugs = cur.fetchone()[0]
+
+    # In Review Bugs
+    cur.execute("SELECT COUNT(*) FROM bugs WHERE status='In Review'")
+    in_review_bugs = cur.fetchone()[0]
+
+    # Resolved Bugs
+    cur.execute("SELECT COUNT(*) FROM bugs WHERE status='Resolved'")
+    resolved_bugs = cur.fetchone()[0]
+
     # Closed Bugs
     cur.execute("SELECT COUNT(*) FROM bugs WHERE status='Closed'")
     closed_bugs = cur.fetchone()[0]
@@ -342,12 +428,45 @@ def dashboard():
         "total_projects": total_projects,
         "total_bugs": total_bugs,
         "open_bugs": open_bugs,
+        "in_progress_bugs": in_progress_bugs,
+        "in_review_bugs": in_review_bugs,
+        "resolved_bugs": resolved_bugs,
         "closed_bugs": closed_bugs
     }, 200
-
 @app.route("/api/projects", methods=["POST"])
 @jwt_required()
 def create_project():
+    """
+    Create a New Project
+    ---
+    tags:
+      - Projects
+    security:
+      - Bearer: []
+    consumes:
+      - application/json
+    parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          required:
+            - name
+          properties:
+            name:
+              type: string
+              example: Bug Tracker Project
+    responses:
+      201:
+        description: Project created successfully
+      400:
+        description: Invalid input
+      401:
+        description: Authentication required
+      403:
+        description: Manager access required
+    """
 
     # Get logged-in user's email
     email = get_jwt_identity()
@@ -370,9 +489,7 @@ def create_project():
 
         cur.close()
 
-        return {
-            "message": "User not found"
-        }, 404
+        return error_response("User not found", 404)
 
     role = user[0]
 
@@ -410,6 +527,21 @@ def create_project():
 @app.route("/api/projects", methods=["GET"])
 @jwt_required()
 def get_projects():
+    """
+    Get All Projects
+    ---
+    tags:
+      - Projects
+    security:
+      - Bearer: []
+    responses:
+      200:
+        description: List of all projects
+      401:
+        description: Authentication required
+      403:
+        description: Access denied
+    """
 
     allowed, error, status_code = require_role(
         ["Tester", "Developer", "Manager"]
@@ -449,6 +581,29 @@ def get_projects():
 @app.route("/api/projects/<int:project_id>", methods=["GET"])
 @jwt_required()
 def get_project_details(project_id):
+    """
+    Get Project by ID
+    ---
+    tags:
+      - Projects
+    security:
+      - Bearer: []
+    parameters:
+      - in: path
+        name: project_id
+        required: true
+        type: integer
+        example: 1
+    responses:
+      200:
+        description: Project details retrieved successfully
+      401:
+        description: Authentication required
+      403:
+        description: Access denied
+      404:
+        description: Project not found
+    """
 
     allowed, error, status_code = require_role(
         ["Tester", "Developer", "Manager"]
@@ -470,8 +625,7 @@ def get_project_details(project_id):
 
     if not project:
         cur.close()
-        return {"message": "Project not found"}, 404
-
+        return error_response("Project not found", 404)
     # Get bugs of this project
     cur.execute("""
         SELECT
@@ -512,6 +666,21 @@ def get_project_details(project_id):
 @app.route("/api/users", methods=["GET"])
 @jwt_required()
 def get_users():
+        """
+    Get All Users
+    ---
+    tags:
+      - Users
+    security:
+      - Bearer: []
+    responses:
+      200:
+        description: List of all users
+      401:
+        description: Authentication required
+      403:
+        description: Manager access required
+        """
         allowed, error, status_code = require_role(["Manager"])
 
         if not allowed:
@@ -684,7 +853,68 @@ Do not add any explanation outside the JSON.
 @app.route("/api/bugs", methods=["POST"])
 @jwt_required()
 def create_bug():
-
+    """
+    Create a New Bug
+    ---
+    tags:
+      - Bugs
+    security:
+      - Bearer: []
+    consumes:
+      - application/json
+    parameters:
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          required:
+            - title
+            - description
+            - priority
+            - severity
+            - project_id
+          properties:
+            title:
+              type: string
+              example: Login button not working
+            description:
+              type: string
+              example: Login button does not respond when clicked
+            priority:
+              type: string
+              enum:
+                - Low
+                - Medium
+                - High
+              example: High
+            severity:
+              type: string
+              enum:
+                - Low
+                - Medium
+                - High
+                - Critical
+              example: High
+            project_id:
+              type: integer
+              example: 1
+            assigned_to:
+              type: integer
+              example: 2
+            category:
+              type: string
+              example: UI
+    responses:
+      201:
+        description: Bug created successfully
+      400:
+        description: Invalid input
+      401:
+        description: Authentication required
+      403:
+        description: Access denied
+    """
     allowed, error, status_code = require_role(
         ["Tester", "Manager"]
     )
@@ -694,14 +924,63 @@ def create_bug():
 
     data = request.get_json()
 
+    if not data:
+        return {
+            "message": "Request body must be JSON"
+        }, 400
+
     title = data.get("title")
     description = data.get("description")
     priority = data.get("priority")
     severity = data.get("severity")
     project_id = data.get("project_id")
     assigned_to = data.get("assigned_to")
+    category = data.get("category")
+
+    # Required field validation
+    if not title or not title.strip():
+        return {
+            "message": "Title is required"
+        }, 400
+
+    if not description or not description.strip():
+        return {
+            "message": "Description is required"
+        }, 400
+
+    if not priority:
+        return {
+            "message": "Priority is required"
+        }, 400
+
+    if not severity:
+        return {
+            "message": "Severity is required"
+        }, 400
+
+    if not project_id:
+        return {
+            "message": "Project ID is required"
+        }, 400
+
+    # Allowed values validation
+    allowed_priorities = ["Low", "Medium", "High"]
+
+    if priority not in allowed_priorities:
+        return {
+            "message": "Invalid priority",
+            "allowed_values": allowed_priorities
+        }, 400
+
+    allowed_severities = ["Low", "Medium", "High", "Critical"]
+
+    if severity not in allowed_severities:
+        return {
+            "message": "Invalid severity",
+            "allowed_values": allowed_severities
+        }, 400
+
     similar_bugs = find_similar_bugs(title, description)
-    
 
     print("========== PINECONE DUPLICATE CHECK ==========")
 
@@ -711,12 +990,12 @@ def create_bug():
         print("DESCRIPTION:", match.metadata.get("description"))
         print("---------------------------------------------")
 
-        if match.score >= 0.70:
+        if match.score >= 0.85:
             return {
                 "duplicate": True,
                 "message": "A similar bug already exists",
                 "similar_bug": match.metadata
-            }, 409
+                }, 409
 
     cur = mysql.connection.cursor()
 
@@ -728,16 +1007,18 @@ def create_bug():
             description,
             priority,
             severity,
+            category,
             project_id,
             assigned_to
         )
-        VALUES(%s,%s,%s,%s,%s,%s)
+        VALUES(%s,%s,%s,%s,%s,%s,%s)
         """,
         (
             title,
             description,
             priority,
             severity,
+            category,
             project_id,
             assigned_to
         )
@@ -796,6 +1077,19 @@ def create_bug():
 @app.route("/api/bugs", methods=["GET"])
 @jwt_required()
 def get_bugs():
+    """
+    Get All Bugs
+    ---
+    tags:
+      - Bugs
+    security:
+      - Bearer: []
+    responses:
+      200:
+        description: List of all bugs
+      401:
+        description: Authentication required
+    """
 
     allowed, error, status_code = require_role(
         ["Tester", "Developer", "Manager"]
@@ -815,13 +1109,14 @@ def get_bugs():
             bugs.severity,
             bugs.status,
             bugs.project_id,
-            users.username
+            users.username,
+            bugs.created_at,
+            bugs.resolved_at
         FROM bugs
         LEFT JOIN users
             ON bugs.assigned_to = users.user_id
         ORDER BY bugs.bug_id DESC
     """)
-            
 
     bugs = cur.fetchall()
 
@@ -838,16 +1133,57 @@ def get_bugs():
             "severity": bug[4],
             "status": bug[5],
             "project_id": bug[6],
-            "assigned_to": bug[7]
+            "assigned_to": bug[7],
+            "created_at": str(bug[8]) if bug[8] else None,
+            "resolved_at": str(bug[9]) if bug[9] else None
         })
 
     return {
         "bugs": result
-    }, 200    
-
+    }, 200
 @app.route("/api/bugs/<int:bug_id>", methods=["PUT"])
 @jwt_required()
 def update_bug_status(bug_id):
+    """
+    Update Bug Status
+    ---
+    tags:
+      - Bugs
+    security:
+      - Bearer: []
+    parameters:
+      - in: path
+        name: bug_id
+        required: true
+        type: integer
+        example: 1
+      - in: body
+        name: body
+        required: true
+        schema:
+          type: object
+          required:
+            - status
+          properties:
+            status:
+              type: string
+              enum:
+                - In Progress
+                - In Review
+                - Resolved
+              example: In Progress
+    responses:
+      200:
+        description: Bug status updated successfully
+      400:
+        description: Invalid status or transition
+      401:
+        description: Authentication required
+      403:
+        description: Access denied
+      404:
+        description: Bug not found
+    """
 
     allowed, error, status_code = require_role(
         ["Developer", "Manager"]
@@ -880,12 +1216,8 @@ def update_bug_status(bug_id):
     bug = cur.fetchone()
 
     if not bug:
-
         cur.close()
-
-        return {
-            "message": "Bug not found"
-        }, 404
+        return error_response("Bug not found", 404)
 
     old_status = bug[0]
 
@@ -898,7 +1230,6 @@ def update_bug_status(bug_id):
 
     if new_status not in allowed_transitions.get(old_status, []):
         cur.close()
-
         return {
             "message": f"Invalid status transition: {old_status} → {new_status}"
         }, 400
@@ -915,30 +1246,40 @@ def update_bug_status(bug_id):
         """,
         (email,)
     )
-    
 
     user = cur.fetchone()
 
     if not user:
-
         cur.close()
-
-        return {
-            "message": "User not found"
-        }, 404
+        return error_response("User not found", 404)
 
     user_id = user[0]
 
+    
     # Update bug status
-    cur.execute(
-    """
-    UPDATE bugs
-    SET status=%s
-    WHERE bug_id=%s
-    """,
-    (new_status, bug_id)
-    )
+    if new_status == "Resolved":
 
+        cur.execute(
+            """
+            UPDATE bugs
+            SET status=%s,
+                resolved_at=CURRENT_TIMESTAMP
+            WHERE bug_id=%s
+            """,
+            (new_status, bug_id)
+        )
+
+    else:
+
+        cur.execute(
+            """
+            UPDATE bugs
+            SET status=%s
+            WHERE bug_id=%s
+            """,
+            (new_status, bug_id)
+        )
+    # Add activity history
     cur.execute(
         """
         INSERT INTO activity_history
@@ -1028,9 +1369,7 @@ def upload_attachment(bug_id):
         if not bug:
             cur.close()
 
-            return {
-                "message": "Bug not found"
-            }, 404
+            return error_response("Bug not found", 404)
 
     # Get logged-in user
         email = get_jwt_identity()
@@ -1049,9 +1388,7 @@ def upload_attachment(bug_id):
         if not user:
             cur.close()
 
-            return {
-                "message": "User not found"
-            }, 404
+            return error_response("User not found", 404)
 
         user_id = user[0]
 
@@ -1143,12 +1480,27 @@ def get_activity_history(bug_id):
 @app.route("/api/dashboard/charts", methods=["GET"])
 @jwt_required()
 def dashboard_charts():
+    """
+    Get Dashboard Chart Data
+    ---
+    tags:
+      - Dashboard
+    security:
+      - Bearer: []
+    responses:
+      200:
+        description: Dashboard chart data retrieved successfully
+      401:
+        description: Authentication required
+      403:
+        description: Access denied
+    """
 
     cur = mysql.connection.cursor()
 
-
+    # -----------------------------
     # Bug status count
-
+    # -----------------------------
     cur.execute("""
         SELECT status, COUNT(*)
         FROM bugs
@@ -1158,9 +1510,9 @@ def dashboard_charts():
     status_data = cur.fetchall()
 
 
-
+    # -----------------------------
     # Priority count
-
+    # -----------------------------
     cur.execute("""
         SELECT priority, COUNT(*)
         FROM bugs
@@ -1170,68 +1522,157 @@ def dashboard_charts():
     priority_data = cur.fetchall()
 
 
-
-    # Developer workload
-
+    # -----------------------------
+    # Severity count
+    # -----------------------------
     cur.execute("""
-        SELECT 
-        users.username,
-        COUNT(bugs.bug_id)
-
-        FROM users
-
-        LEFT JOIN bugs
-
-        ON users.user_id = bugs.assigned_to
-
-        GROUP BY users.username
-
+        SELECT severity, COUNT(*)
+        FROM bugs
+        GROUP BY severity
     """)
 
+    severity_data = cur.fetchall()
 
-    developer_data = cur.fetchall()
+
+    # -----------------------------
+    # Category count
+    # -----------------------------
+    cur.execute("""
+        SELECT category, COUNT(*)
+        FROM bugs
+        WHERE category IS NOT NULL
+        AND category != ''
+        GROUP BY category
+    """)
+
+    category_data = cur.fetchall()
 
 
+    # -----------------------------
+    # Defect trend by date
+    # -----------------------------
+    cur.execute("""
+        SELECT DATE(created_at), COUNT(*)
+        FROM bugs
+        GROUP BY DATE(created_at)
+        ORDER BY DATE(created_at)
+    """)
+
+    trend_data = cur.fetchall()
+
+
+    # -----------------------------
+    # Developer workload
+    # -----------------------------
+    cur.execute("""
+        SELECT u.username, COUNT(b.bug_id)
+        FROM bugs b
+        JOIN users u
+            ON b.assigned_to = u.user_id
+        WHERE b.assigned_to IS NOT NULL
+        GROUP BY b.assigned_to, u.username
+        ORDER BY COUNT(b.bug_id) DESC
+    """)
+
+    developer_workload_data = cur.fetchall()
+    # Average resolution time
+    cur.execute("""
+        SELECT AVG(
+            TIMESTAMPDIFF(
+                HOUR,
+                created_at,
+                resolved_at
+            )
+        )
+        FROM bugs
+        WHERE resolved_at IS NOT NULL
+    """)
+
+    average_resolution_time = cur.fetchone()[0]
+
+    # Close cursor AFTER all queries
     cur.close()
 
 
+    # -----------------------------
+    # Convert data to JSON format
+    # -----------------------------
 
-    return {
-
-        "status": [
-            {
-                "name": row[0],
-                "value": row[1]
-            }
-
-            for row in status_data
-        ],
-
-
-        "priority":[
-
-            {
-                "name":row[0],
-                "value":row[1]
-            }
-
-            for row in priority_data
-
-        ],
+    status = [
+        {
+            "name": row[0],
+            "value": row[1]
+        }
+        for row in status_data
+    ]
 
 
-        "developers":[
+    priority = [
+        {
+            "name": row[0],
+            "value": row[1]
+        }
+        for row in priority_data
+    ]
 
-            {
-                "name":row[0],
-                "value":row[1]
-            }
 
-            for row in developer_data
+    severity = [
+        {
+            "name": row[0],
+            "value": row[1]
+        }
+        for row in severity_data
+    ]
 
-        ]
 
-    },200
+    category = [
+        {
+            "name": row[0],
+            "value": row[1]
+        }
+        for row in category_data
+    ]
+
+
+    trend = [
+        {
+            "date": str(row[0]),
+            "value": row[1]
+        }
+        for row in trend_data
+    ]
+
+
+    developer_workload = [
+        {
+            "name": row[0],
+            "value": row[1]
+        }
+        for row in developer_workload_data
+    ]
+
+
+    # -----------------------------
+    # Final response
+    # -----------------------------
+
+    return jsonify({
+
+        "status": status,
+
+        "priority": priority,
+
+        "severity": severity,
+
+        "category": category,
+
+        "trend": trend,
+
+        "developer_workload": developer_workload,
+        "average_resolution_time":
+            round(float(average_resolution_time), 2)
+            if average_resolution_time is not None else 0
+        }), 200
 @app.route("/api/bugs/<int:bug_id>/comments", methods=["GET"])
 @jwt_required()
 def get_comments(bug_id):
@@ -1315,9 +1756,7 @@ def add_comment(bug_id):
 
     if not user:
         cur.close()
-        return {
-            "message": "User not found"
-        }, 404
+        return error_response("User not found", 404)
 
     user_id = user[0]
 
@@ -1335,9 +1774,7 @@ def add_comment(bug_id):
 
     if not bug:
         cur.close()
-        return {
-            "message": "Bug not found"
-        }, 404
+        return error_response("Bug not found", 404)
 
     # Insert comment
     cur.execute(
@@ -1411,9 +1848,7 @@ def ai_resolution(bug_id):
     cur.close()
 
     if not bug:
-        return {
-            "message": "Bug not found"
-        }, 404
+         return error_response("Bug not found", 404)
 
     title = bug[0]
     description = bug[1]
@@ -1630,9 +2065,7 @@ def assign_bug_to_sprint(bug_id):
     if not bug:
         cur.close()
 
-        return {
-            "message": "Bug not found"
-        }, 404
+        return error_response("Bug not found", 404)
 
     # Check sprint exists
     cur.execute("""
@@ -1646,9 +2079,7 @@ def assign_bug_to_sprint(bug_id):
     if not sprint:
         cur.close()
 
-        return {
-            "message": "Sprint not found"
-        }, 404
+        return error_response("Sprint not found", 404)
 
     # Assign bug to sprint
     cur.execute("""
