@@ -139,17 +139,24 @@ def generate_ai_response(prompt):
 
     return response.text
 # Pinecone
-pinecone = Pinecone(
-    api_key=os.getenv("PINECONE_API_KEY")
-)
+
+pinecone = None
+index = None
 
 PINECONE_INDEX_NAME = os.getenv("PINECONE_INDEX_NAME")
 
-print("Pinecone initialized successfully")
-# Pinecone Index
-index = pinecone.Index(PINECONE_INDEX_NAME)
+if os.getenv("PINECONE_API_KEY"):
+    pinecone = Pinecone(
+        api_key=os.getenv("PINECONE_API_KEY")
+    )
 
-print("Pinecone index connected successfully")
+    print("Pinecone initialized successfully")
+
+    if PINECONE_INDEX_NAME:
+        index = pinecone.Index(PINECONE_INDEX_NAME)
+        print("Pinecone index connected successfully")
+else:
+    print("Pinecone not configured - running without Pinecone")
 def store_bug_embedding(bug_id, title, description):
     text = f"{title}. {description}"
 
