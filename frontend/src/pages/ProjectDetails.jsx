@@ -22,17 +22,6 @@ const [bugs,setBugs]=useState([]);
 
 
 
-useEffect(()=>{
-
-fetchDetails();
-
-},[]);
-
-
-
-
-
-
 const fetchDetails=async()=>{
 
 
@@ -60,11 +49,11 @@ console.log(error);
 };
 
 
-
-
-
-
-
+useEffect(()=>{
+// eslint-disable-next-line react-hooks/set-state-in-effect
+fetchDetails();
+// eslint-disable-next-line react-hooks/exhaustive-deps
+},[]);
 
 const openBugs =
 bugs.filter(

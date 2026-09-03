@@ -26,17 +26,11 @@ function AIResolution() {
 
     const [resolution, setResolution] = useState("");
     const [error, setError] = useState("");
-
-
-    useEffect(() => {
-        fetchBugs();
-    }, []);
-
+    const [historicalResolutions, setHistoricalResolutions] = useState([]);
 
     const fetchBugs = async () => {
 
         try {
-
             const response = await api.get("/api/bugs");
 
             setBugs(response.data.bugs || []);
@@ -59,6 +53,13 @@ function AIResolution() {
     };
 
 
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        fetchBugs();
+
+    }, []);
+
+
     const handleBugChange = (e) => {
 
         const bugId = Number(e.target.value);
@@ -69,6 +70,7 @@ function AIResolution() {
 
         setSelectedBug(bug || null);
         setResolution("");
+        setHistoricalResolutions([]);
         setError("");
 
     };
@@ -84,7 +86,6 @@ function AIResolution() {
         setResolution("");
         setError("");
 
-
         try {
 
             const response = await api.get(
@@ -97,6 +98,9 @@ function AIResolution() {
                 "No AI resolution was generated."
             );
 
+            setHistoricalResolutions(
+                response.data.historical_resolutions || []
+            );
 
         } catch (error) {
 
@@ -926,6 +930,219 @@ function AIResolution() {
                                 </div>
 
                             )}
+
+                        </div>
+
+                    )}
+
+
+                    {historicalResolutions.length > 0 && (
+
+                        <div className="mt-8">
+
+                            <div className="
+                                flex
+                                items-center
+                                gap-3
+                                mb-5
+                            ">
+
+                                <div className="
+                                    w-10
+                                    h-10
+                                    rounded-xl
+                                    bg-blue-50
+                                    dark:bg-blue-900/20
+                                    text-blue-600
+                                    dark:text-blue-400
+                                    flex
+                                    items-center
+                                    justify-center
+                                    shrink-0
+                                ">
+                                    <Search size={22} />
+                                </div>
+
+                                <div>
+
+                                    <h2 className="
+                                        text-2xl
+                                        font-bold
+                                        text-gray-800
+                                        dark:text-white
+                                    ">
+                                        Historical Resolution
+                                    </h2>
+
+                                    <p className="
+                                        text-sm
+                                        text-gray-500
+                                        dark:text-gray-400
+                                    ">
+                                        Previously resolved similar defects
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <div className="
+                                grid
+                                grid-cols-1
+                                gap-5
+                            ">
+
+                                {historicalResolutions.map((history) => (
+
+                                    <div
+                                        key={history.bug_id}
+                                        className="
+                                            bg-white
+                                            dark:bg-slate-900
+                                            rounded-2xl
+                                            border
+                                            border-gray-200
+                                            dark:border-slate-800
+                                            shadow-sm
+                                            p-6
+                                        "
+                                    >
+
+                                        <div className="
+                                            flex
+                                            items-start
+                                            justify-between
+                                            gap-4
+                                            mb-5
+                                        ">
+
+                                            <div>
+
+                                                <p className="
+                                                    text-xs
+                                                    font-semibold
+                                                    text-gray-500
+                                                    dark:text-gray-400
+                                                    uppercase
+                                                    tracking-wide
+                                                ">
+                                                    Related Defect
+                                                </p>
+
+                                                <h3 className="
+                                                    text-lg
+                                                    font-bold
+                                                    text-gray-800
+                                                    dark:text-white
+                                                    mt-1
+                                                ">
+                                                    #{history.bug_id} - {history.title}
+                                                </h3>
+
+                                            </div>
+
+                                            <span className="
+                                                px-3
+                                                py-1
+                                                rounded-full
+                                                bg-green-100
+                                                dark:bg-green-900/30
+                                                text-green-700
+                                                dark:text-green-400
+                                                text-sm
+                                                font-semibold
+                                                whitespace-nowrap
+                                            ">
+                                                Resolved
+                                            </span>
+
+                                        </div>
+
+
+                                        <div className="space-y-5">
+
+                                            <div>
+
+                                                <p className="
+                                                    text-sm
+                                                    font-semibold
+                                                    text-gray-700
+                                                    dark:text-gray-300
+                                                    mb-1
+                                                ">
+                                                    Previous Root Cause
+                                                </p>
+
+                                                <p className="
+                                                    text-sm
+                                                    text-gray-600
+                                                    dark:text-gray-400
+                                                    leading-relaxed
+                                                ">
+                                                    {history.description ||
+                                                        "No previous root cause was recorded."}
+                                                </p>
+
+                                            </div>
+
+
+                                            <div>
+
+                                                <p className="
+                                                    text-sm
+                                                    font-semibold
+                                                    text-gray-700
+                                                    dark:text-gray-300
+                                                    mb-1
+                                                ">
+                                                    Previous Resolution
+                                                </p>
+
+                                                <p className="
+                                                    text-sm
+                                                    text-gray-600
+                                                    dark:text-gray-400
+                                                    leading-relaxed
+                                                ">
+                                                    {history.comment ||
+                                                        "No previous resolution was recorded."}
+                                                </p>
+
+                                            </div>
+
+
+                                            <div>
+
+                                                <p className="
+                                                    text-sm
+                                                    font-semibold
+                                                    text-gray-700
+                                                    dark:text-gray-300
+                                                    mb-1
+                                                ">
+                                                    Relevant Developer Comments
+                                                </p>
+
+                                                <p className="
+                                                    text-sm
+                                                    text-gray-600
+                                                    dark:text-gray-400
+                                                    leading-relaxed
+                                                ">
+                                                    {history.comment ||
+                                                        "No developer comments available."}
+                                                </p>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                ))}
+
+                            </div>
 
                         </div>
 

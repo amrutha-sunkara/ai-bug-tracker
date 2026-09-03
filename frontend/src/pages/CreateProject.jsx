@@ -23,15 +23,10 @@ try{
 setLoading(true);
 
 
-const response = await api.post("/api/projects",{
-
-project_name: projectName,
-
-description: description
-
+await api.post("/api/projects", {
+    project_name: projectName,
+    description: description
 });
-
-
 
 toast.success(
 "🚀 Project created successfully!"

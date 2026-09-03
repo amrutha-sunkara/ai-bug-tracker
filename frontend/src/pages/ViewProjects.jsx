@@ -15,16 +15,6 @@ const navigate=useNavigate();
 
 
 
-useEffect(()=>{
-
-getProjects();
-
-},[]);
-
-
-
-
-
 const getProjects=async()=>{
 
 try{
@@ -47,11 +37,12 @@ error.response?.data || error.message
 };
 
 
+useEffect(()=>{
 
+// eslint-disable-next-line react-hooks/set-state-in-effect
+getProjects();
 
-
-
-
+},[]);
 return(
 
 <div className="

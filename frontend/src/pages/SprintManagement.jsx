@@ -7,8 +7,6 @@ import Sidebar from "../components/Sidebar";
 import {
     Plus,
     CalendarDays,
-    Bug,
-    Users,
     Layers
 } from "lucide-react";
 
@@ -30,53 +28,54 @@ function SprintManagement() {
 
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        fetchSprints();
-        fetchBugs();
-    }, []);
-
     const fetchSprints = async () => {
 
-        try {
+    try {
 
-            const response = await api.get("/api/sprints");
+        const response = await api.get("/api/sprints");
 
-            setSprints(response.data.sprints);
+        setSprints(response.data.sprints);
 
-        } catch (error) {
+    } catch (error) {
 
-            console.log(
-                "Sprint Error:",
-                error.response?.data || error.message
-            );
+        console.log(
+            "Sprint Error:",
+            error.response?.data || error.message
+        );
 
-        } finally {
+    } finally {
 
-            setLoading(false);
+        setLoading(false);
 
-        }
-    };
-
-
-    const fetchBugs = async () => {
-
-        try {
-
-            const response = await api.get("/api/bugs");
-
-            setBugs(response.data.bugs);
-
-        } catch (error) {
-
-            console.log(
-                "Bug Error:",
-                error.response?.data || error.message
-            );
-
-        }
-    };
+    }
+};
 
 
+const fetchBugs = async () => {
+
+    try {
+
+        const response = await api.get("/api/bugs");
+
+        setBugs(response.data.bugs);
+
+    } catch (error) {
+
+        console.log(
+            "Bug Error:",
+            error.response?.data || error.message
+        );
+
+    }
+};
+
+
+useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchSprints();
+    fetchBugs();
+
+}, []);
     const createSprint = async (e) => {
 
         e.preventDefault();
@@ -108,7 +107,7 @@ function SprintManagement() {
         }
     };
 
-
+    // eslint-disable-next-line no-unused-vars
     const assignBugToSprint = async (bugId, sprintId) => {
 
         try {

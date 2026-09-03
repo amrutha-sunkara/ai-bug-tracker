@@ -28,50 +28,48 @@ function ReportBug() {
     const [triageLoading, setTriageLoading] = useState(false);
     const [duplicateBug, setDuplicateBug] = useState(null);
 
-    useEffect(() => {
-
-        fetchProjects();
-        fetchUsers();
-
-    }, []);
-
-
     const fetchProjects = async () => {
 
-        try {
+    try {
 
-            const response = await api.get("/api/projects");
+        const response = await api.get("/api/projects");
 
-            setProjects(response.data.projects || []);
+        setProjects(response.data.projects || []);
 
-        }
-        catch (error) {
+    }
+    catch (error) {
 
-            console.log(error);
+        console.log(error);
 
-        }
+    }
 
-    };
-
-
-    const fetchUsers = async () => {
-
-        try {
-
-            const response = await api.get("/api/users");
-
-            setUsers(response.data.users || []);
-
-        }
-        catch (error) {
-
-            console.log(error);
-
-        }
-
-    };
+};
 
 
+const fetchUsers = async () => {
+
+    try {
+
+        const response = await api.get("/api/users");
+
+        setUsers(response.data.users || []);
+
+    }
+    catch (error) {
+
+        console.log(error);
+
+    }
+
+};
+
+
+useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchProjects();
+    fetchUsers();
+
+}, []);
     // ------------------------------------
     // AI GENERATED BUG REPORT
     // ------------------------------------
@@ -235,7 +233,7 @@ function ReportBug() {
         }
 
 
-        if (!severity || !priority) {
+        if (!aiCategory || !severity || !priority) {
 
             toast.error(
                 "Please run AI Auto-Triage before submitting"
@@ -262,7 +260,7 @@ function ReportBug() {
                     priority,
 
                     severity,
-
+                    category: aiCategory,
                     project_id:
                         projectId,
 

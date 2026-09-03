@@ -4,6 +4,7 @@ import api from "../services/api";
 
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
+import Chatbot from "../components/Chatbot";
 
 import {
     Users,
@@ -13,7 +14,6 @@ import {
     CheckCircle
 } from "lucide-react";
 
-
 import {
     PieChart,
     Pie,
@@ -22,716 +22,844 @@ import {
     Legend,
     BarChart,
     Bar,
+    LineChart,
+    Line,
     XAxis,
     YAxis,
     CartesianGrid
 } from "recharts";
 
 
+function Dashboard() {
 
-function Dashboard(){
+    const [data, setData] = useState({
 
+        total_users: 0,
+        total_projects: 0,
+        total_bugs: 0,
+        open_bugs: 0,
+        closed_bugs: 0
 
-const [data,setData]=useState({
-
-    total_users:0,
-    total_projects:0,
-    total_bugs:0,
-    open_bugs:0,
-    closed_bugs:0
-
-});
+    });
 
 
-const [charts,setCharts]=useState({
+    const [charts, setCharts] = useState({
 
-    status:[],
-    priority:[],
-    developers:[]
-
-});
-
-
-const [loading,setLoading]=useState(true);
-
-
+        status: [],
+        priority: [],
+        severity: [],
+        category: [],
+        trend: [],
+        developer_workload: [],
+        average_resolution_time: 0
+    });
 
 
+    const [loading, setLoading] = useState(true);
 
 
-useEffect(()=>{
+    const fetchDashboard = async () => {
 
-fetchDashboard();
+    try {
 
-fetchCharts();
+        const response = await api.get("/api/dashboard");
 
-},[]);
+        setData(response.data);
 
+    }
 
+    catch (error) {
 
+        console.log(
+            "Dashboard Error:",
+            error.response?.data || error.message
+        );
 
+    }
 
+    finally {
 
+        setLoading(false);
 
-const fetchDashboard=async()=>{
-
-
-try{
-
-
-const response = await api.get("/api/dashboard");
-
-
-setData(response.data);
-
-
-}
-
-
-catch(error){
-
-
-console.log(
-"Dashboard Error:",
-error.response?.data || error.message
-);
-
-
-}
-
-finally{
-
-setLoading(false);
-
-}
-
+    }
 
 };
 
 
+const fetchCharts = async () => {
 
+    try {
 
+        const response = await api.get("/api/dashboard/charts");
+        console.log("CHART DATA:", response.data);
 
+        setCharts({
 
+            status: response.data.status || [],
+            priority: response.data.priority || [],
+            severity: response.data.severity || [],
+            category: response.data.category || [],
+            trend: response.data.trend || [],
+            developer_workload: response.data.developer_workload || [],
+            average_resolution_time:
+                response.data.average_resolution_time || 0
 
+        });
 
+    }
 
-const fetchCharts=async()=>{
+    catch (error) {
 
+        console.log(
+            "Charts Error:",
+            error.response?.data || error.message
+        );
 
-try{
-
-
-const response = await api.get("/api/dashboard/charts");
-
-
-setCharts(response.data);
-
-
-}
-
-
-catch(error){
-
-
-console.log(
-"Charts Error:",
-error.response?.data || error.message
-);
-
-
-}
-
+    }
 
 };
 
 
+useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchDashboard();
+
+    fetchCharts();
+
+}, []);
+    if (loading) {
+
+        return (
+
+            <div
+                className="
+                min-h-screen
+                flex
+                items-center
+                justify-center
+                bg-gray-100
+                dark:bg-slate-950
+                "
+            >
+
+                <h1
+                    className="
+                    text-2xl
+                    font-bold
+                    dark:text-white
+                    "
+                >
+
+                    Loading Dashboard...
+
+                </h1>
+
+            </div>
+
+        );
+
+    }
 
 
+    const cards = [
 
+        {
+            title: "Users",
+            value: data.total_users,
+            icon: <Users size={40} />,
+            color: "text-blue-500"
+        },
 
+        {
+            title: "Projects",
+            value: data.total_projects,
+            icon: <FolderKanban size={40} />,
+            color: "text-yellow-500"
+        },
 
+        {
+            title: "Total Bugs",
+            value: data.total_bugs,
+            icon: <Bug size={40} />,
+            color: "text-red-500"
+        },
 
-if(loading){
+        {
+            title: "Open Bugs",
+            value: data.open_bugs,
+            icon: <AlertCircle size={40} />,
+            color: "text-orange-500"
+        },
 
+        {
+            title: "In Progress",
+            value: data.in_progress_bugs,
+            icon: <Bug size={40} />,
+            color: "text-yellow-500"
+        },
 
-return(
+        {
+            title: "In Review",
+            value: data.in_review_bugs,
+            icon: <Bug size={40} />,
+            color: "text-blue-500"
+        },
 
-<div className="
-min-h-screen
-flex
-items-center
-justify-center
-bg-gray-100
-dark:bg-slate-950
-">
+        {
+            title: "Resolved",
+            value: data.resolved_bugs,
+            icon: <CheckCircle size={40} />,
+            color: "text-green-500"
+        },
 
-
-<h1 className="
-text-2xl
-font-bold
-dark:text-white
-">
-
-Loading Dashboard...
-
-</h1>
-
-
-</div>
-
-
-);
-
-
+        {
+            title: "Closed Bugs",
+            value: data.closed_bugs,
+            icon: <CheckCircle size={40} />,
+            color: "text-green-600"
+        },
+        {
+    title: "Avg Resolution Time",
+    value: `${charts.average_resolution_time} hrs`,
+    icon: <CheckCircle size={40} />,
+    color: "text-purple-500"
 }
 
+    ];
 
 
+    return (
 
+        <div
+            className="
+            flex
+            min-h-screen
+            bg-gray-100
+            dark:bg-slate-950
+            "
+        >
 
+            <Sidebar />
 
 
+            <div className="flex-1">
 
-const cards=[
+                <Navbar />
 
 
-{
-title:"Users",
-value:data.total_users,
-icon:<Users size={40}/>,
-color:"text-blue-500"
-},
+                <div className="p-8">
 
 
-{
-title:"Projects",
-value:data.total_projects,
-icon:<FolderKanban size={40}/>,
-color:"text-yellow-500"
-},
+                    <h1
+                        className="
+                        text-4xl
+                        font-bold
+                        text-gray-800
+                        dark:text-white
+                        "
+                    >
 
+                        Dashboard
 
-{
-title:"Total Bugs",
-value:data.total_bugs,
-icon:<Bug size={40}/>,
-color:"text-red-500"
-},
+                    </h1>
 
 
-{
-title:"Open Bugs",
-value:data.open_bugs,
-icon:<AlertCircle size={40}/>,
-color:"text-orange-500"
-},
+                    <p
+                        className="
+                        mt-2
+                        mb-8
+                        text-gray-600
+                        dark:text-gray-300
+                        "
+                    >
 
+                        Welcome back, {localStorage.getItem("username")}
 
-{
-title:"Closed Bugs",
-value:data.closed_bugs,
-icon:<CheckCircle size={40}/>,
-color:"text-green-500"
-}
+                    </p>
 
 
+                    {/* Dashboard Cards */}
 
-];
+                    <div
+                        className="
+                        grid
+                        grid-cols-1
+                        md:grid-cols-2
+                        lg:grid-cols-4
+                        gap-6
+                        mb-10
+                        "
+                    >
 
+                        {
 
+                            cards.map((card, index) => (
 
+                                <div
 
+                                    key={index}
 
+                                    className="
+                                    bg-white
+                                    dark:bg-slate-900
+                                    rounded-xl
+                                    shadow-lg
+                                    p-6
+                                    transition
+                                    hover:-translate-y-2
+                                    "
 
-return(
+                                >
 
+                                    <div
+                                        className="
+                                        flex
+                                        justify-between
+                                        items-center
+                                        "
+                                    >
 
-<div className="
-flex
-min-h-screen
-bg-gray-100
-dark:bg-slate-950
-">
 
+                                        <div>
 
-<Sidebar/>
+                                            <h2
+                                                className="
+                                                text-gray-500
+                                                dark:text-gray-400
+                                                font-medium
+                                                "
+                                            >
 
+                                                {card.title}
 
+                                            </h2>
 
 
-<div className="flex-1">
+                                            <p
+                                                className="
+                                                text-4xl
+                                                font-bold
+                                                mt-3
+                                                text-gray-800
+                                                dark:text-white
+                                                "
+                                            >
 
+                                                {card.value}
 
-<Navbar/>
+                                            </p>
 
+                                        </div>
 
 
+                                        <div className={card.color}>
 
+                                            {card.icon}
 
-<div className="p-8">
+                                        </div>
 
 
+                                    </div>
 
+                                </div>
 
+                            ))
 
+                        }
 
-<h1 className="
-text-4xl
-font-bold
-text-gray-800
-dark:text-white
-">
+                    </div>
 
-Dashboard
 
-</h1>
+                    {/* Charts Section */}
 
+                    <div
+                        className="
+                        grid
+                        grid-cols-1
+                        lg:grid-cols-2
+                        gap-8
+                        "
+                    >
 
 
+                        {/* Bug Status */}
 
+                        <div
+                            className="
+                            bg-white
+                            dark:bg-slate-900
+                            rounded-xl
+                            shadow-lg
+                            p-6
+                            "
+                        >
 
-<p className="
-mt-2
-mb-8
-text-gray-600
-dark:text-gray-300
-">
+                            <h2
+                                className="
+                                text-2xl
+                                font-bold
+                                mb-5
+                                text-gray-800
+                                dark:text-white
+                                "
+                            >
 
-Welcome back, {localStorage.getItem("username")}
+                                Bug Status
 
-</p>
+                            </h2>
 
 
+                            {
 
+                                charts.status.length > 0 ?
 
+                                    <PieChart
+                                        width={400}
+                                        height={300}
+                                    >
 
+                                        <Pie
 
+                                            data={charts.status}
 
-<div className="
-grid
-grid-cols-1
-md:grid-cols-2
-lg:grid-cols-5
-gap-6
-mb-10
-">
+                                            dataKey="value"
 
+                                            nameKey="name"
 
+                                            cx="50%"
 
-{
+                                            cy="50%"
 
-cards.map((card,index)=>(
+                                            outerRadius={100}
 
+                                            label
 
-<div
+                                        >
 
-key={index}
+                                            {
 
-className="
-bg-white
-dark:bg-slate-900
-rounded-xl
-shadow-lg
-p-6
-transition
-hover:-translate-y-2
-"
+                                                charts.status.map(
+                                                    (entry, index) => (
 
+                                                        <Cell
+                                                            key={index}
+                                                        />
 
->
+                                                    )
+                                                )
 
+                                            }
 
-<div className="
-flex
-justify-between
-items-center
-">
+                                        </Pie>
 
 
+                                        <Tooltip />
 
-<div>
+                                        <Legend />
 
+                                    </PieChart>
 
-<h2 className="
-text-gray-500
-dark:text-gray-400
-font-medium
-">
+                                    :
 
-{card.title}
+                                    <p
+                                        className="
+                                        text-gray-500
+                                        dark:text-gray-400
+                                        "
+                                    >
 
-</h2>
+                                        No bug data available
 
+                                    </p>
 
-<p className="
-text-4xl
-font-bold
-mt-3
-text-gray-800
-dark:text-white
-">
+                            }
 
-{card.value}
+                        </div>
 
-</p>
 
+                        {/* Bug Priority */}
 
+                        <div
+                            className="
+                            bg-white
+                            dark:bg-slate-900
+                            rounded-xl
+                            shadow-lg
+                            p-6
+                            "
+                        >
 
-</div>
+                            <h2
+                                className="
+                                text-2xl
+                                font-bold
+                                mb-5
+                                text-gray-800
+                                dark:text-white
+                                "
+                            >
 
+                                Bug Priority
 
+                            </h2>
 
 
+                            {
 
-<div className={card.color}>
+                                charts.priority.length > 0 ?
 
-{card.icon}
+                                    <BarChart
 
-</div>
+                                        width={450}
 
+                                        height={300}
 
+                                        data={charts.priority}
 
+                                    >
 
-</div>
+                                        <CartesianGrid />
 
+                                        <XAxis dataKey="name" />
 
+                                        <YAxis />
 
-</div>
+                                        <Tooltip />
 
+                                        <Bar
 
-))
+                                            dataKey="value"
 
+                                            fill="#2563eb"
 
-}
+                                        />
 
+                                    </BarChart>
 
+                                    :
 
-</div>
-{/* Charts Section */}
+                                    <p
+                                        className="
+                                        text-gray-500
+                                        dark:text-gray-400
+                                        "
+                                    >
 
+                                        No priority data available
 
-<div className="
-grid
-grid-cols-1
-lg:grid-cols-2
-gap-8
-">
+                                    </p>
 
+                            }
 
+                        </div>
 
 
+                        {/* Bug Severity */}
 
+                        <div
+                            className="
+                            bg-white
+                            dark:bg-slate-900
+                            rounded-xl
+                            shadow-lg
+                            p-6
+                            "
+                        >
 
-<div className="
-bg-white
-dark:bg-slate-900
-rounded-xl
-shadow-lg
-p-6
-">
+                            <h2
+                                className="
+                                text-2xl
+                                font-bold
+                                mb-5
+                                text-gray-800
+                                dark:text-white
+                                "
+                            >
 
+                                Bug Severity
 
-<h2 className="
-text-2xl
-font-bold
-mb-5
-text-gray-800
-dark:text-white
-">
+                            </h2>
 
-Bug Status
 
-</h2>
+                            {
 
+                                charts.severity.length > 0 ?
 
+                                    <BarChart
 
-{
+                                        width={450}
 
-charts.status.length > 0 ?
+                                        height={300}
 
+                                        data={charts.severity}
 
-<PieChart width={400} height={300}>
+                                    >
 
+                                        <CartesianGrid />
 
-<Pie
+                                        <XAxis dataKey="name" />
 
-data={charts.status}
+                                        <YAxis />
 
-dataKey="value"
+                                        <Tooltip />
 
-nameKey="name"
+                                        <Bar
 
-cx="50%"
+                                            dataKey="value"
 
-cy="50%"
+                                        />
 
-outerRadius={100}
+                                    </BarChart>
 
-label
+                                    :
 
+                                    <p
+                                        className="
+                                        text-gray-500
+                                        dark:text-gray-400
+                                        "
+                                    >
 
->
+                                        No severity data available
 
+                                    </p>
 
-{
+                            }
 
-charts.status.map((entry,index)=>(
+                        </div>
 
-<Cell key={index}/>
 
-))
+                        {/* Bug Category */}
 
-}
+                        <div
+                            className="
+                            bg-white
+                            dark:bg-slate-900
+                            rounded-xl
+                            shadow-lg
+                            p-6
+                            "
+                        >
 
+                            <h2
+                                className="
+                                text-2xl
+                                font-bold
+                                mb-5
+                                text-gray-800
+                                dark:text-white
+                                "
+                            >
 
-</Pie>
+                                Bug Category
 
+                            </h2>
 
-<Tooltip/>
 
-<Legend/>
+                            {
 
+                                charts.category.length > 0 ?
 
-</PieChart>
+                                    <BarChart
 
+                                        width={450}
 
-:
+                                        height={300}
 
-<p className="
-text-gray-500
-dark:text-gray-400
-">
+                                        data={charts.category}
 
-No bug data available
+                                    >
 
-</p>
+                                        <CartesianGrid />
 
+                                        <XAxis dataKey="name" />
 
-}
+                                        <YAxis />
 
+                                        <Tooltip />
 
+                                        <Bar
 
-</div>
+                                            dataKey="value"
 
+                                            fill="#7c3aed"
 
+                                        />
 
+                                    </BarChart>
 
+                                    :
 
+                                    <p
+                                        className="
+                                        text-gray-500
+                                        dark:text-gray-400
+                                        "
+                                    >
 
+                                        No category data available
 
+                                    </p>
 
+                            }
 
+                        </div>
 
-<div className="
-bg-white
-dark:bg-slate-900
-rounded-xl
-shadow-lg
-p-6
-">
 
+                        {/* Defect Trend */}
 
-<h2 className="
-text-2xl
-font-bold
-mb-5
-text-gray-800
-dark:text-white
-">
+                        <div
+                            className="
+                            bg-white
+                            dark:bg-slate-900
+                            rounded-xl
+                            shadow-lg
+                            p-6
+                            "
+                        >
 
-Bug Priority
+                            <h2
+                                className="
+                                text-2xl
+                                font-bold
+                                mb-5
+                                text-gray-800
+                                dark:text-white
+                                "
+                            >
 
-</h2>
+                                Defect Trend
 
+                            </h2>
 
 
-{
+                            {
 
-charts.priority.length > 0 ?
+                                charts.trend && charts.trend.length > 0 ?
 
+                                    <LineChart
 
+                                        width={450}
 
-<BarChart
+                                        height={300}
 
-width={450}
+                                        data={charts.trend}
 
-height={300}
+                                    >
 
-data={charts.priority}
+                                        <CartesianGrid />
 
->
+                                        <XAxis dataKey="date" />
 
+                                        <YAxis />
 
-<CartesianGrid/>
+                                        <Tooltip />
 
+                                        <Line
 
-<XAxis dataKey="name"/>
+                                            type="monotone"
 
+                                            dataKey="value"
 
-<YAxis/>
+                                            stroke="#2563eb"
 
+                                            strokeWidth={3}
 
-<Tooltip/>
+                                        />
 
+                                    </LineChart>
 
-<Bar
+                                    :
 
-dataKey="value"
+                                    <p
+                                        className="
+                                        text-gray-500
+                                        dark:text-gray-400
+                                        "
+                                    >
 
-fill="#2563eb"
+                                        No trend data available
 
-/>
+                                    </p>
 
+                            }
 
-
-</BarChart>
-
-
-:
-
-
-<p className="
-text-gray-500
-dark:text-gray-400
-">
-
-No priority data available
-
-</p>
-
-
-
-}
-
-
-
-</div>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
+                        </div>
 {/* Developer Workload */}
 
-
-
-<div className="
-mt-8
-bg-white
-dark:bg-slate-900
-rounded-xl
-shadow-lg
-p-6
-">
-
-
-<h2 className="
-text-2xl
-font-bold
-mb-5
-text-gray-800
-dark:text-white
-">
-
-Developer Workload
-
-</h2>
-
-
-
-
-
-{
-
-charts.developers.length > 0 ?
-
-
-
-<BarChart
-
-width={700}
-
-height={350}
-
-data={charts.developers}
-
+<div
+    className="
+    bg-white
+    dark:bg-slate-900
+    rounded-xl
+    shadow-lg
+    p-6
+    "
 >
 
+    <h2
+        className="
+        text-2xl
+        font-bold
+        mb-5
+        text-gray-800
+        dark:text-white
+        "
+    >
+        Developer Workload
+    </h2>
 
-<CartesianGrid/>
+    {charts.developer_workload &&
+    charts.developer_workload.length > 0 ? (
 
+        <BarChart
+            width={450}
+            height={300}
+            data={charts.developer_workload}
+        >
 
-<XAxis dataKey="name"/>
+            <CartesianGrid />
 
+            <XAxis dataKey="name" />
 
-<YAxis/>
+            <YAxis />
 
+            <Tooltip />
 
-<Tooltip/>
+            <Bar
+                dataKey="value"
+                fill="#16a34a"
+            />
 
+        </BarChart>
 
-<Bar
+    ) : (
 
-dataKey="value"
+        <p
+            className="
+            text-gray-500
+            dark:text-gray-400
+            "
+        >
+            No developer workload data available
+        </p>
 
-fill="#16a34a"
-
-/>
-
-
-
-</BarChart>
-
-
-
-:
-
-
-<p className="
-text-gray-500
-dark:text-gray-400
-">
-
-No developer data available
-
-</p>
-
-
-
-}
-
-
-
-
-</div>
-
-
-
-
-
-
-
+    )}
 
 </div>
 
-
-</div>
-
-
-</div>
+                    </div>
 
 
-);
+                </div>
 
+
+            </div>
+
+<Chatbot />
+        </div>
+
+    );
 
 }
 

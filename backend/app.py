@@ -141,6 +141,188 @@ def generate_ai_response(prompt):
     )
 
     return response.text
+def get_bug_statistics():
+    cur = mysql.connection.cursor()
+
+    cur.execute("SELECT COUNT(*) FROM bugs")
+    total_bugs = cur.fetchone()[0]
+
+    cur.execute("SELECT COUNT(*) FROM bugs WHERE status='Open'")
+    open_bugs = cur.fetchone()[0]
+
+    cur.execute("SELECT COUNT(*) FROM bugs WHERE status='In Progress'")
+    in_progress_bugs = cur.fetchone()[0]
+
+    cur.execute("SELECT COUNT(*) FROM bugs WHERE status='In Review'")
+    in_review_bugs = cur.fetchone()[0]
+
+    cur.execute("SELECT COUNT(*) FROM bugs WHERE status='Resolved'")
+    resolved_bugs = cur.fetchone()[0]
+
+    cur.execute("SELECT COUNT(*) FROM bugs WHERE status='Closed'")
+    closed_bugs = cur.fetchone()[0]
+
+    cur.close()
+
+    return {
+        "total_bugs": total_bugs,
+        "open_bugs": open_bugs,
+        "in_progress_bugs": in_progress_bugs,
+        "in_review_bugs": in_review_bugs,
+        "resolved_bugs": resolved_bugs,
+        "closed_bugs": closed_bugs
+    }
+
+
+def get_bug_details(bug_id):
+    cur = mysql.connection.cursor()
+
+    cur.execute("""
+        SELECT
+            bug_id,
+            title,
+            description,
+            category,
+            severity,
+            priority,
+            status,
+            assigned_to,
+            created_at
+        FROM bugs
+        WHERE bug_id = %s
+    """, (bug_id,))
+
+    bug = cur.fetchone()
+
+    cur.close()
+
+    return bug
+
+
+@app.route("/api/chat", methods=["POST"])
+@jwt_required()
+def chat():
+
+    data = request.get_json(silent=True) or {}
+
+    message = data.get("message", "").strip()
+
+    if not message:
+        return error_response("Message is required", 400)
+
+    if len(message) > 1000:
+        return error_response("Message is too long", 400)
+
+    # Get current BugFlow statistics
+    stats = get_bug_statistics()
+
+    # Detect whether the user mentioned a specific bug
+    import re
+
+    bug_match = re.search(
+        r"\bbug\s*(\d+)\b",
+        message,
+        re.IGNORECASE
+    )
+
+    bug_details = None
+
+    if bug_match:
+        bug_id = int(bug_match.group(1))
+        bug_details = get_bug_details(bug_id)
+
+    # Create the main AI prompt
+    prompt = f"""
+You are BugFlow AI, an AI assistant inside a Bug Tracking System.
+
+Help the user with:
+
+- software bugs
+- debugging
+- root cause analysis
+- error messages
+- software development
+- testing
+- bug tracking concepts
+- severity and priority
+- troubleshooting
+
+Give clear, practical and concise answers.
+
+Current BugFlow Statistics:
+- Total bugs: {stats["total_bugs"]}
+- Open bugs: {stats["open_bugs"]}
+- In Progress bugs: {stats["in_progress_bugs"]}
+- In Review bugs: {stats["in_review_bugs"]}
+- Resolved bugs: {stats["resolved_bugs"]}
+- Closed bugs: {stats["closed_bugs"]}
+
+When the user's question is about these statistics,
+use the database information above instead of guessing.
+
+User's question:
+{message}
+"""
+
+    # Add individual bug information when a bug ID was detected
+    if bug_details:
+
+        prompt += f"""
+
+Specific Bug Details:
+- Bug ID: {bug_details[0]}
+- Title: {bug_details[1]}
+- Description: {bug_details[2]}
+- Category: {bug_details[3]}
+- Severity: {bug_details[4]}
+- Priority: {bug_details[5]}
+- Status: {bug_details[6]}
+- Assigned To: {bug_details[7]}
+- Created At: {bug_details[8]}
+
+When the user asks about this specific bug,
+use the database information above instead of guessing.
+"""
+
+    elif bug_match:
+
+        bug_id = int(bug_match.group(1))
+
+        prompt += f"""
+
+The user asked about Bug {bug_id}, but that bug was not found
+in the database.
+
+Clearly tell the user that Bug {bug_id} was not found.
+Do not invent or guess any details about it.
+"""
+
+    try:
+
+        response = generate_ai_response(prompt)
+
+        if not response:
+            return error_response(
+                "AI returned an empty response",
+                500
+            )
+
+        return jsonify({
+            "response": response
+        }), 200
+
+    except Exception as e:
+
+        print("====================================")
+        print("CHATBOT ERROR")
+        print("====================================")
+        print(str(e))
+        print("====================================")
+
+        return error_response(
+            "AI service is temporarily unavailable",
+            503
+        )
 # Pinecone
 
 pinecone = None
@@ -190,6 +372,36 @@ def find_similar_bugs(title, description):
     )
 
     return results.matches
+def get_historical_resolutions(bug_ids):
+    if not bug_ids:
+        return []
+
+    placeholders = ",".join(["%s"] * len(bug_ids))
+
+    cur = mysql.connection.cursor()
+
+    query = f"""
+        SELECT
+            b.bug_id,
+            b.title,
+            b.description,
+            b.status,
+            b.resolved_at,
+            c.comment
+        FROM bugs b
+        LEFT JOIN comments c
+            ON b.bug_id = c.bug_id
+        WHERE b.bug_id IN ({placeholders})
+          AND b.status = 'Resolved'
+          AND b.resolved_at IS NOT NULL
+        ORDER BY b.resolved_at DESC
+    """
+
+    cur.execute(query, tuple(bug_ids))
+    results = cur.fetchall()
+    cur.close()
+
+    return results
 @app.route("/api/search-bugs", methods=["POST"])
 @jwt_required()
 def search_bugs():
@@ -1862,18 +2074,47 @@ def ai_resolution(bug_id):
 
     title = bug[0]
     description = bug[1]
+        # Find similar bugs using Pinecone
+    similar_bugs = find_similar_bugs(title, description)
 
+    # Get IDs of similar bugs
+    similar_bug_ids = [
+        int(match.id)
+        for match in similar_bugs
+        if int(match.id) != bug_id
+    ]
+
+    # Retrieve resolved similar bugs from MySQL
+    historical_resolutions = get_historical_resolutions(
+        similar_bug_ids
+    )
+    historical_context = ""
+
+    for history in historical_resolutions:
+        historical_context += f"""
+Previous Resolved Bug:
+Title: {history[1]}
+Description: {history[2]}
+Comment: {history[5] or "No comment available"}
+Resolved At: {history[4]}
+"""
     prompt = f"""
 You are a software debugging assistant.
 
 Analyze the following bug:
 
 Bug Title:
-{'title'}
+{title}
 
 Bug Description:
-{'description'}
-
+{description}
+Historical Resolved Bugs:
+{historical_context}
+Use the historical resolved bugs above as supporting evidence.
+If a previous resolved bug is relevant to the current bug, use its
+information to improve the root cause, debugging steps, resolution,
+and prevention recommendations.
+Do not copy the historical bug text directly.
 Generate a SHORT and CLEAR debugging solution.
 
 IMPORTANT RULES:
@@ -1928,10 +2169,21 @@ PREVENTION
             }, 500
 
         return {
-            "bug_id": bug_id,
-            "title": title,
-            "resolution_assistance": response
-        }, 200
+    "bug_id": bug_id,
+    "title": title,
+    "resolution_assistance": response,
+    "historical_resolutions": [
+        {
+            "bug_id": history[0],
+            "title": history[1],
+            "description": history[2],
+            "status": history[3],
+            "resolved_at": str(history[4]) if history[4] else None,
+            "comment": history[5]
+        }
+        for history in historical_resolutions
+    ]
+}, 200
 
     except Exception as e:
 
@@ -2157,6 +2409,57 @@ def get_sprint_bugs(sprint_id):
 
     return {
         "bugs": result
+    }, 200
+@app.route("/api/test-historical/<int:bug_id>", methods=["GET"])
+@jwt_required()
+def test_historical(bug_id):
+    cur = mysql.connection.cursor()
+
+    cur.execute(
+        """
+        SELECT title, description
+        FROM bugs
+        WHERE bug_id=%s
+        """,
+        (bug_id,)
+    )
+
+    bug = cur.fetchone()
+    cur.close()
+
+    if not bug:
+        return error_response("Bug not found", 404)
+
+    title = bug[0]
+    description = bug[1]
+
+    similar_bugs = find_similar_bugs(title, description)
+
+    similar_bug_ids = [
+        int(match.id)
+        for match in similar_bugs
+        if int(match.id) != bug_id
+    ]
+
+    historical_resolutions = get_historical_resolutions(
+        similar_bug_ids
+    )
+
+    return {
+        "current_bug_id": bug_id,
+        "current_bug_title": title,
+        "similar_bug_ids": similar_bug_ids,
+        "historical_resolutions": [
+            {
+                "bug_id": row[0],
+                "title": row[1],
+                "description": row[2],
+                "status": row[3],
+                "resolved_at": str(row[4]),
+                "comment": row[5]
+            }
+            for row in historical_resolutions
+        ]
     }, 200
 if __name__ == "__main__":
     app.run(debug=True)
