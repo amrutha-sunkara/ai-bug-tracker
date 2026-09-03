@@ -35,6 +35,12 @@ jobs:
         run: |
           pip install -r backend/requirements.txt
 
+      - name: Initialize database
+        env:
+          MYSQL_PWD: root
+        run: |
+          mysql -h 127.0.0.1 -u root bug_tracker < backend/database.sql
+
       - name: Run tests
         env:
           MYSQL_HOST: 127.0.0.1
