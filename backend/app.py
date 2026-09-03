@@ -50,7 +50,10 @@ CORS(app)
 
 # Secret Keys
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
-app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
+app.config["JWT_SECRET_KEY"] = os.getenv(
+    "JWT_SECRET_KEY",
+    "ci-test-secret-key"
+)
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=7)
 # MySQL Configuration
 app.config["MYSQL_HOST"] = os.getenv("MYSQL_HOST")
