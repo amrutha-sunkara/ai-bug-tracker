@@ -21,8 +21,12 @@ function ViewBugs() {
 
     const [comments, setComments] = useState({});
     const [activities, setActivities] = useState({});
-
-
+    const [rootCauseBug, setRootCauseBug] = useState(null);
+    const [rootCauseAnalysis, setRootCauseAnalysis] = useState("");
+    const [rootCauseLoading, setRootCauseLoading] = useState(false);
+    const [testCaseBug, setTestCaseBug] = useState(null);
+    const [testCases, setTestCases] = useState("");
+    const [testCaseLoading, setTestCaseLoading] = useState(false);
 
     const fetchComments = async (bugId) => {
 
@@ -272,7 +276,53 @@ function ViewBugs() {
         }
 
     };
+    const analyzeRootCause = async (bug) => {
+    setRootCauseBug(bug);
+    setRootCauseAnalysis("");
+    setRootCauseLoading(true);
 
+    try {
+        const response = await api.post(
+            `/api/bugs/${bug.bug_id}/root-cause-analysis`
+        );
+
+        setRootCauseAnalysis(
+            response.data.root_cause_analysis || "No analysis returned."
+        );
+    } catch (error) {
+        console.log(error.response?.data);
+        setRootCauseAnalysis(
+            error.response?.data?.message ||
+            "Failed to generate root cause analysis."
+        );
+    } finally {
+        setRootCauseLoading(false);
+    }
+};
+const generateTestCases = async (bug) => {
+    setTestCaseBug(bug);
+    setTestCases("");
+    setTestCaseLoading(true);
+
+    try {
+        const response = await api.post(
+            `/api/bugs/${bug.bug_id}/test-cases`
+        );
+
+        setTestCases(
+            response.data.test_cases || "No test cases returned."
+        );
+    } catch (error) {
+        console.log(error.response?.data);
+
+        setTestCases(
+            error.response?.data?.message ||
+            "Failed to generate test cases."
+        );
+    } finally {
+        setTestCaseLoading(false);
+    }
+};
 
 
     const filteredBugs = bugs.filter((bug) => {
@@ -697,29 +747,55 @@ function ViewBugs() {
                                             </select>
 
 
-                                            <button
+                                            <div className="flex gap-2">
 
-                                                onClick={() =>
-                                                    deleteBug(bug.bug_id)
-                                                }
+    <button
+        onClick={() => analyzeRootCause(bug)}
+        className="
+            bg-purple-600
+            hover:bg-purple-700
+            text-white
+            px-4
+            py-2
+            rounded-lg
+            transition
+        "
+    >
+        🤖 Root Cause Analysis
+    </button>
+    <button
+    onClick={() => generateTestCases(bug)}
+    className="
+        bg-blue-600
+        hover:bg-blue-700
+        text-white
+        px-4
+        py-2
+        rounded-lg
+        transition
+    "
+>
+    🧪 Generate Test Cases
+</button>
 
-                                                className="
-                                                    bg-red-600
-                                                    hover:bg-red-700
-                                                    text-white
-                                                    px-4
-                                                    py-2
-                                                    rounded-lg
-                                                    transition
-                                                "
+    <button
+        onClick={() =>
+            deleteBug(bug.bug_id)
+        }
+        className="
+            bg-red-600
+            hover:bg-red-700
+            text-white
+            px-4
+            py-2
+            rounded-lg
+            transition
+        "
+    >
+        Delete
+    </button>
 
-                                            >
-
-                                                Delete
-
-                                            </button>
-
-
+</div>
                                         </div>
 
 
@@ -1152,14 +1228,278 @@ function ViewBugs() {
                         }
 
 
-                    </div>
+                                        </div>
 
+                    {/* AI ROOT CAUSE ANALYSIS MODAL */}
+                    {rootCauseBug && (
+                        <div className="
+                            fixed
+                            inset-0
+                            z-50
+                            flex
+                            items-center
+                            justify-center
+                            bg-black/50
+                            p-4
+                        ">
 
+                            <div className="
+                                w-full
+                                max-w-2xl
+                                max-h-[85vh]
+                                overflow-y-auto
+                                rounded-2xl
+                                bg-white
+                                p-6
+                                shadow-2xl
+                                dark:bg-slate-900
+                            ">
+
+                                <div className="
+                                    flex
+                                    items-center
+                                    justify-between
+                                    mb-5
+                                ">
+
+                                    <div>
+                                        <h2 className="
+                                            text-2xl
+                                            font-bold
+                                            dark:text-white
+                                        ">
+                                            🤖 AI Root Cause Analysis
+                                        </h2>
+
+                                        <p className="
+                                            mt-1
+                                            text-sm
+                                            text-gray-500
+                                            dark:text-gray-400
+                                        ">
+                                            Bug #{rootCauseBug.bug_id}
+                                        </p>
+                                    </div>
+
+                                    <button
+                                        onClick={() => {
+                                            setRootCauseBug(null);
+                                            setRootCauseAnalysis("");
+                                        }}
+                                        className="
+                                            text-2xl
+                                            text-gray-500
+                                            hover:text-gray-800
+                                            dark:hover:text-white
+                                        "
+                                    >
+                                        ✕
+                                    </button>
+
+                                </div>
+
+                                <div className="
+                                    mb-5
+                                    rounded-xl
+                                    bg-gray-50
+                                    p-4
+                                    dark:bg-slate-800
+                                ">
+
+                                    <p className="
+                                        font-semibold
+                                        text-gray-800
+                                        dark:text-white
+                                    ">
+                                        {rootCauseBug.title}
+                                    </p>
+
+                                    <p className="
+                                        mt-2
+                                        text-sm
+                                        text-gray-600
+                                        dark:text-gray-300
+                                    ">
+                                        {rootCauseBug.description}
+                                    </p>
+
+                                </div>
+
+                                {rootCauseLoading ? (
+                                    <div className="
+                                        py-10
+                                        text-center
+                                        text-gray-600
+                                        dark:text-gray-300
+                                    ">
+                                        <p className="text-lg">
+                                            🤖 Analyzing bug...
+                                        </p>
+
+                                        <p className="
+                                            mt-2
+                                            text-sm
+                                            text-gray-500
+                                        ">
+                                            Gemini is generating the root cause analysis.
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <div className="
+                                        whitespace-pre-wrap
+                                        text-sm
+                                        leading-7
+                                        text-gray-700
+                                        dark:text-gray-200
+                                    ">
+                                        {rootCauseAnalysis}
+                                    </div>
+                                )}
+{testCaseBug && (
+    <div className="
+        fixed
+        inset-0
+        z-50
+        flex
+        items-center
+        justify-center
+        bg-black/50
+        p-4
+    ">
+
+        <div className="
+            w-full
+            max-w-3xl
+            max-h-[85vh]
+            overflow-y-auto
+            rounded-2xl
+            bg-white
+            p-6
+            shadow-2xl
+            dark:bg-slate-900
+        ">
+
+            <div className="
+                flex
+                items-center
+                justify-between
+                mb-5
+            ">
+
+                <div>
+                    <h2 className="
+                        text-2xl
+                        font-bold
+                        dark:text-white
+                    ">
+                        🧪 AI Test Case Generator
+                    </h2>
+
+                    <p className="
+                        mt-1
+                        text-sm
+                        text-gray-500
+                        dark:text-gray-400
+                    ">
+                        Bug #{testCaseBug.bug_id}
+                    </p>
                 </div>
 
+                <button
+                    onClick={() => {
+                        setTestCaseBug(null);
+                        setTestCases("");
+                    }}
+                    className="
+                        text-2xl
+                        text-gray-500
+                        hover:text-gray-800
+                        dark:hover:text-white
+                    "
+                >
+                    ✕
+                </button>
 
             </div>
 
+            <div className="
+                mb-5
+                rounded-xl
+                bg-gray-50
+                p-4
+                dark:bg-slate-800
+            ">
+
+                <p className="
+                    font-semibold
+                    text-gray-800
+                    dark:text-white
+                ">
+                    {testCaseBug.title}
+                </p>
+
+                <p className="
+                    mt-2
+                    text-sm
+                    text-gray-600
+                    dark:text-gray-300
+                ">
+                    {testCaseBug.description}
+                </p>
+
+            </div>
+
+            {testCaseLoading ? (
+
+                <div className="
+                    py-12
+                    text-center
+                    text-gray-600
+                    dark:text-gray-300
+                ">
+
+                    <p className="text-lg">
+                        🤖 Generating test cases...
+                    </p>
+
+                    <p className="
+                        mt-2
+                        text-sm
+                        text-gray-500
+                        dark:text-gray-400
+                    ">
+                        Gemini is preparing test scenarios for this bug.
+                    </p>
+
+                </div>
+
+            ) : (
+
+                <div className="
+                    whitespace-pre-wrap
+                    text-sm
+                    leading-7
+                    text-gray-700
+                    dark:text-gray-200
+                ">
+                    {testCases}
+                </div>
+
+            )}
+
+        </div>
+
+    </div>
+)}
+
+                            </div>
+
+                        </div>
+                    )}
+
+                </div>
+
+            </div>
 
         </div>
 

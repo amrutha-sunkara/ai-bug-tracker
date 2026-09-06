@@ -2043,6 +2043,175 @@ def add_comment(bug_id):
     return {
         "message": "Comment added successfully"
     }, 201
+@app.route("/api/bugs/<int:bug_id>/test-cases", methods=["POST"])
+@jwt_required()
+def generate_test_cases(bug_id):
+
+    allowed, error, status_code = require_role(
+        ["Tester", "Developer", "Manager"]
+    )
+
+    if not allowed:
+        return error, status_code
+
+    cur = mysql.connection.cursor()
+
+    try:
+        # Get bug details
+        cur.execute(
+            """
+            SELECT
+                bug_id,
+                title,
+                description,
+                category,
+                severity,
+                priority,
+                status
+            FROM bugs
+            WHERE bug_id=%s
+            """,
+            (bug_id,)
+        )
+
+        bug = cur.fetchone()
+
+        if not bug:
+            return error_response("Bug not found", 404)
+
+        # Get comments related to the bug
+        cur.execute(
+            """
+            SELECT comment
+            FROM comments
+            WHERE bug_id=%s
+            ORDER BY comment_id ASC
+            """,
+            (bug_id,)
+        )
+
+        comment_rows = cur.fetchall()
+
+        comments_text = "\n".join(
+            f"- {row[0]}"
+            for row in comment_rows
+            if row[0]
+        )
+
+        if not comments_text:
+            comments_text = "No comments available."
+
+        prompt = f"""
+You are BugFlow AI, a software testing assistant.
+
+Generate practical test cases for the following software bug.
+
+Bug ID:
+{bug[0]}
+
+Title:
+{bug[1]}
+
+Description:
+{bug[2]}
+
+Category:
+{bug[3]}
+
+Severity:
+{bug[4]}
+
+Priority:
+{bug[5]}
+
+Status:
+{bug[6]}
+
+Developer / Tester Comments:
+{comments_text}
+
+IMPORTANT RULES:
+- Generate test cases specifically for this bug.
+- Do not invent application functionality that is not mentioned.
+- Include positive testing where appropriate.
+- Include negative testing where appropriate.
+- Include important edge cases.
+- Include regression testing for related functionality.
+- Keep the test cases concise and practical.
+- Each test case must contain an action and an expected result.
+- Do not provide source code.
+
+Return ONLY these sections:
+
+FUNCTIONAL TEST CASES
+
+Test Case 1:
+Action:
+Expected Result:
+
+Test Case 2:
+Action:
+Expected Result:
+
+Test Case 3:
+Action:
+Expected Result:
+
+NEGATIVE TEST CASES
+
+Test Case 1:
+Action:
+Expected Result:
+
+Test Case 2:
+Action:
+Expected Result:
+
+EDGE CASES
+
+Test Case 1:
+Action:
+Expected Result:
+
+Test Case 2:
+Action:
+Expected Result:
+
+REGRESSION TESTS
+
+• Short regression test
+• Short regression test
+• Short regression test
+"""
+
+        response = generate_ai_response(prompt)
+
+        if not response:
+            return error_response(
+                "AI returned an empty response",
+                500
+            )
+
+        return {
+            "bug_id": bug_id,
+            "test_cases": response
+        }, 200
+
+    except Exception as e:
+
+        print("====================================")
+        print("AI TEST CASE GENERATION ERROR")
+        print("====================================")
+        print(str(e))
+        print("====================================")
+
+        return error_response(
+            "AI test case generation failed",
+            503
+        )
+
+    finally:
+        cur.close()
 @app.route("/api/bugs/<int:bug_id>/ai-resolution", methods=["GET"])
 @jwt_required()
 def ai_resolution(bug_id):
@@ -2197,6 +2366,152 @@ PREVENTION
             "message": "AI resolution generation failed",
             "error": str(e)
         }, 500
+
+@app.route("/api/bugs/<int:bug_id>/root-cause-analysis", methods=["POST"])
+@jwt_required()
+def root_cause_analysis(bug_id):
+
+    allowed, error, status_code = require_role(
+        ["Tester", "Developer", "Manager"]
+    )
+
+    if not allowed:
+        return error, status_code
+
+    cur = mysql.connection.cursor()
+
+    cur.execute(
+        """
+        SELECT
+            bug_id,
+            title,
+            description,
+            category,
+            severity,
+            priority,
+            status,
+            assigned_to,
+            sprint_id
+        FROM bugs
+        WHERE bug_id=%s
+        """,
+        (bug_id,)
+    )
+
+    bug = cur.fetchone()
+
+    if not bug:
+        cur.close()
+        return error_response("Bug not found", 404)
+
+    cur.execute(
+        """
+        SELECT comment
+        FROM comments
+        WHERE bug_id=%s
+        ORDER BY comment_id ASC
+        """,
+        (bug_id,)
+    )
+
+    comment_rows = cur.fetchall()
+
+    cur.close()
+
+    comments_text = "\n".join(
+        f"- {row[0]}"
+        for row in comment_rows
+        if row[0]
+    )
+
+    if not comments_text:
+        comments_text = "No comments available."
+
+    prompt = f"""
+You are BugFlow AI, a software debugging assistant.
+
+Analyze the following software bug and provide a probable root cause analysis.
+
+Bug ID:
+{bug[0]}
+
+Title:
+{bug[1]}
+
+Description:
+{bug[2]}
+
+Category:
+{bug[3]}
+
+Severity:
+{bug[4]}
+
+Priority:
+{bug[5]}
+
+Status:
+{bug[6]}
+
+Sprint ID:
+{bug[8]}
+
+Developer / Tester Comments:
+{comments_text}
+
+IMPORTANT:
+- Do not claim that the root cause is definitely known.
+- Provide a probable root cause based only on the information provided.
+- Keep the response concise and practical.
+- Use simple technical language.
+- Do not invent source-code details that were not provided.
+
+Return ONLY the following sections:
+
+PROBABLE ROOT CAUSE
+• Maximum 2 points
+
+EVIDENCE / REASONING
+• Maximum 2 points
+
+INVESTIGATION AREAS
+• Maximum 3 points
+
+SUGGESTED NEXT STEPS
+1. Maximum 3 steps
+2. Maximum 3 steps
+3. Maximum 3 steps
+
+CONFIDENCE
+Low / Medium / High
+"""
+
+    try:
+        response = generate_ai_response(prompt)
+
+        if not response:
+            return error_response(
+                "AI returned an empty response",
+                500
+            )
+
+        return {
+            "bug_id": bug_id,
+            "root_cause_analysis": response
+        }, 200
+
+    except Exception as e:
+
+        print("====================================")
+        print("ROOT CAUSE ANALYSIS ERROR")
+        print("====================================")
+        print(str(e))
+        print("====================================")
+
+        return error_response(
+            "AI root cause analysis failed",
+            503
+        )
 @app.route("/api/sprints", methods=["GET"])
 @jwt_required()
 def get_sprints():
@@ -2461,5 +2776,211 @@ def test_historical(bug_id):
             for row in historical_resolutions
         ]
     }, 200
+@app.route("/api/sprints/ai-planning", methods=["POST"])
+@jwt_required()
+def ai_sprint_planning():
+
+    allowed, error, status_code = require_role(
+        ["Developer", "Manager"]
+    )
+
+    if not allowed:
+        return error, status_code
+
+    cur = mysql.connection.cursor()
+
+    try:
+        # Get all unresolved bugs
+        cur.execute(
+            """
+            SELECT
+                bug_id,
+                title,
+                description,
+                priority,
+                severity,
+                status,
+                assigned_to,
+                sprint_id
+            FROM bugs
+            WHERE status != 'Resolved'
+              AND status != 'Closed'
+            ORDER BY
+                CASE
+                    WHEN priority = 'Critical' THEN 1
+                    WHEN priority = 'High' THEN 2
+                    WHEN priority = 'Medium' THEN 3
+                    WHEN priority = 'Low' THEN 4
+                    ELSE 5
+                END,
+                bug_id DESC
+            """
+        )
+
+        bugs = cur.fetchall()
+
+        # Get sprint information
+        cur.execute(
+            """
+            SELECT
+                sprint_id,
+                sprint_name,
+                description,
+                start_date,
+                end_date
+            FROM sprints
+            ORDER BY sprint_id DESC
+            """
+        )
+
+        sprints = cur.fetchall()
+
+        # Get current developer workload
+        cur.execute(
+            """
+            SELECT
+                bugs.assigned_to,
+                users.username,
+                COUNT(bugs.bug_id)
+            FROM bugs
+            LEFT JOIN users
+                ON bugs.assigned_to = users.user_id
+            WHERE bugs.status != 'Resolved'
+              AND bugs.status != 'Closed'
+            GROUP BY bugs.assigned_to, users.username
+            ORDER BY COUNT(bugs.bug_id) DESC
+            """
+        )
+
+        workload = cur.fetchall()
+
+        cur.close()
+
+        # Prepare bug information for Gemini
+        bug_context = ""
+
+        for bug in bugs:
+            bug_context += f"""
+Bug ID: {bug[0]}
+Title: {bug[1]}
+Description: {bug[2]}
+Priority: {bug[3]}
+Severity: {bug[4]}
+Status: {bug[5]}
+Assigned To: {bug[6] or "Unassigned"}
+Current Sprint ID: {bug[7] or "Not Assigned"}
+
+"""
+
+        if not bug_context:
+            bug_context = "No unresolved bugs are currently available."
+
+        # Prepare sprint information
+        sprint_context = ""
+
+        for sprint in sprints:
+            sprint_context += f"""
+Sprint ID: {sprint[0]}
+Sprint Name: {sprint[1]}
+Description: {sprint[2] or "No description"}
+Start Date: {sprint[3]}
+End Date: {sprint[4]}
+
+"""
+
+        if not sprint_context:
+            sprint_context = "No sprints are currently available."
+
+        # Prepare workload information
+        workload_context = ""
+
+        for item in workload:
+            workload_context += f"""
+Developer: {item[1] or "Unassigned"}
+Open Bugs Assigned: {item[2]}
+
+"""
+
+        if not workload_context:
+            workload_context = "No developer workload information is available."
+
+        prompt = f"""
+You are BugFlow AI, an AI sprint planning assistant.
+
+Analyze the available unresolved bugs, sprint information,
+and developer workload.
+
+Your task is to provide practical sprint planning recommendations.
+
+BUGS:
+{bug_context}
+
+CURRENT SPRINTS:
+{sprint_context}
+
+DEVELOPER WORKLOAD:
+{workload_context}
+
+IMPORTANT RULES:
+- Recommend bugs based on priority, severity, status, and likely impact.
+- Give preference to Critical and High priority unresolved bugs.
+- Consider whether bugs are already assigned to a sprint.
+- Consider developer workload when making recommendations.
+- Do NOT automatically assign any bug.
+- Do NOT claim that an estimate is exact when no effort estimate is available.
+- Keep recommendations concise.
+- Do not invent missing project information.
+
+Return ONLY these sections:
+
+RECOMMENDED BUGS
+• Bug #ID — Short reason
+• Bug #ID — Short reason
+• Bug #ID — Short reason
+Maximum 5 bugs.
+
+SPRINT FOCUS
+• One short sentence describing the recommended sprint focus.
+
+WHY THESE BUGS
+• Maximum 3 short points.
+
+WORKLOAD ASSESSMENT
+• Low, Moderate, or High
+• One short reason.
+
+PLANNING SUGGESTIONS
+1. One short suggestion.
+2. One short suggestion.
+3. One short suggestion.
+"""
+
+        response = generate_ai_response(prompt)
+
+        if not response:
+            return error_response(
+                "AI returned an empty sprint plan",
+                500
+            )
+
+        return {
+            "sprint_plan": response
+        }, 200
+
+    except Exception as e:
+
+        if cur:
+            cur.close()
+
+        print("====================================")
+        print("AI SPRINT PLANNING ERROR")
+        print("====================================")
+        print(str(e))
+        print("====================================")
+
+        return error_response(
+            "AI sprint planning failed",
+            503
+        )
 if __name__ == "__main__":
     app.run(debug=True)

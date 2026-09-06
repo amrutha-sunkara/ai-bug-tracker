@@ -18,6 +18,9 @@ function SprintManagement() {
     const [selectedSprint, setSelectedSprint] = useState(null);
 
     const [showCreateForm, setShowCreateForm] = useState(false);
+    const [showAiSprintHelp, setShowAiSprintHelp] = useState(false);
+    const [aiSprintPlan, setAiSprintPlan] = useState("");
+    const [aiSprintLoading, setAiSprintLoading] = useState(false);      
 
     const [formData, setFormData] = useState({
         sprint_name: "",
@@ -158,7 +161,31 @@ useEffect(() => {
         }
     };
 
+const generateAiSprintPlan = async () => {
+    setShowAiSprintHelp(true);
+    setAiSprintPlan("");
+    setAiSprintLoading(true);
 
+    try {
+        const response = await api.post("/api/sprints/ai-planning");
+
+        setAiSprintPlan(
+            response.data.sprint_plan || "No sprint recommendation returned."
+        );
+    } catch (error) {
+        console.log(
+            "AI Sprint Planning Error:",
+            error.response?.data || error.message
+        );
+
+        setAiSprintPlan(
+            error.response?.data?.message ||
+            "Failed to generate AI sprint plan."
+        );
+    } finally {
+        setAiSprintLoading(false);
+    }
+};
     const selectSprint = (sprintId) => {
 
         setSelectedSprint(sprintId);
@@ -242,28 +269,46 @@ useEffect(() => {
                         </div>
 
 
-                        <button
-                            onClick={() => setShowCreateForm(!showCreateForm)}
-                            className="
-                                flex
-                                items-center
-                                gap-2
-                                px-5
-                                py-3
-                                rounded-lg
-                                bg-blue-600
-                                hover:bg-blue-700
-                                text-white
-                                font-semibold
-                            "
-                        >
+                        <div className="flex items-center gap-3">
 
-                            <Plus size={20} />
+    <button
+        onClick={generateAiSprintPlan}
+        className="
+            flex
+            items-center
+            gap-2
+            px-5
+            py-3
+            rounded-lg
+            bg-purple-600
+            hover:bg-purple-700
+            text-white
+            font-semibold
+        "
+    >
+        🤖 AI Sprint Help
+    </button>
 
-                            Create Sprint
+    <button
+        onClick={() => setShowCreateForm(!showCreateForm)}
+        className="
+            flex
+            items-center
+            gap-2
+            px-5
+            py-3
+            rounded-lg
+            bg-blue-600
+            hover:bg-blue-700
+            text-white
+            font-semibold
+        "
+    >
+        <Plus size={20} />
+        Create Sprint
+    </button>
 
-                        </button>
-
+</div>
                     </div>
 
 
@@ -614,6 +659,122 @@ useEffect(() => {
                         </div>
 
                     )}
+                    {showAiSprintHelp && (
+    <div className="
+        fixed
+        inset-0
+        z-50
+        flex
+        items-center
+        justify-center
+        bg-black/50
+        p-4
+    ">
+
+        <div className="
+            w-full
+            max-w-3xl
+            max-h-[85vh]
+            overflow-y-auto
+            rounded-2xl
+            bg-white
+            p-6
+            shadow-2xl
+            dark:bg-slate-900
+        ">
+
+            <div className="
+                flex
+                items-center
+                justify-between
+                mb-5
+            ">
+
+                <div>
+                    <h2 className="
+                        text-2xl
+                        font-bold
+                        dark:text-white
+                    ">
+                        🤖 AI Sprint Planning Assistant
+                    </h2>
+
+                    <p className="
+                        mt-1
+                        text-sm
+                        text-gray-500
+                        dark:text-gray-400
+                    ">
+                        AI-powered recommendations for sprint planning
+                    </p>
+                </div>
+
+                <button
+                    onClick={() => {
+                        setShowAiSprintHelp(false);
+                        setAiSprintPlan("");
+                    }}
+                    className="
+                        text-2xl
+                        text-gray-500
+                        hover:text-gray-800
+                        dark:hover:text-white
+                    "
+                >
+                    ✕
+                </button>
+
+            </div>
+
+            {aiSprintLoading ? (
+
+                <div className="
+                    py-12
+                    text-center
+                    text-gray-600
+                    dark:text-gray-300
+                ">
+
+                    <p className="text-lg">
+                        🤖 Analyzing sprint data...
+                    </p>
+
+                    <p className="
+                        mt-2
+                        text-sm
+                        text-gray-500
+                        dark:text-gray-400
+                    ">
+                        Gemini is preparing sprint recommendations.
+                    </p>
+
+                </div>
+
+            ) : (
+
+                <div className="
+                    rounded-xl
+                    bg-gray-50
+                    p-5
+                    dark:bg-slate-800
+                ">
+                    <div className="
+                        whitespace-pre-wrap
+                        text-sm
+                        leading-7
+                        text-gray-700
+                        dark:text-gray-200
+                    ">
+                        {aiSprintPlan}
+                    </div>
+                </div>
+
+            )}
+
+        </div>
+
+    </div>
+)}
 
                 </div>
 
