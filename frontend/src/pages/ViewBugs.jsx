@@ -1355,6 +1355,11 @@ const generateTestCases = async (bug) => {
                                         {rootCauseAnalysis}
                                     </div>
                                 )}
+                                                                                       </div>
+                        </div>
+                    )}
+
+                    
 {testCaseBug && (
     <div className="
         fixed
@@ -1492,10 +1497,7 @@ const generateTestCases = async (bug) => {
     </div>
 )}
 
-                            </div>
-
-                        </div>
-                    )}
+                           
 
                 </div>
 
