@@ -367,11 +367,18 @@ def find_similar_bugs(title, description):
 
     results = index.query(
         vector=embedding,
-        top_k=3,
+        top_k=5,
         include_metadata=True
     )
 
-    return results.matches
+    # Only keep genuinely similar bugs
+    similar_matches = []
+
+    for match in results.matches:
+        if match.score >= 0.80:
+            similar_matches.append(match)
+
+    return similar_matches
 def get_historical_resolutions(bug_ids):
     if not bug_ids:
         return []
@@ -968,14 +975,10 @@ def improve_bug():
     Keep each point short (1-2 lines only).
     Do not add extra explanations.
     """
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=prompt
-            )
-
+        response = generate_ai_response(prompt)
 
         return {
-            "bug_report": response.text
+            "bug_report": response
         }, 200
 @app.route("/api/auto_triage", methods=["POST"])
 @jwt_required()
@@ -997,52 +1000,63 @@ def auto_triage():
         }, 400
 
     prompt = f"""
-You are a software QA engineer.
+    You are a software QA engineer.
 
-Analyze the following bug description and automatically classify it.
+    Analyze the following bug description and automatically classify it.
 
-Bug Description:
-{description}
+    Bug Description:
+    {description}
 
-Return ONLY valid JSON in exactly this format:
+    Return ONLY valid JSON in exactly this format:
 
-{{
-    "category": "one short category",
-    "severity": "Critical",
-    "priority": "High"
-}}
+    {{
+        "category": "one short category",
+        "severity": "Critical",
+        "priority": "High"
+    }}
 
-Severity MUST be exactly one of:
-Critical
-High
-Medium
-Low
+    Severity MUST be exactly one of:
+    Critical
+    High
+    Medium
+    Low
 
-Priority MUST be exactly one of:
-Critical
-High
-Medium
-Low
+    Priority MUST be exactly one of:
+    Critical
+    High
+    Medium
+    Low
 
-Choose severity based on the technical impact of the bug.
+    Choose severity based on the technical impact of the bug.
 
-Choose priority based on how urgently the bug should be fixed.
+    Choose priority based on how urgently the bug should be fixed.
 
-Choose a suitable category such as:
-UI
-Authentication
-Performance
-Database
-API
-File Upload
-Security
-Functional
-Other
+    Choose a suitable category such as:
+    UI
+    Authentication
+    Performance
+    Database
+    API
+    File Upload
+    Security
+    Functional
+    Other
 
-Do not add any explanation outside the JSON.
-"""
+    Do not add any explanation outside the JSON.
+    """
 
-    response = client.models.generate_content(
+    # Create Gemini client
+    gemini_api_key = os.getenv("GEMINI_API_KEY")
+
+    if not gemini_api_key:
+        return {
+            "message": "GEMINI_API_KEY is not configured"
+        }, 500
+
+    gemini_client = genai.Client(api_key=gemini_api_key)
+
+    # Generate AI response
+    response = gemini_client.models.generate_content(
         model="gemini-2.5-flash",
         contents=prompt,
         config=types.GenerateContentConfig(
@@ -1071,7 +1085,6 @@ Do not add any explanation outside the JSON.
         "severity": result.get("severity"),
         "priority": result.get("priority")
     }, 200
-
 @app.route("/api/bugs", methods=["POST"])
 @jwt_required()
 def create_bug():
@@ -1203,7 +1216,7 @@ def create_bug():
         }, 400
 
     similar_bugs = find_similar_bugs(title, description)
-
+    
     print("========== PINECONE DUPLICATE CHECK ==========")
 
     for match in similar_bugs:
@@ -2245,13 +2258,25 @@ def ai_resolution(bug_id):
     description = bug[1]
         # Find similar bugs using Pinecone
     similar_bugs = find_similar_bugs(title, description)
+    print("========== AI RESOLUTION HISTORICAL SEARCH ==========")
+    print("CURRENT BUG ID:", bug_id)
+    print("CURRENT TITLE:", title)
+    print("CURRENT DESCRIPTION:", description)
+
+    for match in similar_bugs:
+        print("BUG ID:", match.id)
+        print("SCORE:", match.score)
+        print("TITLE:", match.metadata.get("title"))
+        print("DESCRIPTION:", match.metadata.get("description"))
+        print("------------------------------------------")
 
     # Get IDs of similar bugs
     similar_bug_ids = [
-        int(match.id)
-        for match in similar_bugs
-        if int(match.id) != bug_id
-    ]
+    int(match.id)
+    for match in similar_bugs
+    if int(match.id) != bug_id
+]
+    print("SIMILAR BUG IDS:", similar_bug_ids)
 
     # Retrieve resolved similar bugs from MySQL
     historical_resolutions = get_historical_resolutions(
@@ -2749,6 +2774,14 @@ def test_historical(bug_id):
     description = bug[1]
 
     similar_bugs = find_similar_bugs(title, description)
+    print("========== HISTORICAL BUG SEARCH ==========")
+
+    for match in similar_bugs:
+        print("BUG ID:", match.id)
+        print("SCORE:", match.score)
+        print("TITLE:", match.metadata.get("title"))
+        print("DESCRIPTION:", match.metadata.get("description"))
+        print("------------------------------------------")
 
     similar_bug_ids = [
         int(match.id)
