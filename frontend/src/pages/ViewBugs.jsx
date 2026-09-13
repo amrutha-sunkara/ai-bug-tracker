@@ -236,6 +236,32 @@ const uploadFile = async (bugId, file) => {
         );
     }
 };
+const downloadAttachment = async (attachment) => {
+    try {
+        const response = await api.get(
+            `/api/attachments/${attachment.attachment_id}/download`,
+            {
+                responseType: "blob"
+            }
+        );
+
+        const url = window.URL.createObjectURL(response.data);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = attachment.file_name;
+
+        document.body.appendChild(link);
+        link.click();
+
+        link.remove();
+        window.URL.revokeObjectURL(url);
+
+    } catch (error) {
+        console.log(error.response?.data);
+        alert("Failed to download file");
+    }
+};
     const analyzeRootCause = async (bug) => {
     setRootCauseBug(bug);
     setRootCauseAnalysis("");
@@ -962,10 +988,8 @@ const generateTestCases = async (bug) => {
                         rounded-lg
                     "
                 >
-                    <a
-    href={`${api.defaults.baseURL}/api/attachments/${attachment.attachment_id}/download`}
-    target="_blank"
-    rel="noopener noreferrer"
+                    <button
+    onClick={() => downloadAttachment(attachment)}
     className="
         text-sm
         text-blue-600
@@ -976,7 +1000,7 @@ const generateTestCases = async (bug) => {
     "
 >
     📄 {attachment.file_name}
-</a>
+</button>
                     <span className="
                         text-xs
                         text-gray-500
