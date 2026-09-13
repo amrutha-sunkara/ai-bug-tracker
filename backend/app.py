@@ -1773,6 +1773,45 @@ def upload_attachment(bug_id):
             "message": "File uploaded successfully",
             "file_name": filename
         }, 201
+@app.route("/api/attachments/<int:attachment_id>/download", methods=["GET"])
+@jwt_required()
+def download_attachment(attachment_id):
+    allowed, error, status_code = require_role(
+        ["Tester", "Developer", "Manager"]
+    )
+
+    if not allowed:
+        return error, status_code
+
+    cur = mysql.connection.cursor()
+
+    cur.execute(
+        """
+        SELECT file_name, file_path
+        FROM attachments
+        WHERE attachment_id = %s
+        """,
+        (attachment_id,)
+    )
+
+    attachment = cur.fetchone()
+    cur.close()
+
+    if not attachment:
+        return error_response("Attachment not found", 404)
+
+    file_name = attachment[0]
+    file_path = attachment[1]
+
+    if not os.path.exists(file_path):
+        return error_response("File not found on server", 404)
+
+    return send_from_directory(
+        os.path.dirname(file_path),
+        os.path.basename(file_path),
+        as_attachment=True,
+        download_name=file_name
+    )
 @app.route("/api/bugs/<int:bug_id>/attachments", methods=["GET"])
 @jwt_required()
 def get_attachments(bug_id):

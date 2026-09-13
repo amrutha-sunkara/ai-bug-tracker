@@ -962,14 +962,21 @@ const generateTestCases = async (bug) => {
                         rounded-lg
                     "
                 >
-                    <span className="
-                        text-sm
-                        text-gray-700
-                        dark:text-gray-200
-                    ">
-                        📄 {attachment.file_name}
-                    </span>
-
+                    <a
+    href={`${api.defaults.baseURL}/api/attachments/${attachment.attachment_id}/download`}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="
+        text-sm
+        text-blue-600
+        hover:text-blue-800
+        dark:text-blue-400
+        dark:hover:text-blue-300
+        hover:underline
+    "
+>
+    📄 {attachment.file_name}
+</a>
                     <span className="
                         text-xs
                         text-gray-500
