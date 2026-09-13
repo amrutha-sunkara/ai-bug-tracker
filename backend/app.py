@@ -372,10 +372,27 @@ def find_similar_bugs(title, description):
         include_metadata=True
     )
 
-    # Only keep genuinely similar bugs
+    # Get bug IDs that currently exist in MySQL
+    cur = mysql.connection.cursor()
+
+    cur.execute("SELECT bug_id FROM bugs")
+
+    existing_bug_ids = {row[0] for row in cur.fetchall()}
+
+    cur.close()
+
+    # Keep only similar bugs that still exist in MySQL
     similar_matches = []
 
     for match in results.matches:
+        bug_id = match.metadata.get("bug_id")
+
+        if bug_id is None:
+            continue
+
+        if int(bug_id) not in existing_bug_ids:
+            continue
+
         if match.score >= 0.80:
             similar_matches.append(match)
 
