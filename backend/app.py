@@ -1223,7 +1223,7 @@ def create_bug():
         }, 400
 
     # Allowed values validation
-    allowed_priorities = ["Low", "Medium", "High"]
+    allowed_priorities = ["Low", "Medium", "High","Critical"]
 
     if priority not in allowed_priorities:
         return {
