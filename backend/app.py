@@ -1377,6 +1377,92 @@ def get_bugs():
     return {
         "bugs": result
     }, 200
+@app.route("/api/bugs/related-data", methods=["GET"])
+@jwt_required()
+def get_bugs_related_data():
+    try:
+        cur = mysql.connection.cursor()
+
+        # Fetch all comments with usernames
+        cur.execute("""
+            SELECT
+                comments.comment_id,
+                comments.bug_id,
+                comments.user_id,
+                comments.comment,
+                comments.created_at,
+                users.username
+            FROM comments
+            LEFT JOIN users
+                ON comments.user_id = users.user_id
+            ORDER BY comments.created_at ASC
+        """)
+
+        comment_rows = cur.fetchall()
+
+        # Fetch all activity history with usernames
+        cur.execute("""
+            SELECT
+                activity_history.activity_id,
+                activity_history.bug_id,
+                activity_history.user_id,
+                activity_history.action,
+                activity_history.details,
+                activity_history.created_at,
+                users.username
+            FROM activity_history
+            LEFT JOIN users
+                ON activity_history.user_id = users.user_id
+            ORDER BY activity_history.created_at ASC
+        """)
+
+        activity_rows = cur.fetchall()
+
+        # Group comments by bug_id
+        comments_by_bug = {}
+
+        for row in comment_rows:
+            bug_id = row["bug_id"]
+
+            if bug_id not in comments_by_bug:
+                comments_by_bug[bug_id] = []
+
+            comments_by_bug[bug_id].append({
+                "comment_id": row["comment_id"],
+                "bug_id": row["bug_id"],
+                "user_id": row["user_id"],
+                "comment": row["comment"],
+                "created_at": row["created_at"],
+                "username": row["username"]
+            })
+
+        # Group activities by bug_id
+        activities_by_bug = {}
+
+        for row in activity_rows:
+            bug_id = row["bug_id"]
+
+            if bug_id not in activities_by_bug:
+                activities_by_bug[bug_id] = []
+
+            activities_by_bug[bug_id].append({
+                "activity_id": row["activity_id"],
+                "bug_id": row["bug_id"],
+                "user_id": row["user_id"],
+                "action": row["action"],
+                "details": row["details"],
+                "created_at": row["created_at"],
+                "username": row["username"]
+            })
+
+        return {
+            "comments": comments_by_bug,
+            "activities": activities_by_bug
+        }, 200
+
+    except Exception as e:
+        print("Related data error:", str(e))
+        return {"error": "Failed to fetch bug related data"}, 500
 @app.route("/api/bugs/<int:bug_id>", methods=["PUT"])
 @jwt_required()
 def update_bug_status(bug_id):

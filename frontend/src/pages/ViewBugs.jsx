@@ -78,33 +78,21 @@ function ViewBugs() {
 
 
     const fetchBugs = async () => {
+  try {
+    const response = await api.get("/api/bugs");
 
-        try {
+    const bugList = response.data.bugs || [];
+    setBugs(bugList);
 
-            const response = await api.get("/api/bugs");
+    // Fetch all comments and activity in one request
+    const relatedResponse = await api.get("/api/bugs/related-data");
 
-            const bugList = response.data.bugs || [];
-
-            setBugs(bugList);
-
-            bugList.forEach((bug) => {
-
-                fetchComments(bug.bug_id);
-
-                fetchActivity(bug.bug_id);
-
-            });
-
-        }
-
-        catch (error) {
-
-            console.log(error.response?.data);
-
-        }
-
-    };
-
+    setComments(relatedResponse.data.comments || {});
+    setActivities(relatedResponse.data.activities || {});
+  } catch (error) {
+    console.error("Error fetching bugs:", error);
+  }
+};
 
     const fetchSprints = async () => {
 
