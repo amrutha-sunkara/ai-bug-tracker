@@ -21,6 +21,7 @@ function ViewBugs() {
 
     const [comments, setComments] = useState({});
     const [activities, setActivities] = useState({});
+    const [attachments, setAttachments] = useState({});
     const [rootCauseBug, setRootCauseBug] = useState(null);
     const [rootCauseAnalysis, setRootCauseAnalysis] = useState("");
     const [rootCauseLoading, setRootCauseLoading] = useState(false);
@@ -36,6 +37,25 @@ function ViewBugs() {
 
     const bugList = response.data.bugs || [];
     setBugs(bugList);
+    const attachmentResults = await Promise.all(
+    bugList.map(async (bug) => {
+        try {
+            const response = await api.get(
+                `/api/bugs/${bug.bug_id}/attachments`
+            );
+
+            return [
+                bug.bug_id,
+                response.data.attachments || []
+            ];
+        } catch (error) {
+            console.log(error.response?.data);
+            return [bug.bug_id, []];
+        }
+    })
+);
+
+setAttachments(Object.fromEntries(attachmentResults));
 
     // Fetch all comments and activity in one request
     const relatedResponse = await api.get("/api/bugs/related-data");
@@ -908,7 +928,57 @@ const generateTestCases = async (bug) => {
                                             />
 
                                         </div>
+{attachments[bug.bug_id]?.length > 0 && (
+    <div className="
+        mt-4
+        rounded-lg
+        bg-gray-50
+        dark:bg-slate-800
+        p-4
+    ">
+        <h4 className="
+            font-semibold
+            text-gray-700
+            dark:text-gray-200
+            mb-2
+        ">
+            📎 Attachments
+        </h4>
 
+        <div className="space-y-2">
+            {attachments[bug.bug_id].map((attachment) => (
+                <div
+                    key={attachment.attachment_id}
+                    className="
+                        flex
+                        items-center
+                        justify-between
+                        bg-white
+                        dark:bg-slate-700
+                        p-3
+                        rounded-lg
+                    "
+                >
+                    <span className="
+                        text-sm
+                        text-gray-700
+                        dark:text-gray-200
+                    ">
+                        📄 {attachment.file_name}
+                    </span>
+
+                    <span className="
+                        text-xs
+                        text-gray-500
+                        dark:text-gray-400
+                    ">
+                        {attachment.uploaded_at}
+                    </span>
+                </div>
+            ))}
+        </div>
+    </div>
+)}
 
 
                                         {/* Comments */}

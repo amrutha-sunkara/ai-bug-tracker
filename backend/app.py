@@ -1773,6 +1773,52 @@ def upload_attachment(bug_id):
             "message": "File uploaded successfully",
             "file_name": filename
         }, 201
+@app.route("/api/bugs/<int:bug_id>/attachments", methods=["GET"])
+@jwt_required()
+def get_attachments(bug_id):
+    allowed, error, status_code = require_role(
+        ["Tester", "Developer", "Manager"]
+    )
+
+    if not allowed:
+        return error, status_code
+
+    cur = mysql.connection.cursor()
+
+    cur.execute(
+        """
+        SELECT
+            attachment_id,
+            bug_id,
+            user_id,
+            file_name,
+            file_path,
+            uploaded_at
+        FROM attachments
+        WHERE bug_id = %s
+        ORDER BY uploaded_at DESC
+        """,
+        (bug_id,)
+    )
+
+    rows = cur.fetchall()
+    cur.close()
+
+    attachments = []
+
+    for row in rows:
+        attachments.append({
+            "attachment_id": row[0],
+            "bug_id": row[1],
+            "user_id": row[2],
+            "file_name": row[3],
+            "file_path": row[4],
+            "uploaded_at": str(row[5]) if row[5] else None
+        })
+
+    return {
+        "attachments": attachments
+    }, 200
 @app.route("/api/bugs/<int:bug_id>/activity", methods=["GET"])
 @jwt_required()
 def get_activity_history(bug_id):
