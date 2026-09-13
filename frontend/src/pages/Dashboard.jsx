@@ -258,18 +258,16 @@ useEffect(() => {
 
 
                     <h1
-                        className="
-                        text-4xl
-                        font-bold
-                        text-gray-800
-                        dark:text-white
-                        "
-                    >
-
-                        Dashboard
-
-                    </h1>
-
+    className="
+    text-4xl
+    font-bold
+    text-gray-900
+    dark:text-white
+    tracking-tight
+    "
+>
+    Dashboard
+</h1>
 
                     <p
                         className="
