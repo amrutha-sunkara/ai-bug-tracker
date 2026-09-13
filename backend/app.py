@@ -1422,38 +1422,40 @@ def get_bugs_related_data():
         comments_by_bug = {}
 
         for row in comment_rows:
-            bug_id = row["bug_id"]
+            bug_id = row[1]
 
             if bug_id not in comments_by_bug:
                 comments_by_bug[bug_id] = []
 
             comments_by_bug[bug_id].append({
-                "comment_id": row["comment_id"],
-                "bug_id": row["bug_id"],
-                "user_id": row["user_id"],
-                "comment": row["comment"],
-                "created_at": row["created_at"],
-                "username": row["username"]
+                "comment_id": row[0],
+                "bug_id": row[1],
+                "user_id": row[2],
+                "comment": row[3],
+                "created_at": str(row[4]) if row[4] else None,
+                "username": row[5]
             })
 
         # Group activities by bug_id
         activities_by_bug = {}
 
         for row in activity_rows:
-            bug_id = row["bug_id"]
+            bug_id = row[1]
 
             if bug_id not in activities_by_bug:
                 activities_by_bug[bug_id] = []
 
             activities_by_bug[bug_id].append({
-                "activity_id": row["activity_id"],
-                "bug_id": row["bug_id"],
-                "user_id": row["user_id"],
-                "action": row["action"],
-                "details": row["details"],
-                "created_at": row["created_at"],
-                "username": row["username"]
+                "activity_id": row[0],
+                "bug_id": row[1],
+                "user_id": row[2],
+                "action": row[3],
+                "details": row[4],
+                "created_at": str(row[5]) if row[5] else None,
+                "username": row[6]
             })
+
+        cur.close()
 
         return {
             "comments": comments_by_bug,
