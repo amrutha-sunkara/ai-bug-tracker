@@ -46,7 +46,10 @@ UPLOAD_FOLDER = "uploads"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 # Enable CORS
-CORS(app)
+CORS(
+    app,
+    origins=["https://ai-bug-tracker-pi.vercel.app"]
+)
 
 # Secret Keys
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
@@ -569,8 +572,14 @@ def login():
     """
     data = request.get_json()
 
+    if not data:
+        return {"message": "Request body is required"}, 400
+
     email = data.get("email")
     password = data.get("password")
+
+    if not email or not password:
+        return {"message": "Email and password are required"}, 400
 
     cur = mysql.connection.cursor()
 
@@ -583,17 +592,10 @@ def login():
 
     cur.close()
 
-    if not user:
+    if not user or not check_password_hash(user[3], password):
         return {
-            "message": "Invalid Email"
+            "message": "Invalid email or password"
         }, 401
-
-    if not check_password_hash(user[3], password):
-
-        return {
-            "message": "Invalid Password"
-        }, 401
-
     
     access_token = create_access_token(
     identity=email,
