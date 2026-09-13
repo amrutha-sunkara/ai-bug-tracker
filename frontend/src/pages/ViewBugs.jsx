@@ -205,24 +205,19 @@ const uploadFile = async (bugId, file) => {
         const formData = new FormData();
         formData.append("file", file);
 
-        const response = await api.post(
+        await api.post(
             `/api/bugs/${bugId}/attachments`,
             formData
         );
 
-        const uploadedAttachment = {
-            attachment_id: Date.now(),
-            bug_id: bugId,
-            file_name: response.data.file_name,
-            uploaded_at: new Date().toISOString()
-        };
+        // Fetch the real attachment record from the database
+        const response = await api.get(
+            `/api/bugs/${bugId}/attachments`
+        );
 
         setAttachments((prev) => ({
             ...prev,
-            [bugId]: [
-                uploadedAttachment,
-                ...(prev[bugId] || [])
-            ]
+            [bugId]: response.data.attachments || []
         }));
 
         alert("File uploaded successfully!");
