@@ -196,43 +196,46 @@ setAttachments(Object.fromEntries(attachmentResults));
         }
 
     };
+const uploadFile = async (bugId, file) => {
+    if (!file) {
+        return;
+    }
 
+    try {
+        const formData = new FormData();
+        formData.append("file", file);
 
-    const uploadFile = async (bugId, file) => {
+        const response = await api.post(
+            `/api/bugs/${bugId}/attachments`,
+            formData
+        );
 
-        if (!file) {
+        const uploadedAttachment = {
+            attachment_id: Date.now(),
+            bug_id: bugId,
+            file_name: response.data.file_name,
+            uploaded_at: new Date().toISOString()
+        };
 
-            return;
+        setAttachments((prev) => ({
+            ...prev,
+            [bugId]: [
+                uploadedAttachment,
+                ...(prev[bugId] || [])
+            ]
+        }));
 
-        }
+        alert("File uploaded successfully!");
 
-        try {
+    } catch (error) {
+        console.log(error.response?.data);
 
-            const formData = new FormData();
-
-            formData.append("file", file);
-
-            await api.post(
-                `/api/bugs/${bugId}/attachments`,
-                formData
-            );
-
-            alert("File uploaded successfully!");
-
-        }
-
-        catch (error) {
-
-            console.log(error.response?.data);
-
-            alert(
-                error.response?.data?.message ||
-                "File upload failed"
-            );
-
-        }
-
-    };
+        alert(
+            error.response?.data?.message ||
+            "File upload failed"
+        );
+    }
+};
     const analyzeRootCause = async (bug) => {
     setRootCauseBug(bug);
     setRootCauseAnalysis("");
