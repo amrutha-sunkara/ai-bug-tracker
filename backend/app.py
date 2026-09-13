@@ -13,6 +13,7 @@ from google import genai
 from google.genai import types
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
+import re
 from datetime import timedelta
 
 from config import mysql
