@@ -258,9 +258,15 @@ const downloadAttachment = async (attachment) => {
         window.URL.revokeObjectURL(url);
 
     } catch (error) {
-        console.log(error.response?.data);
-        alert("Failed to download file");
-    }
+    console.log("DOWNLOAD ERROR:", error);
+    console.log("STATUS:", error.response?.status);
+    console.log("DATA:", error.response?.data);
+
+    alert(
+        error.response?.data?.message ||
+        `Download failed (${error.response?.status || "unknown error"})`
+    );
+}
 };
     const analyzeRootCause = async (bug) => {
     setRootCauseBug(bug);
