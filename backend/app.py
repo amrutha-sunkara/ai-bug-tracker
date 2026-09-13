@@ -648,36 +648,40 @@ def dashboard():
     cur.execute("SELECT COUNT(*) FROM bugs")
     total_bugs = cur.fetchone()[0]
 
-    # Open Bugs
-    cur.execute("SELECT COUNT(*) FROM bugs WHERE status='Open'")
-    open_bugs = cur.fetchone()[0]
+    # Reported Bugs
+    cur.execute("SELECT COUNT(*) FROM bugs WHERE status='Reported'")
+    reported_bugs = cur.fetchone()[0]
+
+    # Assigned Bugs
+    cur.execute("SELECT COUNT(*) FROM bugs WHERE status='Assigned'")
+    assigned_bugs = cur.fetchone()[0]
 
     # In Progress Bugs
     cur.execute("SELECT COUNT(*) FROM bugs WHERE status='In Progress'")
     in_progress_bugs = cur.fetchone()[0]
 
-    # In Review Bugs
-    cur.execute("SELECT COUNT(*) FROM bugs WHERE status='In Review'")
-    in_review_bugs = cur.fetchone()[0]
-
     # Resolved Bugs
     cur.execute("SELECT COUNT(*) FROM bugs WHERE status='Resolved'")
     resolved_bugs = cur.fetchone()[0]
 
+    # Verified Bugs
+    cur.execute("SELECT COUNT(*) FROM bugs WHERE status='Verified'")
+    verified_bugs = cur.fetchone()[0]
+
     # Closed Bugs
     cur.execute("SELECT COUNT(*) FROM bugs WHERE status='Closed'")
     closed_bugs = cur.fetchone()[0]
-
     cur.close()
 
     return {
         "total_users": total_users,
         "total_projects": total_projects,
         "total_bugs": total_bugs,
-        "open_bugs": open_bugs,
+        "reported_bugs": reported_bugs,
+        "assigned_bugs": assigned_bugs,
         "in_progress_bugs": in_progress_bugs,
-        "in_review_bugs": in_review_bugs,
         "resolved_bugs": resolved_bugs,
+        "verified_bugs": verified_bugs,
         "closed_bugs": closed_bugs
     }, 200
 @app.route("/api/projects", methods=["POST"])
@@ -1255,16 +1259,17 @@ def create_bug():
     cur.execute(
         """
         INSERT INTO bugs
-        (
-            title,
-            description,
-            priority,
-            severity,
-            category,
-            project_id,
-            assigned_to
-        )
-        VALUES(%s,%s,%s,%s,%s,%s,%s)
+(
+    title,
+    description,
+    priority,
+    severity,
+    category,
+    project_id,
+    assigned_to,
+    status
+)
+VALUES(%s,%s,%s,%s,%s,%s,%s,%s)
         """,
         (
             title,
@@ -1273,7 +1278,8 @@ def create_bug():
             severity,
             category,
             project_id,
-            assigned_to
+            assigned_to,
+            "Reported"
         )
     )
 
@@ -1509,9 +1515,12 @@ def update_bug_status(bug_id):
             status:
               type: string
               enum:
+                - Reported
+                - Assigned
                 - In Progress
-                - In Review
                 - Resolved
+                - Verified
+                - Closed
               example: In Progress
     responses:
       200:
@@ -1526,14 +1535,12 @@ def update_bug_status(bug_id):
         description: Bug not found
     """
 
-    allowed, error, status_code = require_role(
-        ["Developer", "Manager"]
-    )
-
-    if not allowed:
-        return error, status_code
-
     data = request.get_json()
+
+    if not data:
+        return {
+            "message": "Request body must be JSON"
+        }, 400
 
     new_status = data.get("status")
 
@@ -1542,9 +1549,24 @@ def update_bug_status(bug_id):
             "message": "Status is required"
         }, 400
 
+    allowed_statuses = [
+        "Reported",
+        "Assigned",
+        "In Progress",
+        "Resolved",
+        "Verified",
+        "Closed"
+    ]
+
+    if new_status not in allowed_statuses:
+        return {
+            "message": "Invalid status",
+            "allowed_values": allowed_statuses
+        }, 400
+
     cur = mysql.connection.cursor()
 
-    # Get current status
+    # Get current bug status
     cur.execute(
         """
         SELECT status
@@ -1563,14 +1585,17 @@ def update_bug_status(bug_id):
     old_status = bug[0]
 
     allowed_transitions = {
-        "Open": ["In Progress"],
-        "In Progress": ["In Review"],
-        "In Review": ["Resolved"],
-        "Resolved": []
+        "Reported": ["Assigned"],
+        "Assigned": ["In Progress"],
+        "In Progress": ["Resolved"],
+        "Resolved": ["Verified"],
+        "Verified": ["Closed"],
+        "Closed": []
     }
 
     if new_status not in allowed_transitions.get(old_status, []):
         cur.close()
+
         return {
             "message": f"Invalid status transition: {old_status} → {new_status}"
         }, 400
@@ -1578,10 +1603,9 @@ def update_bug_status(bug_id):
     # Get logged-in user's email
     email = get_jwt_identity()
 
-    # Get user ID
     cur.execute(
         """
-        SELECT user_id
+        SELECT user_id, role
         FROM users
         WHERE email=%s
         """,
@@ -1595,9 +1619,30 @@ def update_bug_status(bug_id):
         return error_response("User not found", 404)
 
     user_id = user[0]
+    user_role = user[1]
 
-    
-    # Update bug status
+    # Role-based transition control
+    transition_roles = {
+        ("Reported", "Assigned"): ["Manager"],
+        ("Assigned", "In Progress"): ["Developer", "Manager"],
+        ("In Progress", "Resolved"): ["Developer", "Manager"],
+        ("Resolved", "Verified"): ["Tester", "Manager"],
+        ("Verified", "Closed"): ["Manager"]
+    }
+
+    required_roles = transition_roles.get(
+        (old_status, new_status),
+        []
+    )
+
+    if user_role not in required_roles:
+        cur.close()
+
+        return {
+            "message": "You are not authorized to perform this status transition"
+        }, 403
+
+    # Update status
     if new_status == "Resolved":
 
         cur.execute(
@@ -1620,6 +1665,7 @@ def update_bug_status(bug_id):
             """,
             (new_status, bug_id)
         )
+
     # Add activity history
     cur.execute(
         """
@@ -1645,7 +1691,9 @@ def update_bug_status(bug_id):
     cur.close()
 
     return {
-        "message": "Status Updated"
+        "message": "Status Updated",
+        "old_status": old_status,
+        "new_status": new_status
     }, 200
 @app.route("/api/bugs/<int:bug_id>", methods=["DELETE"])
 @jwt_required()
