@@ -491,11 +491,24 @@ def register():
 
     data = request.get_json()
 
+    if not data:
+        return {"message": "Request body is required"}, 400
+
     username = data.get("username")
     email = data.get("email")
     password = data.get("password")
     role = data.get("role")
 
+    if not username or not email or not password or not role:
+        return {
+            "message": "Username, email, password and role are required"
+        }, 400
+    if role not in ["Tester", "Developer", "Manager"]:
+        return {"message": "Invalid role"}, 400
+    if len(password) < 8:
+        return {"message": "Password must be at least 8 characters"}, 400
+    if not re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", email):
+        return {"message": "Invalid email format"}, 400
     cur = mysql.connection.cursor()
 
     cur.execute(
