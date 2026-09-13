@@ -26,7 +26,8 @@ import {
     Line,
     XAxis,
     YAxis,
-    CartesianGrid
+    CartesianGrid,
+    ResponsiveContainer
 } from "recharts";
 
 
@@ -427,10 +428,8 @@ hover:shadow-md
 
                                 charts.status.length > 0 ?
 
-                                    <PieChart
-                                        width={400}
-                                        height={300}
-                                    >
+                                    <ResponsiveContainer width="100%" height={300}>
+    <PieChart>
 
                                         <Pie
 
@@ -472,6 +471,7 @@ hover:shadow-md
                                         <Legend />
 
                                     </PieChart>
+                                    </ResponsiveContainer>
 
                                     :
 
@@ -527,15 +527,10 @@ hover:shadow-md
 
                                 charts.priority.length > 0 ?
 
-                                    <BarChart
-
-                                        width={450}
-
-                                        height={300}
-
-                                        data={charts.priority}
-
-                                    >
+                                    <ResponsiveContainer width="100%" height={300}>
+    <BarChart
+        data={charts.priority}
+    >
 
                                         <CartesianGrid />
 
@@ -554,6 +549,7 @@ hover:shadow-md
                                         />
 
                                     </BarChart>
+                                    </ResponsiveContainer>
 
                                     :
 
@@ -609,15 +605,10 @@ hover:shadow-md
 
                                 charts.severity.length > 0 ?
 
-                                    <BarChart
-
-                                        width={450}
-
-                                        height={300}
-
-                                        data={charts.severity}
-
-                                    >
+                                    <ResponsiveContainer width="100%" height={300}>
+    <BarChart
+        data={charts.severity}
+    >
 
                                         <CartesianGrid />
 
@@ -634,6 +625,7 @@ hover:shadow-md
                                         />
 
                                     </BarChart>
+                                    </ResponsiveContainer>
 
                                     :
 
@@ -689,15 +681,10 @@ hover:shadow-md
 
                                 charts.category.length > 0 ?
 
-                                    <BarChart
-
-                                        width={450}
-
-                                        height={300}
-
-                                        data={charts.category}
-
-                                    >
+                                    <ResponsiveContainer width="100%" height={300}>
+    <BarChart
+        data={charts.category}
+    >
 
                                         <CartesianGrid />
 
@@ -716,6 +703,7 @@ hover:shadow-md
                                         />
 
                                     </BarChart>
+                                    </ResponsiveContainer>
 
                                     :
 
@@ -771,15 +759,10 @@ hover:shadow-md
 
                                 charts.trend && charts.trend.length > 0 ?
 
-                                    <LineChart
-
-                                        width={450}
-
-                                        height={300}
-
-                                        data={charts.trend}
-
-                                    >
+                                    <ResponsiveContainer width="100%" height={300}>
+    <LineChart
+        data={charts.trend}
+    >
 
                                         <CartesianGrid />
 
@@ -802,6 +785,7 @@ hover:shadow-md
                                         />
 
                                     </LineChart>
+                                    </ResponsiveContainer>
 
                                     :
 
@@ -851,11 +835,10 @@ hover:shadow-md
     {charts.developer_workload &&
     charts.developer_workload.length > 0 ? (
 
-        <BarChart
-            width={450}
-            height={300}
-            data={charts.developer_workload}
-        >
+        <ResponsiveContainer width="100%" height={300}>
+    <BarChart
+        data={charts.developer_workload}
+    >
 
             <CartesianGrid />
 
@@ -871,6 +854,7 @@ hover:shadow-md
             />
 
         </BarChart>
+        </ResponsiveContainer>
 
     ) : (
 
