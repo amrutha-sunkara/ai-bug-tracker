@@ -259,7 +259,7 @@ const downloadAttachment = async (attachment) => {
 
     alert(
         error.response?.data?.message ||
-        `Download failed (${error.response?.status || "unknown error"})`
+        "Failed to download file"
     );
 }
 };
