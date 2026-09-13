@@ -185,39 +185,46 @@ useEffect(() => {
         },
 
         {
-            title: "Open Bugs",
-            value: data.open_bugs,
-            icon: <AlertCircle size={40} />,
-            color: "text-orange-500"
-        },
+  title: "Reported",
+  value: data.reported_bugs,
+  icon: <AlertCircle size={40} />,
+  color: "text-red-500"
+},
 
-        {
-            title: "In Progress",
-            value: data.in_progress_bugs,
-            icon: <Bug size={40} />,
-            color: "text-yellow-500"
-        },
+{
+  title: "Assigned",
+  value: data.assigned_bugs,
+  icon: <Bug size={40} />,
+  color: "text-purple-500"
+},
 
-        {
-            title: "In Review",
-            value: data.in_review_bugs,
-            icon: <Bug size={40} />,
-            color: "text-blue-500"
-        },
+{
+  title: "In Progress",
+  value: data.in_progress_bugs,
+  icon: <Bug size={40} />,
+  color: "text-yellow-500"
+},
 
-        {
-            title: "Resolved",
-            value: data.resolved_bugs,
-            icon: <CheckCircle size={40} />,
-            color: "text-green-500"
-        },
+{
+  title: "Resolved",
+  value: data.resolved_bugs,
+  icon: <CheckCircle size={40} />,
+  color: "text-green-500"
+},
 
-        {
-            title: "Closed Bugs",
-            value: data.closed_bugs,
-            icon: <CheckCircle size={40} />,
-            color: "text-green-600"
-        },
+{
+  title: "Verified",
+  value: data.verified_bugs,
+  icon: <CheckCircle size={40} />,
+  color: "text-blue-500"
+},
+
+{
+  title: "Closed",
+  value: data.closed_bugs,
+  icon: <CheckCircle size={40} />,
+  color: "text-gray-500"
+},
         {
     title: "Avg Resolution Time",
     value: `${charts.average_resolution_time} hrs`,

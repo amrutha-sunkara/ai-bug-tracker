@@ -364,58 +364,50 @@ const generateTestCases = async (bug) => {
 
 
     const statusStyle = (status) => {
+  if (status === "Reported")
+    return "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300";
 
-        if (status === "Open")
+  if (status === "Assigned")
+    return "bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300";
 
-            return "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300";
+  if (status === "In Progress")
+    return "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300";
 
+  if (status === "Resolved")
+    return "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300";
 
-        if (status === "In Progress")
+  if (status === "Verified")
+    return "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300";
 
-            return "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300";
+  if (status === "Closed")
+    return "bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300";
 
-
-        if (status === "In Review")
-
-            return "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300";
-
-
-        if (status === "Resolved")
-
-            return "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300";
-
-
-        return "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300";
-
-    };
-
+  return "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300";
+};
 
     const getNextStatuses = (status) => {
+  if (status === "Reported") {
+    return ["Reported", "Assigned"];
+  }
 
-        if (status === "Open") {
+  if (status === "Assigned") {
+    return ["Assigned", "In Progress"];
+  }
 
-            return ["Open", "In Progress"];
+  if (status === "In Progress") {
+    return ["In Progress", "Resolved"];
+  }
 
-        }
+  if (status === "Resolved") {
+    return ["Resolved", "Verified"];
+  }
 
-        if (status === "In Progress") {
+  if (status === "Verified") {
+    return ["Verified", "Closed"];
+  }
 
-            return ["In Progress", "In Review"];
-
-        }
-
-        if (status === "In Review") {
-
-            return ["In Review", "Resolved"];
-
-        }
-
-        return ["Resolved"];
-
-    };
-
-
-
+  return ["Closed"];
+};
     return (
 
         <div className="
@@ -517,15 +509,12 @@ const generateTestCases = async (bug) => {
                         >
 
                             <option>All</option>
-
-                            <option>Open</option>
-
-                            <option>In Progress</option>
-
-                            <option>In Review</option>
-
-                            <option>Resolved</option>
-
+<option>Reported</option>
+<option>Assigned</option>
+<option>In Progress</option>
+<option>Resolved</option>
+<option>Verified</option>
+<option>Closed</option>
                         </select>
 
 
@@ -700,7 +689,7 @@ const generateTestCases = async (bug) => {
                                                     )
                                                 }
 
-                                                disabled={bug.status === "Resolved"}
+                                                disabled={bug.status === "Closed"}
 
                                                 className="
                                                     p-2
