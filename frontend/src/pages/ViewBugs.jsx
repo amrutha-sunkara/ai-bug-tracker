@@ -125,35 +125,31 @@ function ViewBugs() {
 
 
     const addComment = async (bugId) => {
+    const commentText = prompt("Enter your comment:");
 
-        const commentText = prompt("Enter your comment:");
+    if (!commentText || !commentText.trim()) {
+        return;
+    }
 
-        if (!commentText || !commentText.trim()) {
+    try {
+        await api.post(
+            `/api/bugs/${bugId}/comments`,
+            {
+                comment: commentText
+            }
+        );
 
-            return;
+        // Refresh all comments and activity after adding a comment
+        const relatedResponse = await api.get("/api/bugs/related-data");
 
-        }
+        setComments(relatedResponse.data.comments || {});
+        setActivities(relatedResponse.data.activities || {});
+    }
 
-        try {
-
-            await api.post(
-                `/api/bugs/${bugId}/comments`,
-                {
-                    comment: commentText
-                }
-            );
-
-            fetchComments(bugId);
-
-        }
-
-        catch (error) {
-
-            console.log(error.response?.data);
-
-        }
-
-    };
+    catch (error) {
+        console.log(error.response?.data);
+    }
+};
 
 
 
