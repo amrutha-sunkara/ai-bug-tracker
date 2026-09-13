@@ -395,12 +395,17 @@ hover:shadow-md
 
                         <div
                             className="
-                            bg-white
-                            dark:bg-slate-900
-                            rounded-xl
-                            shadow-lg
-                            p-6
-                            "
+    bg-white
+    dark:bg-slate-900
+    rounded-2xl
+    border border-gray-200
+    dark:border-slate-800
+    shadow-sm
+    p-6
+    transition-all
+    duration-200
+    hover:shadow-md
+"
                         >
 
                             <h2
@@ -490,12 +495,17 @@ hover:shadow-md
 
                         <div
                             className="
-                            bg-white
-                            dark:bg-slate-900
-                            rounded-xl
-                            shadow-lg
-                            p-6
-                            "
+    bg-white
+    dark:bg-slate-900
+    rounded-2xl
+    border border-gray-200
+    dark:border-slate-800
+    shadow-sm
+    p-6
+    transition-all
+    duration-200
+    hover:shadow-md
+"
                         >
 
                             <h2
@@ -567,12 +577,17 @@ hover:shadow-md
 
                         <div
                             className="
-                            bg-white
-                            dark:bg-slate-900
-                            rounded-xl
-                            shadow-lg
-                            p-6
-                            "
+    bg-white
+    dark:bg-slate-900
+    rounded-2xl
+    border border-gray-200
+    dark:border-slate-800
+    shadow-sm
+    p-6
+    transition-all
+    duration-200
+    hover:shadow-md
+"
                         >
 
                             <h2
@@ -642,12 +657,17 @@ hover:shadow-md
 
                         <div
                             className="
-                            bg-white
-                            dark:bg-slate-900
-                            rounded-xl
-                            shadow-lg
-                            p-6
-                            "
+    bg-white
+    dark:bg-slate-900
+    rounded-2xl
+    border border-gray-200
+    dark:border-slate-800
+    shadow-sm
+    p-6
+    transition-all
+    duration-200
+    hover:shadow-md
+"
                         >
 
                             <h2
@@ -719,12 +739,17 @@ hover:shadow-md
 
                         <div
                             className="
-                            bg-white
-                            dark:bg-slate-900
-                            rounded-xl
-                            shadow-lg
-                            p-6
-                            "
+    bg-white
+    dark:bg-slate-900
+    rounded-2xl
+    border border-gray-200
+    dark:border-slate-800
+    shadow-sm
+    p-6
+    transition-all
+    duration-200
+    hover:shadow-md
+"
                         >
 
                             <h2
@@ -800,10 +825,15 @@ hover:shadow-md
     className="
     bg-white
     dark:bg-slate-900
-    rounded-xl
-    shadow-lg
+    rounded-2xl
+    border border-gray-200
+    dark:border-slate-800
+    shadow-sm
     p-6
-    "
+    transition-all
+    duration-200
+    hover:shadow-md
+"
 >
 
     <h2
