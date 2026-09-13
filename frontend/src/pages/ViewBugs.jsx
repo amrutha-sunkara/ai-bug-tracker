@@ -28,54 +28,7 @@ function ViewBugs() {
     const [testCases, setTestCases] = useState("");
     const [testCaseLoading, setTestCaseLoading] = useState(false);
 
-    const fetchComments = async (bugId) => {
-
-        try {
-
-            const response = await api.get(
-                `/api/bugs/${bugId}/comments`
-            );
-
-            setComments((prev) => ({
-                ...prev,
-                [bugId]: response.data.comments || []
-            }));
-
-        }
-
-        catch (error) {
-
-            console.log(error.response?.data);
-
-        }
-
-    };
-
-
-    const fetchActivity = async (bugId) => {
-
-        try {
-
-            const response = await api.get(
-                `/api/bugs/${bugId}/activity`
-            );
-
-            setActivities((prev) => ({
-                ...prev,
-                [bugId]: response.data.activities || []
-            }));
-
-        }
-
-        catch (error) {
-
-            console.log(error.response?.data);
-
-        }
-
-    };
-
-
+    
 
     const fetchBugs = async () => {
   try {
