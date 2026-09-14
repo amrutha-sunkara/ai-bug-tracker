@@ -676,11 +676,10 @@ const generateTestCases = async (bug) => {
 
 
                                         <div className="
-                                            flex
-                                            justify-between
-                                            items-center
-                                        ">
-
+    flex
+    flex-col
+    gap-3
+">
 
                                             <select
 
