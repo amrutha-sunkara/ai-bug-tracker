@@ -3005,6 +3005,97 @@ def get_sprint_bugs(sprint_id):
     return {
         "bugs": result
     }, 200
+@app.route("/api/sprints/<int:sprint_id>/health", methods=["GET"])
+@jwt_required()
+def sprint_health(sprint_id):
+
+    cur = mysql.connection.cursor()
+
+    # Check whether sprint exists
+    cur.execute(
+        "SELECT sprint_id, sprint_name, start_date, end_date "
+        "FROM sprints WHERE sprint_id=%s",
+        (sprint_id,)
+    )
+
+    sprint = cur.fetchone()
+
+    if not sprint:
+        cur.close()
+        return {"message": "Sprint not found"}, 404
+
+    # Get all bugs belonging to this sprint
+    cur.execute(
+        """
+        SELECT status, priority, assigned_to
+        FROM bugs
+        WHERE sprint_id=%s
+        """,
+        (sprint_id,)
+    )
+
+    bugs = cur.fetchall()
+    cur.close()
+
+    total_bugs = len(bugs)
+
+    # No bugs in sprint
+    if total_bugs == 0:
+        return {
+            "sprint_id": sprint_id,
+            "sprint_name": sprint[1],
+            "health_score": 100,
+            "health_status": "Healthy",
+            "total_bugs": 0,
+            "completed_bugs": 0,
+            "remaining_bugs": 0,
+            "high_risk_bugs": 0
+        }, 200
+
+    completed_statuses = ("Resolved", "Verified", "Closed")
+
+    completed_bugs = sum(
+        1 for bug in bugs
+        if bug[0] in completed_statuses
+    )
+
+    remaining_bugs = total_bugs - completed_bugs
+
+    high_risk_bugs = sum(
+        1 for bug in bugs
+        if bug[1] in ("Critical", "High")
+        and bug[0] not in completed_statuses
+    )
+
+    # Progress score
+    progress_score = (completed_bugs / total_bugs) * 70
+
+    # Risk penalty
+    risk_penalty = min(high_risk_bugs * 10, 30)
+
+    health_score = round(
+        progress_score + 30 - risk_penalty
+    )
+
+    health_score = max(0, min(100, health_score))
+
+    if health_score >= 75:
+        health_status = "Healthy"
+    elif health_score >= 50:
+        health_status = "At Risk"
+    else:
+        health_status = "Critical"
+
+    return {
+        "sprint_id": sprint_id,
+        "sprint_name": sprint[1],
+        "health_score": health_score,
+        "health_status": health_status,
+        "total_bugs": total_bugs,
+        "completed_bugs": completed_bugs,
+        "remaining_bugs": remaining_bugs,
+        "high_risk_bugs": high_risk_bugs
+    }, 200
 @app.route("/api/test-historical/<int:bug_id>", methods=["GET"])
 @jwt_required()
 def test_historical(bug_id):
