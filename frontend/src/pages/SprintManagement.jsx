@@ -554,20 +554,49 @@ const generateAiSprintPlan = async () => {
 
 
                                 <div className="
-                                    mt-5
-                                    space-y-2
-                                    text-sm
-                                    text-gray-600
-                                    dark:text-gray-300
-                                ">
+    mt-5
+    space-y-3
+    text-sm
+    text-gray-600
+    dark:text-gray-300
+">
+    <p className="flex gap-2">
+        <CalendarDays size={18} />
+        {sprint.start_date} → {sprint.end_date}
+    </p>
 
-                                    <p className="flex gap-2">
-                                        <CalendarDays size={18} />
-                                        {sprint.start_date} → {sprint.end_date}
-                                    </p>
+    {sprintHealth[sprint.sprint_id] && (
+        <div className="
+            flex
+            items-center
+            justify-between
+            rounded-lg
+            bg-gray-50
+            dark:bg-slate-800
+            px-4
+            py-3
+        ">
+            <div>
+                <p className="font-semibold dark:text-white">
+                    Sprint Health
+                </p>
 
-                                </div>
+                <p className="text-xs text-gray-500 dark:text-gray-400">
+                    {sprintHealth[sprint.sprint_id].health_status}
+                </p>
+            </div>
 
+            <span className="
+                text-2xl
+                font-bold
+                text-blue-600
+                dark:text-blue-400
+            ">
+                {sprintHealth[sprint.sprint_id].health_score}/100
+            </span>
+        </div>
+    )}
+</div>
                             </div>
 
                         ))}
