@@ -578,16 +578,18 @@ const generateTestCases = async (bug) => {
                                         key={bug.bug_id}
 
                                         className="
-                                            bg-white
-                                            dark:bg-slate-900
-                                            rounded-2xl
-                                            shadow-lg
-                                            p-6
-                                            border
-                                            dark:border-slate-700
-                                            hover:-translate-y-1
-                                            transition
-                                        "
+    bg-white
+    dark:bg-slate-900
+    rounded-2xl
+    border border-gray-200
+    dark:border-slate-800
+    shadow-sm
+    p-6
+    transition-all
+    duration-200
+    hover:-translate-y-1
+    hover:shadow-md
+"
 
                                     >
 
@@ -641,26 +643,18 @@ const generateTestCases = async (bug) => {
                                         ">
 
 
-                                            <span className={`
-                                                px-3
-                                                py-1
-                                                rounded-full
-                                                font-semibold
-                                                ${priorityStyle(bug.priority)}
-                                            `}>
+                                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${priorityStyle(
+    bug.priority
+)}`}>
 
                                                 {bug.priority}
 
                                             </span>
 
 
-                                            <span className={`
-                                                px-3
-                                                py-1
-                                                rounded-full
-                                                font-semibold
-                                                ${statusStyle(bug.status)}
-                                            `}>
+                                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${statusStyle(
+    bug.status
+)}`}>
 
                                                 {bug.status}
 
