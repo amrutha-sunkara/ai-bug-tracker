@@ -40,6 +40,10 @@ function SprintManagement() {
 
         setSprints(response.data.sprints);
 
+response.data.sprints.forEach((sprint) => {
+    fetchSprintHealth(sprint.sprint_id);
+});
+
     } catch (error) {
 
         console.log(
@@ -54,7 +58,24 @@ function SprintManagement() {
     }
 };
 
+const fetchSprintHealth = async (sprintId) => {
+    try {
+        const response = await api.get(
+            `/api/sprints/${sprintId}/health`
+        );
 
+        setSprintHealth((prev) => ({
+            ...prev,
+            [sprintId]: response.data
+        }));
+
+    } catch (error) {
+        console.log(
+            "Sprint Health Error:",
+            error.response?.data || error.message
+        );
+    }
+};
 const fetchBugs = async () => {
 
     try {
