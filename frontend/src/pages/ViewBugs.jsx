@@ -643,18 +643,28 @@ const generateTestCases = async (bug) => {
                                         ">
 
 
-                                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${priorityStyle(
-    bug.priority
-)}`}>
+                                            <span className={`
+    px-3
+    py-1
+    rounded-full
+    text-xs
+    font-semibold
+    ${priorityStyle(bug.priority)}
+`}>
 
                                                 {bug.priority}
 
                                             </span>
 
 
-                                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${statusStyle(
-    bug.status
-)}`}>
+                                            <span className={`
+    px-3
+    py-1
+    rounded-full
+    text-xs
+    font-semibold
+    ${statusStyle(bug.status)}
+`}>
 
                                                 {bug.status}
 
