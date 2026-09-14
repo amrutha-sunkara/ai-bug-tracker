@@ -14,6 +14,7 @@ function SprintManagement() {
 
     const [sprints, setSprints] = useState([]);
     const [bugs, setBugs] = useState([]);
+    const [sprintHealth, setSprintHealth] = useState({});
 
     const [selectedSprint, setSelectedSprint] = useState(null);
 
