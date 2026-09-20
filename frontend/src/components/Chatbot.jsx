@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 
 import api from "../services/api";
@@ -21,20 +21,20 @@ function Chatbot() {
     const [messages, setMessages] = useState([INITIAL_MESSAGE]);
     const [loading, setLoading] = useState(false);
     const [showHistory, setShowHistory] = useState(false);
-    const [history, setHistory] = useState([]);
+    const [history, setHistory] = useState(() => {
+    try {
+        const savedHistory = localStorage.getItem("chatHistory");
 
-    // Load saved chat history
-    useEffect(() => {
-        try {
-            const savedHistory = localStorage.getItem("bugflow_chat_history");
+        return savedHistory
+            ? JSON.parse(savedHistory)
+            : [];
+    } catch (error) {
+        console.error("Unable to load chat history:", error);
+        return [];
+    }
+});
 
-            if (savedHistory) {
-                setHistory(JSON.parse(savedHistory));
-            }
-        } catch (error) {
-            console.error("Unable to load chat history:", error);
-        }
-    }, []);
+   
 
     const saveCurrentChat = (chatMessages = messages) => {
         // Don't save an empty/default conversation
