@@ -1384,6 +1384,7 @@ def get_bugs():
             bugs.severity,
             bugs.status,
             bugs.project_id,
+            bugs.sprint_id,
             users.username,
             bugs.created_at,
             bugs.resolved_at
@@ -1408,9 +1409,10 @@ def get_bugs():
             "severity": bug[4],
             "status": bug[5],
             "project_id": bug[6],
-            "assigned_to": bug[7],
-            "created_at": str(bug[8]) if bug[8] else None,
-            "resolved_at": str(bug[9]) if bug[9] else None
+            "sprint_id": bug[7],
+            "assigned_to": bug[8],
+            "created_at": str(bug[9]) if bug[9] else None,
+            "resolved_at": str(bug[10]) if bug[10] else None
         })
 
     return {
