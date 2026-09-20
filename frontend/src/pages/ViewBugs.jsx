@@ -1265,134 +1265,609 @@ const generateTestCases = async (bug) => {
                                         </div>
 
                     {/* AI ROOT CAUSE ANALYSIS MODAL */}
-                    {rootCauseBug && (
-                        <div className="
-                            fixed
-                            inset-0
-                            z-50
+{rootCauseBug && (
+    <div
+        className="
+            fixed inset-0 z-50
+            flex items-center justify-center
+            bg-slate-950/70
+            backdrop-blur-md
+            p-4
+        "
+    >
+        <div
+            className="
+                relative
+                w-full max-w-4xl
+                max-h-[90vh]
+                overflow-hidden
+                rounded-[28px]
+                border border-purple-200/30
+                bg-white
+                shadow-[0_25px_80px_rgba(88,28,135,0.25)]
+                dark:bg-slate-950
+                dark:border-purple-500/20
+            "
+        >
+
+            {/* Decorative glows */}
+            <div
+                className="
+                    pointer-events-none
+                    absolute -top-32 -right-32
+                    h-72 w-72
+                    rounded-full
+                    bg-purple-500/20
+                    blur-3xl
+                "
+            />
+
+            <div
+                className="
+                    pointer-events-none
+                    absolute -bottom-32 -left-32
+                    h-72 w-72
+                    rounded-full
+                    bg-indigo-500/20
+                    blur-3xl
+                "
+            />
+
+            {/* Header */}
+            <div
+                className="
+                    relative
+                    flex items-center justify-between
+                    border-b border-gray-200
+                    px-6 py-5
+                    dark:border-slate-800
+                "
+            >
+                <div className="flex items-center gap-4">
+
+                    <div
+                        className="
+                            flex h-12 w-12
+                            items-center justify-center
+                            rounded-2xl
+                            bg-gradient-to-br
+                            from-purple-600
+                            via-indigo-500
+                            to-blue-500
+                            text-2xl
+                            shadow-lg
+                            shadow-purple-500/25
+                        "
+                    >
+                        🧠
+                    </div>
+
+                    <div>
+                        <div className="flex flex-wrap items-center gap-2">
+                            <h2
+                                className="
+                                    text-xl
+                                    font-bold
+                                    text-gray-900
+                                    dark:text-white
+                                "
+                            >
+                                AI Root Cause Analysis
+                            </h2>
+
+                            <span
+                                className="
+                                    rounded-full
+                                    bg-purple-100
+                                    px-2.5 py-1
+                                    text-[10px]
+                                    font-bold
+                                    uppercase
+                                    tracking-wider
+                                    text-purple-700
+                                    dark:bg-purple-500/15
+                                    dark:text-purple-300
+                                "
+                            >
+                                AI Powered
+                            </span>
+                        </div>
+
+                        <p
+                            className="
+                                mt-1
+                                text-sm
+                                text-gray-500
+                                dark:text-slate-400
+                            "
+                        >
+                            Analyze the underlying cause of this software defect
+                        </p>
+                    </div>
+                </div>
+
+                <button
+                    onClick={() => {
+                        setRootCauseBug(null);
+                        setRootCauseAnalysis("");
+                    }}
+                    className="
+                        flex h-9 w-9
+                        items-center justify-center
+                        rounded-xl
+                        bg-gray-100
+                        text-gray-500
+                        transition
+                        hover:bg-gray-200
+                        hover:text-gray-900
+                        dark:bg-slate-800
+                        dark:text-slate-400
+                        dark:hover:bg-slate-700
+                        dark:hover:text-white
+                    "
+                >
+                    ✕
+                </button>
+            </div>
+
+            {/* Scrollable Content */}
+            <div
+                className="
+                    relative
+                    max-h-[calc(90vh-89px)]
+                    overflow-y-auto
+                    p-6
+                "
+            >
+
+                {/* Bug Context */}
+                <div
+                    className="
+                        mb-6
+                        overflow-hidden
+                        rounded-2xl
+                        border
+                        border-purple-100
+                        bg-gradient-to-r
+                        from-purple-50
+                        via-indigo-50
+                        to-blue-50
+                        dark:border-purple-500/20
+                        dark:from-purple-500/10
+                        dark:via-indigo-500/5
+                        dark:to-blue-500/10
+                    "
+                >
+                    <div
+                        className="
+                            flex items-center gap-2
+                            border-b
+                            border-purple-100
+                            px-5 py-3
+                            dark:border-purple-500/10
+                        "
+                    >
+                        <span className="text-sm">
+                            🐞
+                        </span>
+
+                        <span
+                            className="
+                                text-xs
+                                font-bold
+                                uppercase
+                                tracking-wider
+                                text-purple-700
+                                dark:text-purple-300
+                            "
+                        >
+                            Bug Context
+                        </span>
+
+                        <span
+                            className="
+                                ml-auto
+                                rounded-full
+                                bg-white/70
+                                px-3 py-1
+                                text-xs
+                                font-semibold
+                                text-gray-600
+                                dark:bg-slate-900/50
+                                dark:text-slate-300
+                            "
+                        >
+                            #{rootCauseBug.bug_id}
+                        </span>
+                    </div>
+
+                    <div className="px-5 py-4">
+
+                        <div className="flex flex-wrap gap-2 mb-3">
+
+                            <span
+                                className="
+                                    rounded-full
+                                    bg-purple-100
+                                    px-3 py-1
+                                    text-xs
+                                    font-semibold
+                                    text-purple-700
+                                    dark:bg-purple-500/15
+                                    dark:text-purple-300
+                                "
+                            >
+                                {rootCauseBug.priority}
+                            </span>
+
+                            <span
+                                className="
+                                    rounded-full
+                                    bg-blue-100
+                                    px-3 py-1
+                                    text-xs
+                                    font-semibold
+                                    text-blue-700
+                                    dark:bg-blue-500/15
+                                    dark:text-blue-300
+                                "
+                            >
+                                {rootCauseBug.status}
+                            </span>
+
+                        </div>
+
+                        <h3
+                            className="
+                                text-base
+                                font-bold
+                                text-gray-900
+                                dark:text-white
+                            "
+                        >
+                            {rootCauseBug.title}
+                        </h3>
+
+                        <p
+                            className="
+                                mt-2
+                                text-sm
+                                leading-6
+                                text-gray-600
+                                dark:text-slate-300
+                            "
+                        >
+                            {rootCauseBug.description}
+                        </p>
+
+                    </div>
+                </div>
+
+                {/* Loading State */}
+                {rootCauseLoading ? (
+
+                    <div
+                        className="
                             flex
+                            min-h-[330px]
+                            flex-col
                             items-center
                             justify-center
-                            bg-black/50
-                            p-4
-                        ">
+                            rounded-2xl
+                            border
+                            border-purple-100
+                            bg-gradient-to-b
+                            from-purple-50/80
+                            to-white
+                            dark:border-purple-500/20
+                            dark:from-purple-500/10
+                            dark:to-slate-900
+                        "
+                    >
 
-                            <div className="
-                                w-full
-                                max-w-2xl
-                                max-h-[85vh]
-                                overflow-y-auto
-                                rounded-2xl
-                                bg-white
-                                p-6
-                                shadow-2xl
-                                dark:bg-slate-900
-                            ">
+                        <div
+                            className="
+                                relative
+                                mb-6
+                                flex h-20 w-20
+                                items-center justify-center
+                            "
+                        >
 
-                                <div className="
-                                    flex
-                                    items-center
-                                    justify-between
-                                    mb-5
-                                ">
+                            <div
+                                className="
+                                    absolute inset-0
+                                    animate-ping
+                                    rounded-full
+                                    bg-purple-400/20
+                                "
+                            />
 
-                                    <div>
-                                        <h2 className="
-                                            text-2xl
-                                            font-bold
-                                            dark:text-white
-                                        ">
-                                            🤖 AI Root Cause Analysis
-                                        </h2>
+                            <div
+                                className="
+                                    relative
+                                    flex h-16 w-16
+                                    items-center justify-center
+                                    rounded-2xl
+                                    bg-gradient-to-br
+                                    from-purple-600
+                                    to-indigo-500
+                                    text-3xl
+                                    shadow-xl
+                                    shadow-purple-500/30
+                                "
+                            >
+                                🧠
+                            </div>
 
-                                        <p className="
-                                            mt-1
-                                            text-sm
-                                            text-gray-500
-                                            dark:text-gray-400
-                                        ">
-                                            Bug #{rootCauseBug.bug_id}
-                                        </p>
-                                    </div>
+                        </div>
 
-                                    <button
-                                        onClick={() => {
-                                            setRootCauseBug(null);
-                                            setRootCauseAnalysis("");
-                                        }}
+                        <h3
+                            className="
+                                text-lg
+                                font-bold
+                                text-gray-900
+                                dark:text-white
+                            "
+                        >
+                            Analyzing root cause
+                        </h3>
+
+                        <p
+                            className="
+                                mt-2
+                                max-w-md
+                                text-center
+                                text-sm
+                                leading-6
+                                text-gray-500
+                                dark:text-slate-400
+                            "
+                        >
+                            Gemini is analyzing the bug details and
+                            identifying possible underlying causes.
+                        </p>
+
+                        <div
+                            className="
+                                mt-6
+                                flex items-center gap-1.5
+                            "
+                        >
+                            <span
+                                className="
+                                    h-2 w-2
+                                    animate-bounce
+                                    rounded-full
+                                    bg-purple-500
+                                "
+                            />
+
+                            <span
+                                className="
+                                    h-2 w-2
+                                    animate-bounce
+                                    rounded-full
+                                    bg-indigo-500
+                                    [animation-delay:150ms]
+                                "
+                            />
+
+                            <span
+                                className="
+                                    h-2 w-2
+                                    animate-bounce
+                                    rounded-full
+                                    bg-blue-500
+                                    [animation-delay:300ms]
+                                "
+                            />
+                        </div>
+
+                    </div>
+
+                ) : (
+
+                    <div>
+
+                        {/* Result Header */}
+                        <div
+                            className="
+                                mb-4
+                                flex
+                                flex-wrap
+                                items-center
+                                justify-between
+                                gap-3
+                            "
+                        >
+                            <div>
+
+                                <div
+                                    className="
+                                        flex items-center gap-2
+                                    "
+                                >
+                                    <span
                                         className="
-                                            text-2xl
-                                            text-gray-500
-                                            hover:text-gray-800
-                                            dark:hover:text-white
+                                            flex h-8 w-8
+                                            items-center justify-center
+                                            rounded-lg
+                                            bg-emerald-100
+                                            text-sm
+                                            dark:bg-emerald-500/15
                                         "
                                     >
-                                        ✕
-                                    </button>
+                                        ✓
+                                    </span>
 
+                                    <h3
+                                        className="
+                                            font-bold
+                                            text-gray-900
+                                            dark:text-white
+                                        "
+                                    >
+                                        Root Cause Analysis
+                                    </h3>
                                 </div>
 
-                                <div className="
-                                    mb-5
+                                <p
+                                    className="
+                                        mt-1
+                                        ml-10
+                                        text-xs
+                                        text-gray-500
+                                        dark:text-slate-400
+                                    "
+                                >
+                                    AI-generated analysis of the underlying issue
+                                </p>
+
+                            </div>
+
+                            <button
+                                onClick={() => {
+                                    navigator.clipboard.writeText(
+                                        rootCauseAnalysis
+                                    );
+                                }}
+                                className="
+                                    inline-flex
+                                    items-center gap-2
                                     rounded-xl
-                                    bg-gray-50
-                                    p-4
-                                    dark:bg-slate-800
-                                ">
+                                    border
+                                    border-purple-200
+                                    bg-purple-50
+                                    px-4 py-2
+                                    text-xs
+                                    font-semibold
+                                    text-purple-700
+                                    transition
+                                    hover:bg-purple-100
+                                    dark:border-purple-500/20
+                                    dark:bg-purple-500/10
+                                    dark:text-purple-300
+                                    dark:hover:bg-purple-500/20
+                                "
+                            >
+                                📋 Copy Analysis
+                            </button>
 
-                                    <p className="
-                                        font-semibold
-                                        text-gray-800
-                                        dark:text-white
-                                    ">
-                                        {rootCauseBug.title}
-                                    </p>
-
-                                    <p className="
-                                        mt-2
-                                        text-sm
-                                        text-gray-600
-                                        dark:text-gray-300
-                                    ">
-                                        {rootCauseBug.description}
-                                    </p>
-
-                                </div>
-
-                                {rootCauseLoading ? (
-                                    <div className="
-                                        py-10
-                                        text-center
-                                        text-gray-600
-                                        dark:text-gray-300
-                                    ">
-                                        <p className="text-lg">
-                                            🤖 Analyzing bug...
-                                        </p>
-
-                                        <p className="
-                                            mt-2
-                                            text-sm
-                                            text-gray-500
-                                        ">
-                                            Gemini is generating the root cause analysis.
-                                        </p>
-                                    </div>
-                                ) : (
-                                    <div className="
-                                        whitespace-pre-wrap
-                                        text-sm
-                                        leading-7
-                                        text-gray-700
-                                        dark:text-gray-200
-                                    ">
-                                        {rootCauseAnalysis}
-                                    </div>
-                                )}
-                                                                                       </div>
                         </div>
-                    )}
 
+                        {/* AI Output */}
+                        <div
+                            className="
+                                rounded-2xl
+                                border
+                                border-gray-200
+                                bg-white
+                                p-5
+                                shadow-sm
+                                dark:border-slate-800
+                                dark:bg-slate-900
+                            "
+                        >
+
+                            <div
+                                className="
+                                    mb-4
+                                    flex items-center gap-2
+                                "
+                            >
+                                <span
+                                    className="
+                                        h-2 w-2
+                                        rounded-full
+                                        bg-emerald-500
+                                    "
+                                />
+
+                                <span
+                                    className="
+                                        text-xs
+                                        font-semibold
+                                        uppercase
+                                        tracking-wider
+                                        text-gray-500
+                                        dark:text-slate-400
+                                    "
+                                >
+                                    AI Output
+                                </span>
+                            </div>
+
+                            <div
+                                className="
+                                    whitespace-pre-wrap
+                                    text-sm
+                                    leading-7
+                                    text-gray-700
+                                    dark:text-slate-200
+                                "
+                            >
+                                {rootCauseAnalysis}
+                            </div>
+
+                        </div>
+
+                        {/* Footer */}
+                        <div
+                            className="
+                                mt-5
+                                flex
+                                items-center
+                                justify-between
+                                rounded-xl
+                                bg-gray-50
+                                px-4 py-3
+                                dark:bg-slate-900/70
+                            "
+                        >
+
+                            <p
+                                className="
+                                    text-xs
+                                    text-gray-500
+                                    dark:text-slate-400
+                                "
+                            >
+                                ✨ Generated with AI assistance
+                            </p>
+
+                            <button
+                                onClick={() => {
+                                    setRootCauseBug(null);
+                                    setRootCauseAnalysis("");
+                                }}
+                                className="
+                                    rounded-xl
+                                    bg-gray-900
+                                    px-4 py-2
+                                    text-xs
+                                    font-semibold
+                                    text-white
+                                    transition
+                                    hover:bg-gray-700
+                                    dark:bg-white
+                                    dark:text-slate-900
+                                    dark:hover:bg-gray-200
+                                "
+                            >
+                                Done
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                )}
+
+            </div>
+        </div>
+    </div>
+)}
                     
 ```jsx
 {testCaseBug && (
