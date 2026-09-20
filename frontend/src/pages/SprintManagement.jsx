@@ -14,6 +14,8 @@ function SprintManagement() {
 
     const [sprints, setSprints] = useState([]);
     const [bugs, setBugs] = useState([]);
+    const [allBugs, setAllBugs] = useState([]);
+    const [selectedBug, setSelectedBug] = useState("");
     const [sprintHealth, setSprintHealth] = useState({});
 
     const [selectedSprint, setSelectedSprint] = useState(null);
@@ -77,11 +79,10 @@ const fetchSprintHealth = async (sprintId) => {
     }
 };
 const fetchBugs = async () => {
-
     try {
-
         const response = await api.get("/api/bugs");
 
+        setAllBugs(response.data.bugs);
         setBugs(response.data.bugs);
 
     } catch (error) {
@@ -131,8 +132,6 @@ useEffect(() => {
 
         }
     };
-
-    // eslint-disable-next-line no-unused-vars
     const assignBugToSprint = async (bugId, sprintId) => {
 
         try {
@@ -615,7 +614,70 @@ const generateAiSprintPlan = async () => {
                             shadow-lg
                             p-6
                         ">
+<div className="mb-6">
+    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">
+        Assign Bug to Sprint
+    </h3>
 
+    <div className="flex flex-col sm:flex-row gap-3">
+        <select
+            value={selectedBug}
+            onChange={(e) => setSelectedBug(e.target.value)}
+            className="
+                flex-1
+                rounded-lg
+                border
+                border-gray-300
+                dark:border-slate-700
+                bg-white
+                dark:bg-slate-900
+                px-4
+                py-2
+                text-sm
+                text-gray-900
+                dark:text-white
+            "
+        >
+            <option value="">Select a bug</option>
+
+            {allBugs.map((bug) => (
+                <option
+                    key={bug.bug_id}
+                    value={bug.bug_id}
+                >
+                    #{bug.bug_id} - {bug.title}
+                </option>
+            ))}
+        </select>
+
+        <button
+            onClick={() => {
+                if (!selectedBug) {
+                    alert("Please select a bug");
+                    return;
+                }
+
+                assignBugToSprint(
+                    Number(selectedBug),
+                    selectedSprint
+                );
+
+                setSelectedBug("");
+            }}
+            className="
+                rounded-lg
+                bg-blue-600
+                hover:bg-blue-700
+                text-white
+                px-5
+                py-2
+                font-medium
+            "
+        >
+            Assign Bug
+        </button>
+    </div>
+</div>
                             <h2 className="
                                 text-2xl
                                 font-bold
