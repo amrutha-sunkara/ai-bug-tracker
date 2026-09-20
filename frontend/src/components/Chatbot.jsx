@@ -1,21 +1,86 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 
 import api from "../services/api";
 
+const INITIAL_MESSAGE = {
+    sender: "ai",
+    text: "Hi! I'm BugFlow AI. How can I help you?"
+};
+
+const SUGGESTED_QUESTIONS = [
+    "What are the most common bugs?",
+    "How can I improve bug resolution?",
+    "How should I prioritize bugs?",
+    "Explain the current bug trends"
+];
+
 function Chatbot() {
     const [isOpen, setIsOpen] = useState(false);
     const [message, setMessage] = useState("");
-    const [messages, setMessages] = useState([
-        {
-            sender: "ai",
-            text: "Hi! I'm BugFlow AI. How can I help you?"
-        }
-    ]);
+    const [messages, setMessages] = useState([INITIAL_MESSAGE]);
     const [loading, setLoading] = useState(false);
+    const [showHistory, setShowHistory] = useState(false);
+    const [history, setHistory] = useState([]);
 
-    const sendMessage = async () => {
-        const trimmedMessage = message.trim();
+    // Load saved chat history
+    useEffect(() => {
+        try {
+            const savedHistory = localStorage.getItem("bugflow_chat_history");
+
+            if (savedHistory) {
+                setHistory(JSON.parse(savedHistory));
+            }
+        } catch (error) {
+            console.error("Unable to load chat history:", error);
+        }
+    }, []);
+
+    const saveCurrentChat = (chatMessages = messages) => {
+        // Don't save an empty/default conversation
+        if (
+            chatMessages.length <= 1 &&
+            chatMessages[0]?.text === INITIAL_MESSAGE.text
+        ) {
+            return;
+        }
+
+        const userMessages = chatMessages.filter(
+            (item) => item.sender === "user"
+        );
+
+        if (userMessages.length === 0) {
+            return;
+        }
+
+        const firstUserMessage = userMessages[0]?.text || "BugFlow AI Chat";
+
+        const chatSession = {
+            id: Date.now(),
+            title:
+                firstUserMessage.length > 42
+                    ? `${firstUserMessage.slice(0, 42)}...`
+                    : firstUserMessage,
+            messages: chatMessages,
+            createdAt: new Date().toLocaleString()
+        };
+
+        const updatedHistory = [chatSession, ...history].slice(0, 10);
+
+        setHistory(updatedHistory);
+
+        try {
+            localStorage.setItem(
+                "bugflow_chat_history",
+                JSON.stringify(updatedHistory)
+            );
+        } catch (error) {
+            console.error("Unable to save chat history:", error);
+        }
+    };
+
+    const sendMessage = async (question = message) => {
+        const trimmedMessage = question.trim();
 
         if (!trimmedMessage || loading) {
             return;
@@ -56,6 +121,47 @@ function Chatbot() {
             ]);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleSuggestedQuestion = (question) => {
+        if (loading) return;
+
+        sendMessage(question);
+    };
+
+    const handleNewChat = () => {
+        if (messages.length > 1) {
+            saveCurrentChat(messages);
+        }
+
+        setMessages([INITIAL_MESSAGE]);
+        setMessage("");
+        setShowHistory(false);
+    };
+
+    const openHistoryChat = (chat) => {
+        setMessages(chat.messages);
+        setMessage("");
+        setShowHistory(false);
+    };
+
+    const deleteHistoryChat = (chatId, event) => {
+        event.stopPropagation();
+
+        const updatedHistory = history.filter(
+            (chat) => chat.id !== chatId
+        );
+
+        setHistory(updatedHistory);
+
+        try {
+            localStorage.setItem(
+                "bugflow_chat_history",
+                JSON.stringify(updatedHistory)
+            );
+        } catch (error) {
+            console.error("Unable to update chat history:", error);
         }
     };
 
@@ -143,14 +249,133 @@ function Chatbot() {
                             </button>
                         </div>
 
-                        {/* Status strip */}
-                        <div className="mt-4 flex items-center gap-2 text-[10px] text-white/75">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-300 shadow-[0_0_8px_rgba(110,231,183,0.9)]" />
-                            Online
-                            <span className="text-white/30">•</span>
-                            Ready to assist
+                        <div className="mt-4 flex items-center justify-between">
+                            <div className="flex items-center gap-2 text-[10px] text-white/75">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-300 shadow-[0_0_8px_rgba(110,231,183,0.9)]" />
+                                Online
+                                <span className="text-white/30">•</span>
+                                Ready to assist
+                            </div>
+
+                            {/* Header actions */}
+                            <div className="flex items-center gap-1.5">
+                                <button
+                                    onClick={handleNewChat}
+                                    title="New chat"
+                                    className="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/10 text-[10px] font-medium transition-all"
+                                >
+                                    ＋ New
+                                </button>
+
+                                <button
+                                    onClick={() =>
+                                        setShowHistory(!showHistory)
+                                    }
+                                    title="Chat history"
+                                    className={`px-2.5 py-1.5 rounded-lg border text-[10px] font-medium transition-all ${
+                                        showHistory
+                                            ? "bg-white/25 border-white/30"
+                                            : "bg-white/10 hover:bg-white/20 border-white/10"
+                                    }`}
+                                >
+                                    ◷ History
+                                </button>
+                            </div>
                         </div>
                     </div>
+
+                    {/* History Panel */}
+                    {showHistory && (
+                        <div className="absolute inset-0 z-30 bg-white/98 dark:bg-[#11111a]/98 backdrop-blur-xl flex flex-col">
+
+                            <div className="px-5 py-4 border-b border-gray-200 dark:border-white/10 flex items-center justify-between">
+                                <div>
+                                    <h3 className="font-bold text-gray-900 dark:text-white text-sm">
+                                        Chat History
+                                    </h3>
+                                    <p className="text-[10px] text-gray-400 mt-1">
+                                        Your recent BugFlow conversations
+                                    </p>
+                                </div>
+
+                                <button
+                                    onClick={() => setShowHistory(false)}
+                                    className="w-8 h-8 rounded-lg bg-gray-100 dark:bg-white/10 text-gray-500 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-white/15 transition"
+                                >
+                                    ×
+                                </button>
+                            </div>
+
+                            <div className="flex-1 overflow-y-auto p-4">
+                                {history.length === 0 ? (
+                                    <div className="h-full flex flex-col items-center justify-center text-center px-6">
+                                        <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500/10 to-fuchsia-500/10 flex items-center justify-center text-2xl mb-4">
+                                            ◷
+                                        </div>
+
+                                        <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-200">
+                                            No conversations yet
+                                        </h4>
+
+                                        <p className="text-[11px] text-gray-400 dark:text-gray-500 mt-1.5 leading-5">
+                                            Your previous BugFlow AI conversations
+                                            will appear here.
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <div className="space-y-2">
+                                        {history.map((chat) => (
+                                            <button
+                                                key={chat.id}
+                                                onClick={() =>
+                                                    openHistoryChat(chat)
+                                                }
+                                                className="w-full text-left p-3.5 rounded-2xl bg-gray-50 dark:bg-white/[0.05] border border-gray-200/70 dark:border-white/[0.07] hover:border-violet-300 dark:hover:border-violet-500/40 hover:bg-violet-50 dark:hover:bg-violet-500/[0.08] transition-all group"
+                                            >
+                                                <div className="flex items-start gap-3">
+                                                    <div className="shrink-0 w-8 h-8 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-500 text-white flex items-center justify-center text-xs">
+                                                        ✦
+                                                    </div>
+
+                                                    <div className="min-w-0 flex-1">
+                                                        <p className="text-xs font-semibold text-gray-700 dark:text-gray-200 truncate">
+                                                            {chat.title}
+                                                        </p>
+
+                                                        <p className="text-[9px] text-gray-400 mt-1">
+                                                            {chat.createdAt}
+                                                        </p>
+                                                    </div>
+
+                                                    <span
+                                                        onClick={(event) =>
+                                                            deleteHistoryChat(
+                                                                chat.id,
+                                                                event
+                                                            )
+                                                        }
+                                                        className="opacity-0 group-hover:opacity-100 shrink-0 text-gray-400 hover:text-red-500 text-sm transition"
+                                                        title="Delete"
+                                                    >
+                                                        ×
+                                                    </span>
+                                                </div>
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="p-4 border-t border-gray-200 dark:border-white/10">
+                                <button
+                                    onClick={handleNewChat}
+                                    className="w-full py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-fuchsia-600 text-white text-xs font-semibold shadow-md hover:shadow-lg transition-all"
+                                >
+                                    ＋ Start New Chat
+                                </button>
+                            </div>
+                        </div>
+                    )}
 
                     {/* Messages */}
                     <div className="relative flex-1 overflow-y-auto px-4 py-5 space-y-5 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-white/10 scrollbar-track-transparent">
@@ -254,6 +479,36 @@ function Chatbot() {
                         )}
                     </div>
 
+                    {/* Suggested Questions */}
+                    {!loading && messages.length <= 2 && (
+                        <div className="px-4 pb-2">
+                            <div className="flex items-center gap-2 mb-2">
+                                <span className="text-[10px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">
+                                    Try asking
+                                </span>
+
+                                <div className="h-px flex-1 bg-gray-200 dark:bg-white/10" />
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-2">
+                                {SUGGESTED_QUESTIONS.map((question) => (
+                                    <button
+                                        key={question}
+                                        onClick={() =>
+                                            handleSuggestedQuestion(question)
+                                        }
+                                        className="text-left px-3 py-2.5 rounded-xl bg-gray-50 dark:bg-white/[0.045] border border-gray-200 dark:border-white/[0.08] hover:border-violet-300 dark:hover:border-violet-500/40 hover:bg-violet-50 dark:hover:bg-violet-500/[0.08] text-[10px] leading-4 text-gray-600 dark:text-gray-300 transition-all"
+                                    >
+                                        <span className="block text-violet-500 mb-0.5">
+                                            ✦
+                                        </span>
+                                        {question}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
                     {/* Input Area */}
                     <div className="relative px-4 pb-4 pt-2 bg-white/80 dark:bg-[#11111a]/80 border-t border-gray-200/70 dark:border-white/10">
 
@@ -265,13 +520,13 @@ function Chatbot() {
                                     setMessage(event.target.value)
                                 }
                                 onKeyDown={handleKeyDown}
-                                placeholder="Ask about a bug, resolution, testing..."
+                                placeholder="Ask BugFlow AI..."
                                 rows="1"
                                 className="flex-1 min-w-0 max-h-28 resize-none bg-transparent border-none outline-none px-3 py-2.5 text-[13px] text-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
                             />
 
                             <button
-                                onClick={sendMessage}
+                                onClick={() => sendMessage()}
                                 disabled={loading || !message.trim()}
                                 aria-label="Send message"
                                 className="shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-violet-600 to-fuchsia-600 text-white flex items-center justify-center shadow-md shadow-violet-500/20 hover:shadow-lg hover:scale-105 disabled:opacity-35 disabled:hover:scale-100 disabled:cursor-not-allowed transition-all duration-200"
