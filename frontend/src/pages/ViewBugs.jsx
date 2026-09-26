@@ -1869,7 +1869,6 @@ const generateTestCases = async (bug) => {
     </div>
 )}
                     
-```jsx
 {testCaseBug && (
     <div className="
         fixed inset-0 z-50
@@ -2364,7 +2363,7 @@ const generateTestCases = async (bug) => {
         </div>
     </div>
 )}
-```
+
         
 
                            
