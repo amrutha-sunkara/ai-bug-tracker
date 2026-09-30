@@ -780,46 +780,71 @@ const generateAiSprintPlan = async () => {
         flex
         items-center
         justify-center
-        bg-black/50
+        bg-black/60
+        backdrop-blur-sm
         p-4
     ">
-
         <div className="
             w-full
-            max-w-3xl
-            max-h-[85vh]
-            overflow-y-auto
-            rounded-2xl
+            max-w-4xl
+            max-h-[88vh]
+            overflow-hidden
+            rounded-3xl
             bg-white
-            p-6
-            shadow-2xl
             dark:bg-slate-900
+            shadow-2xl
+            border
+            border-gray-200
+            dark:border-slate-700
         ">
 
+            {/* Header */}
             <div className="
                 flex
                 items-center
                 justify-between
-                mb-5
+                px-6
+                py-5
+                border-b
+                border-gray-200
+                dark:border-slate-700
             ">
+                <div className="flex items-center gap-4">
 
-                <div>
-                    <h2 className="
+                    <div className="
+                        flex
+                        h-12
+                        w-12
+                        items-center
+                        justify-center
+                        rounded-2xl
+                        bg-purple-100
+                        dark:bg-purple-900/30
                         text-2xl
-                        font-bold
-                        dark:text-white
                     ">
-                        🤖 AI Sprint Planning Assistant
-                    </h2>
+                        ✨
+                    </div>
 
-                    <p className="
-                        mt-1
-                        text-sm
-                        text-gray-500
-                        dark:text-gray-400
-                    ">
-                        AI-powered recommendations for sprint planning
-                    </p>
+                    <div>
+                        <h2 className="
+                            text-xl
+                            font-bold
+                            text-gray-900
+                            dark:text-white
+                        ">
+                            AI Sprint Planning Assistant
+                        </h2>
+
+                        <p className="
+                            mt-1
+                            text-sm
+                            text-gray-500
+                            dark:text-gray-400
+                        ">
+                            Analyze your backlog and build a focused sprint plan
+                        </p>
+                    </div>
+
                 </div>
 
                 <button
@@ -828,66 +853,199 @@ const generateAiSprintPlan = async () => {
                         setAiSprintPlan("");
                     }}
                     className="
-                        text-2xl
+                        flex
+                        h-9
+                        w-9
+                        items-center
+                        justify-center
+                        rounded-full
                         text-gray-500
+                        hover:bg-gray-100
                         hover:text-gray-800
+                        dark:hover:bg-slate-800
                         dark:hover:text-white
+                        transition
                     "
                 >
                     ✕
                 </button>
+            </div>
+
+            {/* Content */}
+            <div className="
+                max-h-[calc(88vh-90px)]
+                overflow-y-auto
+                p-6
+            ">
+
+                {aiSprintLoading ? (
+
+                    /* Loading State */
+                    <div className="
+                        flex
+                        min-h-[360px]
+                        flex-col
+                        items-center
+                        justify-center
+                        text-center
+                    ">
+
+                        <div className="
+                            flex
+                            h-20
+                            w-20
+                            items-center
+                            justify-center
+                            rounded-3xl
+                            bg-purple-100
+                            dark:bg-purple-900/30
+                            text-4xl
+                            animate-pulse
+                        ">
+                            🤖
+                        </div>
+
+                        <h3 className="
+                            mt-6
+                            text-xl
+                            font-semibold
+                            text-gray-900
+                            dark:text-white
+                        ">
+                            Analyzing your sprint backlog
+                        </h3>
+
+                        <p className="
+                            mt-2
+                            max-w-md
+                            text-sm
+                            leading-6
+                            text-gray-500
+                            dark:text-gray-400
+                        ">
+                            Gemini is reviewing priorities, unresolved bugs,
+                            workload, and sprint information to prepare
+                            recommendations.
+                        </p>
+
+                        <div className="
+                            mt-6
+                            flex
+                            items-center
+                            gap-2
+                        ">
+                            <span className="
+                                h-2
+                                w-2
+                                rounded-full
+                                bg-purple-500
+                                animate-bounce
+                            "></span>
+
+                            <span className="
+                                h-2
+                                w-2
+                                rounded-full
+                                bg-purple-500
+                                animate-bounce
+                                [animation-delay:150ms]
+                            "></span>
+
+                            <span className="
+                                h-2
+                                w-2
+                                rounded-full
+                                bg-purple-500
+                                animate-bounce
+                                [animation-delay:300ms]
+                            "></span>
+                        </div>
+
+                    </div>
+
+                ) : (
+
+                    /* AI Result */
+                    <div className="space-y-5">
+
+                        <div className="
+                            rounded-2xl
+                            border
+                            border-purple-200
+                            bg-purple-50
+                            dark:border-purple-900/50
+                            dark:bg-purple-950/20
+                            p-5
+                        ">
+                            <div className="
+                                flex
+                                items-center
+                                gap-3
+                            ">
+                                <div className="
+                                    flex
+                                    h-10
+                                    w-10
+                                    items-center
+                                    justify-center
+                                    rounded-xl
+                                    bg-purple-100
+                                    dark:bg-purple-900/40
+                                    text-xl
+                                ">
+                                    ✨
+                                </div>
+
+                                <div>
+                                    <h3 className="
+                                        font-semibold
+                                        text-gray-900
+                                        dark:text-white
+                                    ">
+                                        AI Recommendation
+                                    </h3>
+
+                                    <p className="
+                                        text-xs
+                                        text-gray-500
+                                        dark:text-gray-400
+                                    ">
+                                        Generated from your current backlog
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="
+                            rounded-2xl
+                            border
+                            border-gray-200
+                            dark:border-slate-700
+                            bg-gray-50
+                            dark:bg-slate-800/70
+                            p-6
+                        ">
+                            <div className="
+                                whitespace-pre-wrap
+                                text-sm
+                                leading-7
+                                text-gray-700
+                                dark:text-gray-200
+                            ">
+                                {aiSprintPlan}
+                            </div>
+                        </div>
+
+                    </div>
+
+                )}
 
             </div>
 
-            {aiSprintLoading ? (
-
-                <div className="
-                    py-12
-                    text-center
-                    text-gray-600
-                    dark:text-gray-300
-                ">
-
-                    <p className="text-lg">
-                        🤖 Analyzing sprint data...
-                    </p>
-
-                    <p className="
-                        mt-2
-                        text-sm
-                        text-gray-500
-                        dark:text-gray-400
-                    ">
-                        Gemini is preparing sprint recommendations.
-                    </p>
-
-                </div>
-
-            ) : (
-
-                <div className="
-                    rounded-xl
-                    bg-gray-50
-                    p-5
-                    dark:bg-slate-800
-                ">
-                    <div className="
-                        whitespace-pre-wrap
-                        text-sm
-                        leading-7
-                        text-gray-700
-                        dark:text-gray-200
-                    ">
-                        {aiSprintPlan}
-                    </div>
-                </div>
-
-            )}
-
         </div>
-
     </div>
 )}
+
 
                 </div>
 
