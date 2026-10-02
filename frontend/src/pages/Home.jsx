@@ -2435,21 +2435,19 @@ text-gray-400
         relative
         py-24
         px-8
-        
-        dark:bg-[#070B18]
+        bg-[#070B18]
         overflow-hidden
     "
 >
 
     <div className="max-w-7xl mx-auto">
 
-        {/* Heading */}
+        {/* SECTION HEADING */}
 
         <div className="text-center mb-16">
 
             <p className="
-                text-blue-600
-                dark:text-blue-400
+                text-blue-400
                 font-semibold
                 text-sm
                 uppercase
@@ -2463,16 +2461,14 @@ text-gray-400
                 text-4xl
                 md:text-5xl
                 font-bold
-                text-gray-900
-                dark:text-white
+                text-white
             ">
                 From Report to Resolution
             </h2>
 
             <p className="
                 mt-5
-                text-gray-600
-                dark:text-gray-400
+                text-gray-400
                 text-lg
                 max-w-2xl
                 mx-auto
@@ -2484,7 +2480,7 @@ text-gray-400
         </div>
 
 
-        {/* LIFECYCLE */}
+        {/* LIFECYCLE CARDS */}
 
         <div className="
             grid
@@ -2495,29 +2491,30 @@ text-gray-400
         ">
 
 
-            {/* REPORTED */}
+            {/* STEP 01 — REPORTED */}
 
             <div className="
                 group
                 relative
                 bg-slate-900/90
-border
-border-slate-800
+                border
+                border-slate-800
                 rounded-2xl
                 p-7
                 transition-all
                 duration-300
                 hover:-translate-y-2
-                hover:shadow-xl
-                hover:border-blue-400
+                hover:border-blue-400/40
+                hover:shadow-[0_20px_40px_rgba(59,130,246,0.10)]
             ">
 
                 <div className="
                     w-12
                     h-12
                     rounded-xl
-                    bg-blue-100
-                    dark:bg-blue-500/10
+                    bg-blue-500/10
+                    border
+                    border-blue-400/20
                     flex
                     items-center
                     justify-center
@@ -2530,8 +2527,7 @@ border-slate-800
                 <p className="
                     text-xs
                     font-bold
-                    text-blue-600
-                    dark:text-blue-400
+                    text-blue-400
                     uppercase
                     tracking-wider
                     mb-2
@@ -2542,8 +2538,7 @@ border-slate-800
                 <h3 className="
                     text-xl
                     font-bold
-                    text-gray-900
-                    dark:text-white
+                    text-white
                     mb-3
                 ">
                     Reported
@@ -2553,7 +2548,6 @@ border-slate-800
                     text-sm
                     leading-6
                     text-gray-400
-                   
                 ">
                     A tester reports a new software defect with
                     relevant details, priority and severity.
@@ -2562,31 +2556,30 @@ border-slate-800
             </div>
 
 
-            {/* ASSIGNED */}
+            {/* STEP 02 — ASSIGNED */}
 
             <div className="
                 group
                 relative
-                bg-gray-50
-                dark:bg-slate-900
+                bg-slate-900/90
                 border
-                border-gray-200
-                dark:border-slate-800
+                border-slate-800
                 rounded-2xl
                 p-7
                 transition-all
                 duration-300
                 hover:-translate-y-2
-                hover:shadow-xl
-                hover:border-purple-400
+                hover:border-purple-400/40
+                hover:shadow-[0_20px_40px_rgba(168,85,247,0.10)]
             ">
 
                 <div className="
                     w-12
                     h-12
                     rounded-xl
-                    bg-purple-100
-                    dark:bg-purple-500/10
+                    bg-purple-500/10
+                    border
+                    border-purple-400/20
                     flex
                     items-center
                     justify-center
@@ -2599,8 +2592,7 @@ border-slate-800
                 <p className="
                     text-xs
                     font-bold
-                    text-purple-600
-                    dark:text-purple-400
+                    text-purple-400
                     uppercase
                     tracking-wider
                     mb-2
@@ -2611,7 +2603,7 @@ border-slate-800
                 <h3 className="
                     text-xl
                     font-bold
-                   text-white
+                    text-white
                     mb-3
                 ">
                     Assigned
@@ -2620,8 +2612,7 @@ border-slate-800
                 <p className="
                     text-sm
                     leading-6
-                    text-gray-600
-                    dark:text-gray-400
+                    text-gray-400
                 ">
                     The defect is assigned to the appropriate
                     developer for investigation and resolution.
@@ -2630,31 +2621,30 @@ border-slate-800
             </div>
 
 
-            {/* IN PROGRESS */}
+            {/* STEP 03 — IN PROGRESS */}
 
             <div className="
                 group
                 relative
-                bg-gray-50
-                dark:bg-slate-900
+                bg-slate-900/90
                 border
-                border-gray-200
-                dark:border-slate-800
+                border-slate-800
                 rounded-2xl
                 p-7
                 transition-all
                 duration-300
                 hover:-translate-y-2
-                hover:shadow-xl
-                hover:border-orange-400
+                hover:border-orange-400/40
+                hover:shadow-[0_20px_40px_rgba(251,146,60,0.10)]
             ">
 
                 <div className="
                     w-12
                     h-12
                     rounded-xl
-                    bg-orange-100
-                    dark:bg-orange-500/10
+                    bg-orange-500/10
+                    border
+                    border-orange-400/20
                     flex
                     items-center
                     justify-center
@@ -2667,8 +2657,7 @@ border-slate-800
                 <p className="
                     text-xs
                     font-bold
-                    text-orange-600
-                    dark:text-orange-400
+                    text-orange-400
                     uppercase
                     tracking-wider
                     mb-2
@@ -2679,8 +2668,7 @@ border-slate-800
                 <h3 className="
                     text-xl
                     font-bold
-                    text-gray-900
-                    dark:text-white
+                    text-white
                     mb-3
                 ">
                     In Progress
@@ -2689,8 +2677,7 @@ border-slate-800
                 <p className="
                     text-sm
                     leading-6
-                    text-gray-600
-                    dark:text-gray-400
+                    text-gray-400
                 ">
                     Developers investigate the issue, use AI
                     assistance and work towards a solution.
@@ -2699,31 +2686,30 @@ border-slate-800
             </div>
 
 
-            {/* RESOLVED */}
+            {/* STEP 04 — RESOLVED */}
 
             <div className="
                 group
                 relative
-                bg-gray-50
-                dark:bg-slate-900
+                bg-slate-900/90
                 border
-                border-gray-200
-                dark:border-slate-800
+                border-slate-800
                 rounded-2xl
                 p-7
                 transition-all
                 duration-300
                 hover:-translate-y-2
-                hover:shadow-xl
-                hover:border-emerald-400
+                hover:border-emerald-400/40
+                hover:shadow-[0_20px_40px_rgba(52,211,153,0.10)]
             ">
 
                 <div className="
                     w-12
                     h-12
                     rounded-xl
-                    bg-emerald-100
-                    dark:bg-emerald-500/10
+                    bg-emerald-500/10
+                    border
+                    border-emerald-400/20
                     flex
                     items-center
                     justify-center
@@ -2736,8 +2722,7 @@ border-slate-800
                 <p className="
                     text-xs
                     font-bold
-                    text-emerald-600
-                    dark:text-emerald-400
+                    text-emerald-400
                     uppercase
                     tracking-wider
                     mb-2
@@ -2748,8 +2733,7 @@ border-slate-800
                 <h3 className="
                     text-xl
                     font-bold
-                    text-gray-900
-                    dark:text-white
+                    text-white
                     mb-3
                 ">
                     Resolved
@@ -2758,8 +2742,7 @@ border-slate-800
                 <p className="
                     text-sm
                     leading-6
-                    text-gray-600
-                    dark:text-gray-400
+                    text-gray-400
                 ">
                     The developer applies a solution and marks
                     the defect as resolved for validation.
@@ -2768,31 +2751,30 @@ border-slate-800
             </div>
 
 
-            {/* VERIFIED */}
+            {/* STEP 05 — VERIFIED */}
 
             <div className="
                 group
                 relative
-                bg-gray-50
-                dark:bg-slate-900
+                bg-slate-900/90
                 border
-                border-gray-200
-                dark:border-slate-800
+                border-slate-800
                 rounded-2xl
                 p-7
                 transition-all
                 duration-300
                 hover:-translate-y-2
-                hover:shadow-xl
-                hover:border-cyan-400
+                hover:border-cyan-400/40
+                hover:shadow-[0_20px_40px_rgba(34,211,238,0.10)]
             ">
 
                 <div className="
                     w-12
                     h-12
                     rounded-xl
-                    bg-cyan-100
-                    dark:bg-cyan-500/10
+                    bg-cyan-500/10
+                    border
+                    border-cyan-400/20
                     flex
                     items-center
                     justify-center
@@ -2805,8 +2787,7 @@ border-slate-800
                 <p className="
                     text-xs
                     font-bold
-                    text-cyan-600
-                    dark:text-cyan-400
+                    text-cyan-400
                     uppercase
                     tracking-wider
                     mb-2
@@ -2817,8 +2798,7 @@ border-slate-800
                 <h3 className="
                     text-xl
                     font-bold
-                    text-gray-900
-                    dark:text-white
+                    text-white
                     mb-3
                 ">
                     Verified
@@ -2827,8 +2807,7 @@ border-slate-800
                 <p className="
                     text-sm
                     leading-6
-                    text-gray-600
-                    dark:text-gray-400
+                    text-gray-400
                 ">
                     The tester validates the fix and confirms
                     that the reported issue has been addressed.
@@ -2837,31 +2816,30 @@ border-slate-800
             </div>
 
 
-            {/* CLOSED */}
+            {/* STEP 06 — CLOSED */}
 
             <div className="
                 group
                 relative
-                bg-gray-50
-                dark:bg-slate-900
+                bg-slate-900/90
                 border
-                border-gray-200
-                dark:border-slate-800
+                border-slate-800
                 rounded-2xl
                 p-7
                 transition-all
                 duration-300
                 hover:-translate-y-2
-                hover:shadow-xl
-                hover:border-pink-400
+                hover:border-pink-400/40
+                hover:shadow-[0_20px_40px_rgba(236,72,153,0.10)]
             ">
 
                 <div className="
                     w-12
                     h-12
                     rounded-xl
-                    bg-pink-100
-                    dark:bg-pink-500/10
+                    bg-pink-500/10
+                    border
+                    border-pink-400/20
                     flex
                     items-center
                     justify-center
@@ -2874,8 +2852,7 @@ border-slate-800
                 <p className="
                     text-xs
                     font-bold
-                    text-pink-600
-                    dark:text-pink-400
+                    text-pink-400
                     uppercase
                     tracking-wider
                     mb-2
@@ -2886,8 +2863,7 @@ border-slate-800
                 <h3 className="
                     text-xl
                     font-bold
-                    text-gray-900
-                    dark:text-white
+                    text-white
                     mb-3
                 ">
                     Closed
@@ -2896,8 +2872,7 @@ border-slate-800
                 <p className="
                     text-sm
                     leading-6
-                    text-gray-600
-                    dark:text-gray-400
+                    text-gray-400
                 ">
                     Once verification is successful, the defect
                     is closed and the lifecycle is completed.
@@ -2921,37 +2896,47 @@ border-slate-800
             font-semibold
         ">
 
-            <span className="text-blue-500">
+            <span className="text-blue-400">
                 Reported
             </span>
 
-            <span className="text-gray-400">→</span>
+            <span className="text-slate-600">
+                →
+            </span>
 
-            <span className="text-purple-500">
+            <span className="text-purple-400">
                 Assigned
             </span>
 
-            <span className="text-gray-400">→</span>
+            <span className="text-slate-600">
+                →
+            </span>
 
-            <span className="text-orange-500">
+            <span className="text-orange-400">
                 In Progress
             </span>
 
-            <span className="text-gray-400">→</span>
+            <span className="text-slate-600">
+                →
+            </span>
 
-            <span className="text-emerald-500">
+            <span className="text-emerald-400">
                 Resolved
             </span>
 
-            <span className="text-gray-400">→</span>
+            <span className="text-slate-600">
+                →
+            </span>
 
-            <span className="text-cyan-500">
+            <span className="text-cyan-400">
                 Verified
             </span>
 
-            <span className="text-gray-400">→</span>
+            <span className="text-slate-600">
+                →
+            </span>
 
-            <span className="text-pink-500">
+            <span className="text-pink-400">
                 Closed
             </span>
 
@@ -2967,21 +2952,19 @@ border-slate-800
         relative
         py-24
         px-8
-        bg-gray-50
-        dark:bg-[#070B18]
+        bg-[#070B18]
         overflow-hidden
     "
 >
 
     <div className="max-w-7xl mx-auto">
 
-        {/* Heading */}
+        {/* SECTION HEADING */}
 
         <div className="text-center mb-16">
 
             <p className="
-                text-purple-600
-                dark:text-purple-400
+                text-purple-400
                 font-semibold
                 text-sm
                 uppercase
@@ -2995,16 +2978,14 @@ border-slate-800
                 text-4xl
                 md:text-5xl
                 font-bold
-                text-gray-900
-                dark:text-white
+                text-white
             ">
                 Understand Your Defects at a Glance
             </h2>
 
             <p className="
                 mt-5
-                text-gray-600
-                dark:text-gray-400
+                text-gray-400
                 text-lg
                 max-w-2xl
                 mx-auto
@@ -3020,18 +3001,16 @@ border-slate-800
 
         <div className="
             relative
-            bg-white
-            dark:bg-slate-900
+            bg-slate-900
             border
-            border-gray-200
-            dark:border-slate-800
+            border-slate-800
             rounded-3xl
             shadow-2xl
             p-6
             md:p-8
         ">
 
-            {/* Dashboard Header */}
+            {/* DASHBOARD HEADER */}
 
             <div className="
                 flex
@@ -3047,8 +3026,7 @@ border-slate-800
 
                     <p className="
                         text-sm
-                        text-gray-500
-                        dark:text-gray-400
+                        text-gray-400
                         mb-1
                     ">
                         Project Overview
@@ -3057,8 +3035,7 @@ border-slate-800
                     <h3 className="
                         text-2xl
                         font-bold
-                        text-gray-900
-                        dark:text-white
+                        text-white
                     ">
                         Defect Analytics
                     </h3>
@@ -3073,10 +3050,10 @@ border-slate-800
                     px-4
                     py-2
                     rounded-full
-                    bg-emerald-50
-                    dark:bg-emerald-500/10
-                    text-emerald-600
-                    dark:text-emerald-400
+                    bg-emerald-500/10
+                    border
+                    border-emerald-400/20
+                    text-emerald-400
                     text-sm
                     font-semibold
                 ">
@@ -3085,8 +3062,9 @@ border-slate-800
                         w-2
                         h-2
                         rounded-full
-                        bg-emerald-500
-                    "></span>
+                        bg-emerald-400
+                    ">
+                    </span>
 
                     System Active
 
@@ -3106,22 +3084,20 @@ border-slate-800
                 mb-8
             ">
 
-                {/* TOTAL */}
+
+                {/* TOTAL BUGS */}
 
                 <div className="
                     rounded-2xl
-                    bg-blue-50
-                    dark:bg-blue-500/10
+                    bg-blue-500/10
                     border
-                    border-blue-100
-                    dark:border-blue-500/20
+                    border-blue-400/20
                     p-5
                 ">
 
                     <p className="
                         text-sm
-                        text-gray-500
-                        dark:text-gray-400
+                        text-gray-400
                     ">
                         Total Bugs
                     </p>
@@ -3129,8 +3105,7 @@ border-slate-800
                     <p className="
                         text-3xl
                         font-bold
-                        text-blue-600
-                        dark:text-blue-400
+                        text-blue-400
                         mt-2
                     ">
                         24
@@ -3139,7 +3114,6 @@ border-slate-800
                     <p className="
                         text-xs
                         text-gray-500
-                        dark:text-gray-400
                         mt-2
                     ">
                         Across all projects
@@ -3148,22 +3122,19 @@ border-slate-800
                 </div>
 
 
-                {/* OPEN */}
+                {/* OPEN BUGS */}
 
                 <div className="
                     rounded-2xl
-                    bg-orange-50
-                    dark:bg-orange-500/10
+                    bg-orange-500/10
                     border
-                    border-orange-100
-                    dark:border-orange-500/20
+                    border-orange-400/20
                     p-5
                 ">
 
                     <p className="
                         text-sm
-                        text-gray-500
-                        dark:text-gray-400
+                        text-gray-400
                     ">
                         Open Bugs
                     </p>
@@ -3171,8 +3142,7 @@ border-slate-800
                     <p className="
                         text-3xl
                         font-bold
-                        text-orange-600
-                        dark:text-orange-400
+                        text-orange-400
                         mt-2
                     ">
                         8
@@ -3181,7 +3151,6 @@ border-slate-800
                     <p className="
                         text-xs
                         text-gray-500
-                        dark:text-gray-400
                         mt-2
                     ">
                         Need attention
@@ -3194,18 +3163,15 @@ border-slate-800
 
                 <div className="
                     rounded-2xl
-                    bg-emerald-50
-                    dark:bg-emerald-500/10
+                    bg-emerald-500/10
                     border
-                    border-emerald-100
-                    dark:border-emerald-500/20
+                    border-emerald-400/20
                     p-5
                 ">
 
                     <p className="
                         text-sm
-                        text-gray-500
-                        dark:text-gray-400
+                        text-gray-400
                     ">
                         Resolved
                     </p>
@@ -3213,8 +3179,7 @@ border-slate-800
                     <p className="
                         text-3xl
                         font-bold
-                        text-emerald-600
-                        dark:text-emerald-400
+                        text-emerald-400
                         mt-2
                     ">
                         16
@@ -3223,7 +3188,6 @@ border-slate-800
                     <p className="
                         text-xs
                         text-gray-500
-                        dark:text-gray-400
                         mt-2
                     ">
                         Successfully resolved
@@ -3232,22 +3196,19 @@ border-slate-800
                 </div>
 
 
-                {/* CRITICAL */}
+                {/* HIGH PRIORITY */}
 
                 <div className="
                     rounded-2xl
-                    bg-red-50
-                    dark:bg-red-500/10
+                    bg-red-500/10
                     border
-                    border-red-100
-                    dark:border-red-500/20
+                    border-red-400/20
                     p-5
                 ">
 
                     <p className="
                         text-sm
-                        text-gray-500
-                        dark:text-gray-400
+                        text-gray-400
                     ">
                         High Priority
                     </p>
@@ -3255,8 +3216,7 @@ border-slate-800
                     <p className="
                         text-3xl
                         font-bold
-                        text-red-600
-                        dark:text-red-400
+                        text-red-400
                         mt-2
                     ">
                         3
@@ -3265,7 +3225,6 @@ border-slate-800
                     <p className="
                         text-xs
                         text-gray-500
-                        dark:text-gray-400
                         mt-2
                     ">
                         Require attention
@@ -3285,13 +3244,14 @@ border-slate-800
                 gap-6
             ">
 
-                {/* STATUS DISTRIBUTION */}
+
+                {/* DEFECT STATUS */}
 
                 <div className="
                     rounded-2xl
                     border
-                    border-gray-200
-                    dark:border-slate-800
+                    border-slate-800
+                    bg-slate-950/40
                     p-6
                 ">
 
@@ -3300,8 +3260,7 @@ border-slate-800
                         <h4 className="
                             text-lg
                             font-bold
-                            text-gray-900
-                            dark:text-white
+                            text-white
                         ">
                             Defect Status
                         </h4>
@@ -3309,7 +3268,6 @@ border-slate-800
                         <p className="
                             text-sm
                             text-gray-500
-                            dark:text-gray-400
                             mt-1
                         ">
                             Current distribution of reported defects
@@ -3319,6 +3277,7 @@ border-slate-800
 
 
                     <div className="space-y-5">
+
 
                         {/* REPORTED */}
 
@@ -3331,17 +3290,13 @@ border-slate-800
                                 mb-2
                             ">
 
-                                <span className="
-                                    text-gray-600
-                                    dark:text-gray-300
-                                ">
+                                <span className="text-gray-400">
                                     Reported
                                 </span>
 
                                 <span className="
                                     font-semibold
-                                    text-gray-900
-                                    dark:text-white
+                                    text-white
                                 ">
                                     4
                                 </span>
@@ -3350,8 +3305,7 @@ border-slate-800
 
                             <div className="
                                 h-2
-                                bg-gray-100
-                                dark:bg-slate-800
+                                bg-slate-800
                                 rounded-full
                                 overflow-hidden
                             ">
@@ -3361,7 +3315,8 @@ border-slate-800
                                     w-[25%]
                                     bg-blue-500
                                     rounded-full
-                                "></div>
+                                ">
+                                </div>
 
                             </div>
 
@@ -3379,17 +3334,13 @@ border-slate-800
                                 mb-2
                             ">
 
-                                <span className="
-                                    text-gray-600
-                                    dark:text-gray-300
-                                ">
+                                <span className="text-gray-400">
                                     In Progress
                                 </span>
 
                                 <span className="
                                     font-semibold
-                                    text-gray-900
-                                    dark:text-white
+                                    text-white
                                 ">
                                     5
                                 </span>
@@ -3398,8 +3349,7 @@ border-slate-800
 
                             <div className="
                                 h-2
-                                bg-gray-100
-                                dark:bg-slate-800
+                                bg-slate-800
                                 rounded-full
                                 overflow-hidden
                             ">
@@ -3409,7 +3359,8 @@ border-slate-800
                                     w-[31%]
                                     bg-orange-500
                                     rounded-full
-                                "></div>
+                                ">
+                                </div>
 
                             </div>
 
@@ -3427,17 +3378,13 @@ border-slate-800
                                 mb-2
                             ">
 
-                                <span className="
-                                    text-gray-600
-                                    dark:text-gray-300
-                                ">
+                                <span className="text-gray-400">
                                     Resolved
                                 </span>
 
                                 <span className="
                                     font-semibold
-                                    text-gray-900
-                                    dark:text-white
+                                    text-white
                                 ">
                                     7
                                 </span>
@@ -3446,8 +3393,7 @@ border-slate-800
 
                             <div className="
                                 h-2
-                                bg-gray-100
-                                dark:bg-slate-800
+                                bg-slate-800
                                 rounded-full
                                 overflow-hidden
                             ">
@@ -3457,7 +3403,8 @@ border-slate-800
                                     w-[44%]
                                     bg-emerald-500
                                     rounded-full
-                                "></div>
+                                ">
+                                </div>
 
                             </div>
 
@@ -3475,17 +3422,13 @@ border-slate-800
                                 mb-2
                             ">
 
-                                <span className="
-                                    text-gray-600
-                                    dark:text-gray-300
-                                ">
+                                <span className="text-gray-400">
                                     Verified
                                 </span>
 
                                 <span className="
                                     font-semibold
-                                    text-gray-900
-                                    dark:text-white
+                                    text-white
                                 ">
                                     8
                                 </span>
@@ -3494,8 +3437,7 @@ border-slate-800
 
                             <div className="
                                 h-2
-                                bg-gray-100
-                                dark:bg-slate-800
+                                bg-slate-800
                                 rounded-full
                                 overflow-hidden
                             ">
@@ -3505,7 +3447,8 @@ border-slate-800
                                     w-[50%]
                                     bg-cyan-500
                                     rounded-full
-                                "></div>
+                                ">
+                                </div>
 
                             </div>
 
@@ -3516,13 +3459,13 @@ border-slate-800
                 </div>
 
 
-                {/* PRIORITY */}
+                {/* PRIORITY OVERVIEW */}
 
                 <div className="
                     rounded-2xl
                     border
-                    border-gray-200
-                    dark:border-slate-800
+                    border-slate-800
+                    bg-slate-950/40
                     p-6
                 ">
 
@@ -3531,8 +3474,7 @@ border-slate-800
                         <h4 className="
                             text-lg
                             font-bold
-                            text-gray-900
-                            dark:text-white
+                            text-white
                         ">
                             Priority Overview
                         </h4>
@@ -3540,7 +3482,6 @@ border-slate-800
                         <p className="
                             text-sm
                             text-gray-500
-                            dark:text-gray-400
                             mt-1
                         ">
                             Identify defects requiring immediate focus
@@ -3555,10 +3496,14 @@ border-slate-800
                         gap-4
                     ">
 
+
+                        {/* CRITICAL */}
+
                         <div className="
                             rounded-xl
-                            bg-red-50
-                            dark:bg-red-500/10
+                            bg-red-500/10
+                            border
+                            border-red-400/10
                             p-5
                             text-center
                         ">
@@ -3566,16 +3511,14 @@ border-slate-800
                             <p className="
                                 text-2xl
                                 font-bold
-                                text-red-600
-                                dark:text-red-400
+                                text-red-400
                             ">
                                 3
                             </p>
 
                             <p className="
                                 text-sm
-                                text-gray-600
-                                dark:text-gray-400
+                                text-gray-400
                                 mt-1
                             ">
                                 Critical
@@ -3584,10 +3527,13 @@ border-slate-800
                         </div>
 
 
+                        {/* HIGH */}
+
                         <div className="
                             rounded-xl
-                            bg-orange-50
-                            dark:bg-orange-500/10
+                            bg-orange-500/10
+                            border
+                            border-orange-400/10
                             p-5
                             text-center
                         ">
@@ -3595,16 +3541,14 @@ border-slate-800
                             <p className="
                                 text-2xl
                                 font-bold
-                                text-orange-600
-                                dark:text-orange-400
+                                text-orange-400
                             ">
                                 6
                             </p>
 
                             <p className="
                                 text-sm
-                                text-gray-600
-                                dark:text-gray-400
+                                text-gray-400
                                 mt-1
                             ">
                                 High
@@ -3613,10 +3557,13 @@ border-slate-800
                         </div>
 
 
+                        {/* MEDIUM */}
+
                         <div className="
                             rounded-xl
-                            bg-yellow-50
-                            dark:bg-yellow-500/10
+                            bg-yellow-500/10
+                            border
+                            border-yellow-400/10
                             p-5
                             text-center
                         ">
@@ -3624,16 +3571,14 @@ border-slate-800
                             <p className="
                                 text-2xl
                                 font-bold
-                                text-yellow-600
-                                dark:text-yellow-400
+                                text-yellow-400
                             ">
                                 9
                             </p>
 
                             <p className="
                                 text-sm
-                                text-gray-600
-                                dark:text-gray-400
+                                text-gray-400
                                 mt-1
                             ">
                                 Medium
@@ -3642,10 +3587,13 @@ border-slate-800
                         </div>
 
 
+                        {/* LOW */}
+
                         <div className="
                             rounded-xl
-                            bg-green-50
-                            dark:bg-green-500/10
+                            bg-green-500/10
+                            border
+                            border-green-400/10
                             p-5
                             text-center
                         ">
@@ -3653,16 +3601,14 @@ border-slate-800
                             <p className="
                                 text-2xl
                                 font-bold
-                                text-green-600
-                                dark:text-green-400
+                                text-green-400
                             ">
                                 6
                             </p>
 
                             <p className="
                                 text-sm
-                                text-gray-600
-                                dark:text-gray-400
+                                text-gray-400
                                 mt-1
                             ">
                                 Low
@@ -3698,9 +3644,7 @@ border-slate-800
 
                 <div>
 
-                    <p className="
-                        font-semibold
-                    ">
+                    <p className="font-semibold">
                         Centralized defect visibility
                     </p>
 
@@ -3720,7 +3664,7 @@ border-slate-800
                     px-4
                     py-2
                     rounded-lg
-                    bg-white/15
+                    bg-white/10
                     border
                     border-white/20
                     text-sm
