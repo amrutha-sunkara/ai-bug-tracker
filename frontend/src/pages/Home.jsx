@@ -1732,6 +1732,702 @@ text-gray-400
     </div>
 
 </section>
+{/* AI INTELLIGENCE */}
+
+<section
+    className="
+        relative
+        py-24
+        px-8
+        overflow-hidden
+        bg-gradient-to-b
+        from-slate-950
+        via-[#0B1020]
+        to-slate-950
+    "
+>
+
+    {/* Background Glow */}
+
+    <div className="
+        absolute
+        top-20
+        left-1/2
+        -translate-x-1/2
+        w-[500px]
+        h-[300px]
+        bg-purple-600/10
+        rounded-full
+        blur-3xl
+        pointer-events-none
+    ">
+    </div>
+
+
+    <div className="
+        relative
+        max-w-7xl
+        mx-auto
+    ">
+
+        {/* Section Heading */}
+
+        <div className="
+            text-center
+            mb-16
+        ">
+
+            <p className="
+                text-purple-400
+                font-semibold
+                text-sm
+                uppercase
+                tracking-[0.25em]
+                mb-4
+            ">
+                AI-Powered Intelligence
+            </p>
+
+
+            <h2 className="
+                text-4xl
+                md:text-5xl
+                font-bold
+                text-white
+            ">
+                Smarter Defect Management with AI
+            </h2>
+
+
+            <p className="
+                mt-5
+                text-gray-400
+                text-lg
+                max-w-2xl
+                mx-auto
+            ">
+                Turn raw defect information into actionable
+                insights and intelligent assistance throughout
+                the software development lifecycle.
+            </p>
+
+        </div>
+
+
+        {/* AI FEATURE GRID */}
+
+        <div className="
+            grid
+            grid-cols-1
+            md:grid-cols-2
+            lg:grid-cols-3
+            gap-7
+        ">
+
+
+            {/* AI BUG REPORT */}
+
+            <div className="
+                group
+                relative
+                bg-slate-900/90
+                border
+                border-cyan-400/10
+                rounded-2xl
+                p-7
+                overflow-hidden
+                transition-all
+                duration-300
+                hover:-translate-y-2
+                hover:border-cyan-400/40
+                hover:shadow-[0_20px_45px_rgba(34,211,238,0.10)]
+            ">
+
+                <div className="
+                    absolute
+                    -top-16
+                    -right-16
+                    w-32
+                    h-32
+                    rounded-full
+                    bg-cyan-400/10
+                    blur-3xl
+                    group-hover:bg-cyan-400/20
+                    transition
+                ">
+                </div>
+
+
+                <div className="
+                    relative
+                    w-14
+                    h-14
+                    rounded-2xl
+                    bg-cyan-400/10
+                    border
+                    border-cyan-400/20
+                    flex
+                    items-center
+                    justify-center
+                    text-2xl
+                    mb-6
+                    group-hover:scale-110
+                    transition
+                ">
+                    🤖
+                </div>
+
+
+                <h3 className="
+                    text-xl
+                    font-bold
+                    text-white
+                    mb-3
+                ">
+                    AI Bug Reports
+                </h3>
+
+
+                <p className="
+                    text-gray-400
+                    text-sm
+                    leading-6
+                ">
+                    Transform raw defect descriptions into
+                    clearer and more professional bug reports
+                    using AI assistance.
+                </p>
+
+
+                <div className="
+                    mt-6
+                    text-xs
+                    font-semibold
+                    text-cyan-400
+                    uppercase
+                    tracking-wider
+                ">
+                    Intelligent Reporting
+                </div>
+
+            </div>
+
+
+
+            {/* AI RESOLUTION */}
+
+            <div className="
+                group
+                relative
+                bg-slate-900/90
+                border
+                border-purple-400/10
+                rounded-2xl
+                p-7
+                overflow-hidden
+                transition-all
+                duration-300
+                hover:-translate-y-2
+                hover:border-purple-400/40
+                hover:shadow-[0_20px_45px_rgba(168,85,247,0.10)]
+            ">
+
+                <div className="
+                    absolute
+                    -top-16
+                    -right-16
+                    w-32
+                    h-32
+                    rounded-full
+                    bg-purple-400/10
+                    blur-3xl
+                    group-hover:bg-purple-400/20
+                    transition
+                ">
+                </div>
+
+
+                <div className="
+                    relative
+                    w-14
+                    h-14
+                    rounded-2xl
+                    bg-purple-400/10
+                    border
+                    border-purple-400/20
+                    flex
+                    items-center
+                    justify-center
+                    text-2xl
+                    mb-6
+                    group-hover:scale-110
+                    transition
+                ">
+                    🧠
+                </div>
+
+
+                <h3 className="
+                    text-xl
+                    font-bold
+                    text-white
+                    mb-3
+                ">
+                    AI Resolution Assistance
+                </h3>
+
+
+                <p className="
+                    text-gray-400
+                    text-sm
+                    leading-6
+                ">
+                    Analyze reported defects and provide
+                    investigation areas, debugging steps,
+                    possible resolutions and prevention ideas.
+                </p>
+
+
+                <div className="
+                    mt-6
+                    text-xs
+                    font-semibold
+                    text-purple-400
+                    uppercase
+                    tracking-wider
+                ">
+                    Intelligent Resolution
+                </div>
+
+            </div>
+
+
+
+            {/* SEMANTIC SEARCH */}
+
+            <div className="
+                group
+                relative
+                bg-slate-900/90
+                border
+                border-blue-400/10
+                rounded-2xl
+                p-7
+                overflow-hidden
+                transition-all
+                duration-300
+                hover:-translate-y-2
+                hover:border-blue-400/40
+                hover:shadow-[0_20px_45px_rgba(59,130,246,0.10)]
+            ">
+
+                <div className="
+                    absolute
+                    -top-16
+                    -right-16
+                    w-32
+                    h-32
+                    rounded-full
+                    bg-blue-400/10
+                    blur-3xl
+                    group-hover:bg-blue-400/20
+                    transition
+                ">
+                </div>
+
+
+                <div className="
+                    relative
+                    w-14
+                    h-14
+                    rounded-2xl
+                    bg-blue-400/10
+                    border
+                    border-blue-400/20
+                    flex
+                    items-center
+                    justify-center
+                    text-2xl
+                    mb-6
+                    group-hover:scale-110
+                    transition
+                ">
+                    🔍
+                </div>
+
+
+                <h3 className="
+                    text-xl
+                    font-bold
+                    text-white
+                    mb-3
+                ">
+                    Semantic Bug Search
+                </h3>
+
+
+                <p className="
+                    text-gray-400
+                    text-sm
+                    leading-6
+                ">
+                    Find related defects using semantic
+                    similarity instead of relying only on
+                    exact keyword matching.
+                </p>
+
+
+                <div className="
+                    mt-6
+                    text-xs
+                    font-semibold
+                    text-blue-400
+                    uppercase
+                    tracking-wider
+                ">
+                    Intelligent Search
+                </div>
+
+            </div>
+
+
+
+            {/* ROOT CAUSE */}
+
+            <div className="
+                group
+                relative
+                bg-slate-900/90
+                border
+                border-orange-400/10
+                rounded-2xl
+                p-7
+                overflow-hidden
+                transition-all
+                duration-300
+                hover:-translate-y-2
+                hover:border-orange-400/40
+                hover:shadow-[0_20px_45px_rgba(251,146,60,0.10)]
+            ">
+
+                <div className="
+                    absolute
+                    -top-16
+                    -right-16
+                    w-32
+                    h-32
+                    rounded-full
+                    bg-orange-400/10
+                    blur-3xl
+                    group-hover:bg-orange-400/20
+                    transition
+                ">
+                </div>
+
+
+                <div className="
+                    relative
+                    w-14
+                    h-14
+                    rounded-2xl
+                    bg-orange-400/10
+                    border
+                    border-orange-400/20
+                    flex
+                    items-center
+                    justify-center
+                    text-2xl
+                    mb-6
+                    group-hover:scale-110
+                    transition
+                ">
+                    🎯
+                </div>
+
+
+                <h3 className="
+                    text-xl
+                    font-bold
+                    text-white
+                    mb-3
+                ">
+                    Root Cause Analysis
+                </h3>
+
+
+                <p className="
+                    text-gray-400
+                    text-sm
+                    leading-6
+                ">
+                    Use AI assistance to investigate possible
+                    causes and understand the areas that may
+                    be contributing to a defect.
+                </p>
+
+
+                <div className="
+                    mt-6
+                    text-xs
+                    font-semibold
+                    text-orange-400
+                    uppercase
+                    tracking-wider
+                ">
+                    Intelligent Investigation
+                </div>
+
+            </div>
+
+
+
+            {/* TEST CASES */}
+
+            <div className="
+                group
+                relative
+                bg-slate-900/90
+                border
+                border-emerald-400/10
+                rounded-2xl
+                p-7
+                overflow-hidden
+                transition-all
+                duration-300
+                hover:-translate-y-2
+                hover:border-emerald-400/40
+                hover:shadow-[0_20px_45px_rgba(52,211,153,0.10)]
+            ">
+
+                <div className="
+                    absolute
+                    -top-16
+                    -right-16
+                    w-32
+                    h-32
+                    rounded-full
+                    bg-emerald-400/10
+                    blur-3xl
+                    group-hover:bg-emerald-400/20
+                    transition
+                ">
+                </div>
+
+
+                <div className="
+                    relative
+                    w-14
+                    h-14
+                    rounded-2xl
+                    bg-emerald-400/10
+                    border
+                    border-emerald-400/20
+                    flex
+                    items-center
+                    justify-center
+                    text-2xl
+                    mb-6
+                    group-hover:scale-110
+                    transition
+                ">
+                    🧪
+                </div>
+
+
+                <h3 className="
+                    text-xl
+                    font-bold
+                    text-white
+                    mb-3
+                ">
+                    Test Case Suggestions
+                </h3>
+
+
+                <p className="
+                    text-gray-400
+                    text-sm
+                    leading-6
+                ">
+                    Generate useful test case ideas based on
+                    reported defects to support validation
+                    and regression testing.
+                </p>
+
+
+                <div className="
+                    mt-6
+                    text-xs
+                    font-semibold
+                    text-emerald-400
+                    uppercase
+                    tracking-wider
+                ">
+                    Intelligent Testing
+                </div>
+
+            </div>
+
+
+
+            {/* AI SPRINT PLANNING */}
+
+            <div className="
+                group
+                relative
+                bg-slate-900/90
+                border
+                border-pink-400/10
+                rounded-2xl
+                p-7
+                overflow-hidden
+                transition-all
+                duration-300
+                hover:-translate-y-2
+                hover:border-pink-400/40
+                hover:shadow-[0_20px_45px_rgba(236,72,153,0.10)]
+            ">
+
+                <div className="
+                    absolute
+                    -top-16
+                    -right-16
+                    w-32
+                    h-32
+                    rounded-full
+                    bg-pink-400/10
+                    blur-3xl
+                    group-hover:bg-pink-400/20
+                    transition
+                ">
+                </div>
+
+
+                <div className="
+                    relative
+                    w-14
+                    h-14
+                    rounded-2xl
+                    bg-pink-400/10
+                    border
+                    border-pink-400/20
+                    flex
+                    items-center
+                    justify-center
+                    text-2xl
+                    mb-6
+                    group-hover:scale-110
+                    transition
+                ">
+                    📊
+                </div>
+
+
+                <h3 className="
+                    text-xl
+                    font-bold
+                    text-white
+                    mb-3
+                ">
+                    AI Sprint Planning
+                </h3>
+
+
+                <p className="
+                    text-gray-400
+                    text-sm
+                    leading-6
+                ">
+                    Use AI-powered sprint planning assistance
+                    to organize defects and support more
+                    efficient sprint management.
+                </p>
+
+
+                <div className="
+                    mt-6
+                    text-xs
+                    font-semibold
+                    text-pink-400
+                    uppercase
+                    tracking-wider
+                ">
+                    Intelligent Planning
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        {/* AI INTELLIGENCE FOOTER */}
+
+        <div className="
+            mt-16
+            flex
+            flex-col
+            md:flex-row
+            items-center
+            justify-center
+            gap-4
+            text-center
+        ">
+
+            <div className="
+                flex
+                items-center
+                gap-3
+                px-5
+                py-3
+                rounded-full
+                bg-purple-500/10
+                border
+                border-purple-400/20
+            ">
+
+                <span className="
+                    w-2
+                    h-2
+                    rounded-full
+                    bg-purple-400
+                    shadow-[0_0_12px_rgba(168,85,247,0.8)]
+                ">
+                </span>
+
+                <span className="
+                    text-purple-300
+                    text-sm
+                    font-semibold
+                ">
+                    AI Intelligence Layer
+                </span>
+
+            </div>
+
+
+            <span className="
+                hidden
+                md:block
+                text-gray-600
+            ">
+                •
+            </span>
+
+
+            <p className="
+                text-gray-500
+                text-sm
+            ">
+                Supporting faster investigation, resolution
+                and software quality.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
 <section className="
 text-center
 py-24
