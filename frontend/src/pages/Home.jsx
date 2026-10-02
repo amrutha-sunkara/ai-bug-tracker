@@ -1027,7 +1027,711 @@ text-gray-400
     </div>
 
 </section>
+{/* TEAM ROLES */}
 
+<section
+    className="
+        relative
+        py-24
+        px-8
+        bg-gradient-to-b
+        from-slate-950
+        via-slate-900
+        to-slate-950
+    "
+>
+
+    <div className="max-w-7xl mx-auto">
+
+        {/* Section Heading */}
+
+        <div className="text-center mb-16">
+
+            <p className="
+                text-purple-400
+                font-semibold
+                text-sm
+                uppercase
+                tracking-[0.25em]
+                mb-4
+            ">
+                Built For Every Team
+            </p>
+
+            <h2 className="
+                text-4xl
+                md:text-5xl
+                font-bold
+                text-white
+            ">
+                One Platform. Three Powerful Roles.
+            </h2>
+
+            <p className="
+                mt-5
+                text-gray-400
+                text-lg
+                max-w-2xl
+                mx-auto
+            ">
+                Bug Tracker AI gives every team member the tools
+                they need to manage defects efficiently and
+                deliver better software.
+            </p>
+
+        </div>
+
+
+        {/* ROLE CARDS */}
+
+        <div className="
+            grid
+            grid-cols-1
+            md:grid-cols-3
+            gap-8
+        ">
+
+
+            {/* MANAGER */}
+
+            <div className="
+                group
+                relative
+                bg-slate-900
+                border
+                border-slate-700
+                rounded-3xl
+                p-8
+                transition-all
+                duration-300
+                hover:-translate-y-2
+                hover:border-blue-400/50
+                hover:shadow-[0_20px_50px_rgba(59,130,246,0.12)]
+                overflow-hidden
+            ">
+
+                {/* Glow */}
+
+                <div className="
+                    absolute
+                    -top-20
+                    -right-20
+                    w-40
+                    h-40
+                    bg-blue-500/10
+                    rounded-full
+                    blur-3xl
+                    group-hover:bg-blue-500/20
+                    transition
+                ">
+                </div>
+
+
+                {/* Icon */}
+
+                <div className="
+                    relative
+                    w-16
+                    h-16
+                    rounded-2xl
+                    bg-blue-400/10
+                    border
+                    border-blue-400/20
+                    flex
+                    items-center
+                    justify-center
+                    text-3xl
+                    mb-6
+                    group-hover:scale-110
+                    transition
+                ">
+                    👨‍💼
+                </div>
+
+
+                {/* Title */}
+
+                <h3 className="
+                    text-2xl
+                    font-bold
+                    text-white
+                    mb-3
+                ">
+                    Manager
+                </h3>
+
+
+                <p className="
+                    text-gray-400
+                    text-sm
+                    leading-6
+                    mb-7
+                ">
+                    Manage projects, organize sprints and
+                    monitor the overall progress of the
+                    development team.
+                </p>
+
+
+                {/* Responsibilities */}
+
+                <div className="space-y-4">
+
+                    <div className="flex items-center gap-3">
+
+                        <span className="
+                            w-7
+                            h-7
+                            rounded-lg
+                            bg-blue-400/10
+                            text-blue-400
+                            flex
+                            items-center
+                            justify-center
+                            text-sm
+                        ">
+                            ✓
+                        </span>
+
+                        <span className="text-gray-300 text-sm">
+                            Manage projects
+                        </span>
+
+                    </div>
+
+
+                    <div className="flex items-center gap-3">
+
+                        <span className="
+                            w-7
+                            h-7
+                            rounded-lg
+                            bg-blue-400/10
+                            text-blue-400
+                            flex
+                            items-center
+                            justify-center
+                            text-sm
+                        ">
+                            ✓
+                        </span>
+
+                        <span className="text-gray-300 text-sm">
+                            Create and manage sprints
+                        </span>
+
+                    </div>
+
+
+                    <div className="flex items-center gap-3">
+
+                        <span className="
+                            w-7
+                            h-7
+                            rounded-lg
+                            bg-blue-400/10
+                            text-blue-400
+                            flex
+                            items-center
+                            justify-center
+                            text-sm
+                        ">
+                            ✓
+                        </span>
+
+                        <span className="text-gray-300 text-sm">
+                            Monitor dashboard analytics
+                        </span>
+
+                    </div>
+
+
+                    <div className="flex items-center gap-3">
+
+                        <span className="
+                            w-7
+                            h-7
+                            rounded-lg
+                            bg-blue-400/10
+                            text-blue-400
+                            flex
+                            items-center
+                            justify-center
+                            text-sm
+                        ">
+                            ✓
+                        </span>
+
+                        <span className="text-gray-300 text-sm">
+                            Manage team workflow
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                {/* Role Label */}
+
+                <div className="
+                    mt-8
+                    pt-5
+                    border-t
+                    border-slate-700
+                    text-blue-400
+                    text-xs
+                    font-semibold
+                    uppercase
+                    tracking-wider
+                ">
+                    Project & Team Management
+                </div>
+
+            </div>
+
+
+
+            {/* TESTER */}
+
+            <div className="
+                group
+                relative
+                bg-slate-900
+                border
+                border-slate-700
+                rounded-3xl
+                p-8
+                transition-all
+                duration-300
+                hover:-translate-y-2
+                hover:border-cyan-400/50
+                hover:shadow-[0_20px_50px_rgba(34,211,238,0.12)]
+                overflow-hidden
+            ">
+
+                {/* Glow */}
+
+                <div className="
+                    absolute
+                    -top-20
+                    -right-20
+                    w-40
+                    h-40
+                    bg-cyan-500/10
+                    rounded-full
+                    blur-3xl
+                    group-hover:bg-cyan-500/20
+                    transition
+                ">
+                </div>
+
+
+                {/* Icon */}
+
+                <div className="
+                    relative
+                    w-16
+                    h-16
+                    rounded-2xl
+                    bg-cyan-400/10
+                    border
+                    border-cyan-400/20
+                    flex
+                    items-center
+                    justify-center
+                    text-3xl
+                    mb-6
+                    group-hover:scale-110
+                    transition
+                ">
+                    🧪
+                </div>
+
+
+                {/* Title */}
+
+                <h3 className="
+                    text-2xl
+                    font-bold
+                    text-white
+                    mb-3
+                ">
+                    Tester
+                </h3>
+
+
+                <p className="
+                    text-gray-400
+                    text-sm
+                    leading-6
+                    mb-7
+                ">
+                    Identify defects, provide detailed reports
+                    and verify that resolved issues are working
+                    correctly.
+                </p>
+
+
+                {/* Responsibilities */}
+
+                <div className="space-y-4">
+
+                    <div className="flex items-center gap-3">
+
+                        <span className="
+                            w-7
+                            h-7
+                            rounded-lg
+                            bg-cyan-400/10
+                            text-cyan-400
+                            flex
+                            items-center
+                            justify-center
+                            text-sm
+                        ">
+                            ✓
+                        </span>
+
+                        <span className="text-gray-300 text-sm">
+                            Report software defects
+                        </span>
+
+                    </div>
+
+
+                    <div className="flex items-center gap-3">
+
+                        <span className="
+                            w-7
+                            h-7
+                            rounded-lg
+                            bg-cyan-400/10
+                            text-cyan-400
+                            flex
+                            items-center
+                            justify-center
+                            text-sm
+                        ">
+                            ✓
+                        </span>
+
+                        <span className="text-gray-300 text-sm">
+                            Set priority and severity
+                        </span>
+
+                    </div>
+
+
+                    <div className="flex items-center gap-3">
+
+                        <span className="
+                            w-7
+                            h-7
+                            rounded-lg
+                            bg-cyan-400/10
+                            text-cyan-400
+                            flex
+                            items-center
+                            justify-center
+                            text-sm
+                        ">
+                            ✓
+                        </span>
+
+                        <span className="text-gray-300 text-sm">
+                            Generate AI-assisted reports
+                        </span>
+
+                    </div>
+
+
+                    <div className="flex items-center gap-3">
+
+                        <span className="
+                            w-7
+                            h-7
+                            rounded-lg
+                            bg-cyan-400/10
+                            text-cyan-400
+                            flex
+                            items-center
+                            justify-center
+                            text-sm
+                        ">
+                            ✓
+                        </span>
+
+                        <span className="text-gray-300 text-sm">
+                            Verify resolved defects
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                {/* Role Label */}
+
+                <div className="
+                    mt-8
+                    pt-5
+                    border-t
+                    border-slate-700
+                    text-cyan-400
+                    text-xs
+                    font-semibold
+                    uppercase
+                    tracking-wider
+                ">
+                    Quality Assurance
+                </div>
+
+            </div>
+
+
+
+            {/* DEVELOPER */}
+
+            <div className="
+                group
+                relative
+                bg-slate-900
+                border
+                border-slate-700
+                rounded-3xl
+                p-8
+                transition-all
+                duration-300
+                hover:-translate-y-2
+                hover:border-purple-400/50
+                hover:shadow-[0_20px_50px_rgba(168,85,247,0.12)]
+                overflow-hidden
+            ">
+
+                {/* Glow */}
+
+                <div className="
+                    absolute
+                    -top-20
+                    -right-20
+                    w-40
+                    h-40
+                    bg-purple-500/10
+                    rounded-full
+                    blur-3xl
+                    group-hover:bg-purple-500/20
+                    transition
+                ">
+                </div>
+
+
+                {/* Icon */}
+
+                <div className="
+                    relative
+                    w-16
+                    h-16
+                    rounded-2xl
+                    bg-purple-400/10
+                    border
+                    border-purple-400/20
+                    flex
+                    items-center
+                    justify-center
+                    text-3xl
+                    mb-6
+                    group-hover:scale-110
+                    transition
+                ">
+                    💻
+                </div>
+
+
+                {/* Title */}
+
+                <h3 className="
+                    text-2xl
+                    font-bold
+                    text-white
+                    mb-3
+                ">
+                    Developer
+                </h3>
+
+
+                <p className="
+                    text-gray-400
+                    text-sm
+                    leading-6
+                    mb-7
+                ">
+                    Investigate assigned defects, use AI-powered
+                    assistance and resolve issues efficiently.
+                </p>
+
+
+                {/* Responsibilities */}
+
+                <div className="space-y-4">
+
+                    <div className="flex items-center gap-3">
+
+                        <span className="
+                            w-7
+                            h-7
+                            rounded-lg
+                            bg-purple-400/10
+                            text-purple-400
+                            flex
+                            items-center
+                            justify-center
+                            text-sm
+                        ">
+                            ✓
+                        </span>
+
+                        <span className="text-gray-300 text-sm">
+                            View assigned defects
+                        </span>
+
+                    </div>
+
+
+                    <div className="flex items-center gap-3">
+
+                        <span className="
+                            w-7
+                            h-7
+                            rounded-lg
+                            bg-purple-400/10
+                            text-purple-400
+                            flex
+                            items-center
+                            justify-center
+                            text-sm
+                        ">
+                            ✓
+                        </span>
+
+                        <span className="text-gray-300 text-sm">
+                            Update defect status
+                        </span>
+
+                    </div>
+
+
+                    <div className="flex items-center gap-3">
+
+                        <span className="
+                            w-7
+                            h-7
+                            rounded-lg
+                            bg-purple-400/10
+                            text-purple-400
+                            flex
+                            items-center
+                            justify-center
+                            text-sm
+                        ">
+                            ✓
+                        </span>
+
+                        <span className="text-gray-300 text-sm">
+                            Get AI resolution assistance
+                        </span>
+
+                    </div>
+
+
+                    <div className="flex items-center gap-3">
+
+                        <span className="
+                            w-7
+                            h-7
+                            rounded-lg
+                            bg-purple-400/10
+                            text-purple-400
+                            flex
+                            items-center
+                            justify-center
+                            text-sm
+                        ">
+                            ✓
+                        </span>
+
+                        <span className="text-gray-300 text-sm">
+                            Resolve assigned bugs
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                {/* Role Label */}
+
+                <div className="
+                    mt-8
+                    pt-5
+                    border-t
+                    border-slate-700
+                    text-purple-400
+                    text-xs
+                    font-semibold
+                    uppercase
+                    tracking-wider
+                ">
+                    Development & Resolution
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        {/* Role Flow */}
+
+        <div className="
+            mt-14
+            flex
+            flex-wrap
+            justify-center
+            items-center
+            gap-3
+            text-sm
+            text-gray-400
+        ">
+
+            <span className="text-cyan-400 font-semibold">
+                Tester
+            </span>
+
+            <span>→</span>
+
+            <span className="text-purple-400 font-semibold">
+                Developer
+            </span>
+
+            <span>→</span>
+
+            <span className="text-blue-400 font-semibold">
+                Manager
+            </span>
+
+            <span className="mx-2 text-gray-600">
+                •
+            </span>
+
+            <span className="text-gray-400">
+                Collaborative defect management
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
 <section className="
 text-center
 py-24
