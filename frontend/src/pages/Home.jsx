@@ -129,6 +129,62 @@ track issues, generate AI-powered reports and improve
 software quality.
 
 </p>
+<div className="
+flex
+flex-wrap
+gap-3
+mt-6
+">
+
+<span className="
+px-4
+py-2
+rounded-full
+bg-cyan-400/10
+border
+border-cyan-400/20
+text-cyan-300
+text-sm
+font-semibold
+">
+
+🤖 AI-Powered Analysis
+
+</span>
+
+<span className="
+px-4
+py-2
+rounded-full
+bg-purple-400/10
+border
+border-purple-400/20
+text-purple-300
+text-sm
+font-semibold
+">
+
+📊 Sprint Analytics
+
+</span>
+
+<span className="
+px-4
+py-2
+rounded-full
+bg-blue-400/10
+border
+border-blue-400/20
+text-blue-300
+text-sm
+font-semibold
+">
+
+🔐 Role-Based Access
+
+</span>
+
+</div>
 
 
 
@@ -164,6 +220,29 @@ transition
 Get Started 🚀
 
 </Link>
+<button
+onClick={() =>
+    document
+        .getElementById("workflow")
+        ?.scrollIntoView({ behavior: "smooth" })
+}
+className="
+px-8
+py-4
+rounded-xl
+border
+border-purple-400/40
+text-purple-200
+bg-purple-500/5
+hover:bg-purple-500/15
+hover:border-purple-400/70
+transition
+hover:scale-105
+font-semibold
+"
+>
+See How It Works
+</button>
 
 
 
@@ -508,11 +587,13 @@ text-gray-400
 
 
 
-<section className="
+<section
+id="workflow"
+className="
 py-20
 bg-slate-900
-">
-
+"
+>
 
 <h2 className="
 text-5xl
