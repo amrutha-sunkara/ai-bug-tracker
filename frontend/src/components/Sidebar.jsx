@@ -70,11 +70,14 @@ return(
 w-72
 min-h-screen
 bg-white
-dark:bg-slate-900
+dark:bg-[#0D1426]
 border-r
-dark:border-slate-700
+border-violet-100
+dark:border-slate-700/70
 p-6
 transition
+shadow-[4px_0_20px_rgba(139,92,246,0.06)]
+dark:shadow-[4px_0_20px_rgba(0,0,0,0.18)]
 ">
 
 

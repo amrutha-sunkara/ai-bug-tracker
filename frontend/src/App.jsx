@@ -34,7 +34,22 @@ return (
 <div className={darkMode ? "dark" : ""}>
 
 
-<div className="min-h-screen bg-gray-100 dark:bg-slate-950 text-gray-900 dark:text-white">
+<div
+    className="
+        min-h-screen
+        bg-gradient-to-br
+        from-violet-50
+        via-white
+        to-purple-50
+        dark:from-[#070B18]
+        dark:via-[#0B1020]
+        dark:to-[#11162A]
+        text-gray-900
+        dark:text-white
+        transition-colors
+        duration-300
+    "
+>
 
 
 <BrowserRouter>

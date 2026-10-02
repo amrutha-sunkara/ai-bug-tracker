@@ -45,15 +45,10 @@ duration-300
 z-50
 
 ${landing
-
 ?
-
 "absolute top-0 left-0 w-full bg-transparent text-white"
-
 :
-
-"sticky top-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-lg shadow border-b dark:border-slate-700"
-
+"sticky top-0 bg-white/75 dark:bg-[#0D1426]/85 backdrop-blur-lg shadow-[0_4px_20px_rgba(139,92,246,0.08)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.25)] border-b border-violet-100 dark:border-slate-700/70"
 }
 
 `}
