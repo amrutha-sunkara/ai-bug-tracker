@@ -583,127 +583,450 @@ text-gray-400
 
 
 
-{/* WORKFLOW */}
-
-
+{/* HOW IT WORKS */}
 
 <section
-id="workflow"
-className="
-py-20
-bg-slate-900
-"
+    id="workflow"
+    className="
+        py-24
+        px-8
+        bg-gradient-to-b
+        from-slate-950
+        via-slate-900
+        to-slate-950
+    "
 >
 
-<h2 className="
-text-5xl
-font-bold
-text-center
-mb-14
-">
+    <div className="max-w-7xl mx-auto">
 
-How It Works
+        {/* Section Heading */}
 
-</h2>
+        <div className="text-center mb-16">
 
+            <p className="
+                text-cyan-400
+                font-semibold
+                text-sm
+                uppercase
+                tracking-[0.25em]
+                mb-4
+            ">
+                Simple Workflow
+            </p>
 
+            <h2 className="
+                text-4xl
+                md:text-5xl
+                font-bold
+                text-white
+            ">
+                How It Works
+            </h2>
 
+            <p className="
+                mt-5
+                text-gray-400
+                text-lg
+                max-w-2xl
+                mx-auto
+            ">
+                From reporting a defect to closing it successfully,
+                Bug Tracker AI helps your team manage the complete
+                defect lifecycle.
+            </p>
 
-
-<div className="
-flex
-flex-col
-md:flex-row
-justify-center
-gap-8
-">
-
-
-{
-
-
-[
-
-"Create Project",
-
-"Report Bug",
-
-"AI Improves Report",
-
-"Track Resolution"
-
-].map((item,index)=>(
-
-
-
-<div
-
-key={item}
-
-className="
-bg-slate-800
-border
-border-slate-700
-rounded-2xl
-p-8
-w-64
-text-center
-hover:scale-105
-transition
-"
-
->
+        </div>
 
 
-<div className="
-text-cyan-400
-text-4xl
-font-bold
-">
+        {/* Workflow Steps */}
 
-0{index+1}
+        <div className="
+            grid
+            grid-cols-1
+            md:grid-cols-4
+            gap-6
+            relative
+        ">
 
-</div>
+            {/* STEP 1 */}
+
+            <div className="
+                group
+                relative
+                bg-slate-900
+                border
+                border-slate-700
+                rounded-2xl
+                p-7
+                text-center
+                transition-all
+                duration-300
+                hover:-translate-y-2
+                hover:border-cyan-400/50
+                hover:shadow-[0_15px_40px_rgba(34,211,238,0.10)]
+            ">
+
+                <div className="
+                    absolute
+                    top-5
+                    right-5
+                    text-xs
+                    font-bold
+                    text-cyan-400
+                ">
+                    01
+                </div>
+
+                <div className="
+                    w-16
+                    h-16
+                    mx-auto
+                    rounded-2xl
+                    bg-cyan-400/10
+                    border
+                    border-cyan-400/20
+                    flex
+                    items-center
+                    justify-center
+                    text-3xl
+                    mb-6
+                    group-hover:scale-110
+                    transition
+                ">
+                    🐞
+                </div>
+
+                <h3 className="
+                    text-xl
+                    font-bold
+                    text-white
+                    mb-3
+                ">
+                    Report Bug
+                </h3>
+
+                <p className="
+                    text-gray-400
+                    text-sm
+                    leading-6
+                ">
+                    Create a defect report with its description,
+                    priority and severity.
+                </p>
+
+            </div>
 
 
-<h3 className="
-mt-4
-font-bold
-">
+            {/* ARROW */}
 
-{item}
-
-</h3>
-
-
-</div>
-
-
-
-))
-
-
-}
+            <div className="
+                hidden
+                md:flex
+                absolute
+                top-1/2
+                left-[23%]
+                text-cyan-400/60
+                text-2xl
+                -translate-y-1/2
+            ">
+                →
+            </div>
 
 
+            {/* STEP 2 */}
 
-</div>
+            <div className="
+                group
+                relative
+                bg-slate-900
+                border
+                border-slate-700
+                rounded-2xl
+                p-7
+                text-center
+                transition-all
+                duration-300
+                hover:-translate-y-2
+                hover:border-purple-400/50
+                hover:shadow-[0_15px_40px_rgba(168,85,247,0.10)]
+            ">
+
+                <div className="
+                    absolute
+                    top-5
+                    right-5
+                    text-xs
+                    font-bold
+                    text-purple-400
+                ">
+                    02
+                </div>
+
+                <div className="
+                    w-16
+                    h-16
+                    mx-auto
+                    rounded-2xl
+                    bg-purple-400/10
+                    border
+                    border-purple-400/20
+                    flex
+                    items-center
+                    justify-center
+                    text-3xl
+                    mb-6
+                    group-hover:scale-110
+                    transition
+                ">
+                    🤖
+                </div>
+
+                <h3 className="
+                    text-xl
+                    font-bold
+                    text-white
+                    mb-3
+                ">
+                    AI Analysis
+                </h3>
+
+                <p className="
+                    text-gray-400
+                    text-sm
+                    leading-6
+                ">
+                    AI analyzes the defect and provides
+                    intelligent assistance for investigation
+                    and resolution.
+                </p>
+
+            </div>
 
 
+            {/* ARROW */}
+
+            <div className="
+                hidden
+                md:flex
+                absolute
+                top-1/2
+                left-[48%]
+                text-purple-400/60
+                text-2xl
+                -translate-y-1/2
+            ">
+                →
+            </div>
+
+
+            {/* STEP 3 */}
+
+            <div className="
+                group
+                relative
+                bg-slate-900
+                border
+                border-slate-700
+                rounded-2xl
+                p-7
+                text-center
+                transition-all
+                duration-300
+                hover:-translate-y-2
+                hover:border-blue-400/50
+                hover:shadow-[0_15px_40px_rgba(59,130,246,0.10)]
+            ">
+
+                <div className="
+                    absolute
+                    top-5
+                    right-5
+                    text-xs
+                    font-bold
+                    text-blue-400
+                ">
+                    03
+                </div>
+
+                <div className="
+                    w-16
+                    h-16
+                    mx-auto
+                    rounded-2xl
+                    bg-blue-400/10
+                    border
+                    border-blue-400/20
+                    flex
+                    items-center
+                    justify-center
+                    text-3xl
+                    mb-6
+                    group-hover:scale-110
+                    transition
+                ">
+                    👥
+                </div>
+
+                <h3 className="
+                    text-xl
+                    font-bold
+                    text-white
+                    mb-3
+                ">
+                    Track & Manage
+                </h3>
+
+                <p className="
+                    text-gray-400
+                    text-sm
+                    leading-6
+                ">
+                    Assign defects, update their status and
+                    organize work through sprint management.
+                </p>
+
+            </div>
+
+
+            {/* ARROW */}
+
+            <div className="
+                hidden
+                md:flex
+                absolute
+                top-1/2
+                right-[23%]
+                text-blue-400/60
+                text-2xl
+                -translate-y-1/2
+            ">
+                →
+            </div>
+
+
+            {/* STEP 4 */}
+
+            <div className="
+                group
+                relative
+                bg-slate-900
+                border
+                border-slate-700
+                rounded-2xl
+                p-7
+                text-center
+                transition-all
+                duration-300
+                hover:-translate-y-2
+                hover:border-emerald-400/50
+                hover:shadow-[0_15px_40px_rgba(52,211,153,0.10)]
+            ">
+
+                <div className="
+                    absolute
+                    top-5
+                    right-5
+                    text-xs
+                    font-bold
+                    text-emerald-400
+                ">
+                    04
+                </div>
+
+                <div className="
+                    w-16
+                    h-16
+                    mx-auto
+                    rounded-2xl
+                    bg-emerald-400/10
+                    border
+                    border-emerald-400/20
+                    flex
+                    items-center
+                    justify-center
+                    text-3xl
+                    mb-6
+                    group-hover:scale-110
+                    transition
+                ">
+                    ✅
+                </div>
+
+                <h3 className="
+                    text-xl
+                    font-bold
+                    text-white
+                    mb-3
+                ">
+                    Resolve & Verify
+                </h3>
+
+                <p className="
+                    text-gray-400
+                    text-sm
+                    leading-6
+                ">
+                    Resolve the defect, verify the fix and
+                    close the issue with complete history.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        {/* Workflow Status Line */}
+
+        <div className="
+            mt-14
+            flex
+            flex-wrap
+            justify-center
+            items-center
+            gap-3
+            text-sm
+            text-gray-400
+        ">
+
+            <span className="text-cyan-400">
+                Reported
+            </span>
+
+            <span>→</span>
+
+            <span className="text-blue-400">
+                Assigned
+            </span>
+
+            <span>→</span>
+
+            <span className="text-purple-400">
+                In Progress
+            </span>
+
+            <span>→</span>
+
+            <span className="text-orange-400">
+                Resolved
+            </span>
+
+            <span>→</span>
+
+            <span className="text-yellow-400">
+                Verified
+            </span>
+
+            <span>→</span>
+
+            <span className="text-emerald-400">
+                Closed
+            </span>
+
+        </div>
+
+    </div>
 
 </section>
-
-
-
-
-
-
-
-
-
-{/* CTA */}
-
-
 
 <section className="
 text-center
