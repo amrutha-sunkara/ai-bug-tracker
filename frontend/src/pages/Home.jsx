@@ -284,136 +284,615 @@ Login
 
 {/* AI DASHBOARD MOCKUP */}
 
-
-
 <div className="
-relative
+    relative
+    group
 ">
 
+    {/* OUTER GLOW */}
 
-<div className="
-bg-slate-900
-border
-border-slate-700
-rounded-3xl
-p-6
-shadow-2xl
-hover:scale-105
-transition
-">
-
-
-<div className="
-flex
-justify-between
-mb-6
-">
+    <div className="
+        absolute
+        -inset-6
+        bg-gradient-to-r
+        from-cyan-500/10
+        via-blue-500/10
+        to-purple-500/10
+        blur-3xl
+        rounded-3xl
+    ">
+    </div>
 
 
-<h3 className="
-text-xl
-font-bold
-">
+    {/* DASHBOARD */}
 
-AI Dashboard
+    <div className="
+        relative
+        bg-[#0B1224]
+        border
+        border-slate-700
+        rounded-3xl
+        p-6
+        shadow-2xl
+        overflow-hidden
+    ">
 
-</h3>
+
+        {/* DASHBOARD HEADER */}
+
+        <div className="
+            flex
+            items-center
+            justify-between
+            mb-6
+        ">
+
+            <h3 className="
+                text-lg
+                font-bold
+                text-white
+            ">
+                AI Dashboard
+            </h3>
 
 
-<span className="
-text-green-400
-">
+            <span className="
+                flex
+                items-center
+                gap-2
+                text-xs
+                text-emerald-400
+                font-semibold
+            ">
 
-● Online
+                <span className="
+                    w-2
+                    h-2
+                    rounded-full
+                    bg-emerald-400
+                    shadow-[0_0_10px_rgba(52,211,153,0.8)]
+                ">
+                </span>
 
-</span>
+                Online
 
+            </span>
+
+        </div>
+
+
+        {/* TOP DASHBOARD */}
+
+        <div className="
+            grid
+            grid-cols-1
+            sm:grid-cols-2
+            gap-4
+            mb-5
+        ">
+
+
+            {/* LEFT STATS */}
+
+            <div className="space-y-4">
+
+
+                {/* BUGS DETECTED */}
+
+                <div className="
+                    bg-slate-800/80
+                    border
+                    border-slate-700
+                    rounded-xl
+                    p-4
+                    transition
+                    hover:border-cyan-400/30
+                ">
+
+                    <p className="
+                        text-xs
+                        text-gray-400
+                        mb-1
+                    ">
+                        🐞 Bugs Detected
+                    </p>
+
+                    <div className="
+                        flex
+                        items-end
+                        justify-between
+                    ">
+
+                        <h4 className="
+                            text-3xl
+                            font-bold
+                            text-white
+                        ">
+                            24
+                        </h4>
+
+                        <span className="
+                            text-xs
+                            text-emerald-400
+                        ">
+                            +12%
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                {/* AI REPORTS */}
+
+                <div className="
+                    bg-slate-800/80
+                    border
+                    border-slate-700
+                    rounded-xl
+                    p-4
+                    transition
+                    hover:border-purple-400/30
+                ">
+
+                    <p className="
+                        text-xs
+                        text-gray-400
+                        mb-1
+                    ">
+                        🤖 AI Reports Generated
+                    </p>
+
+                    <div className="
+                        flex
+                        items-end
+                        justify-between
+                    ">
+
+                        <h4 className="
+                            text-3xl
+                            font-bold
+                            text-white
+                        ">
+                            18
+                        </h4>
+
+                        <span className="
+                            text-xs
+                            text-cyan-400
+                        ">
+                            +8%
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            {/* ACTIVITY GRAPH */}
+
+            <div className="
+                bg-slate-800/80
+                border
+                border-slate-700
+                rounded-xl
+                p-4
+            ">
+
+                <div className="
+                    flex
+                    items-center
+                    justify-between
+                    mb-4
+                ">
+
+                    <p className="
+                        text-xs
+                        text-gray-400
+                    ">
+                        Bug Activity
+                    </p>
+
+                    <span className="
+                        text-xs
+                        text-cyan-400
+                    ">
+                        Weekly
+                    </span>
+
+                </div>
+
+
+                <div className="
+                    h-28
+                    flex
+                    items-end
+                    justify-between
+                    gap-2
+                ">
+
+                    <div className="
+                        w-full
+                        h-[30%]
+                        rounded-t-md
+                        bg-blue-500/60
+                    ">
+                    </div>
+
+                    <div className="
+                        w-full
+                        h-[45%]
+                        rounded-t-md
+                        bg-blue-500/70
+                    ">
+                    </div>
+
+                    <div className="
+                        w-full
+                        h-[35%]
+                        rounded-t-md
+                        bg-cyan-400/70
+                    ">
+                    </div>
+
+                    <div className="
+                        w-full
+                        h-[60%]
+                        rounded-t-md
+                        bg-cyan-400/80
+                    ">
+                    </div>
+
+                    <div className="
+                        w-full
+                        h-[52%]
+                        rounded-t-md
+                        bg-purple-500/70
+                    ">
+                    </div>
+
+                    <div className="
+                        w-full
+                        h-[75%]
+                        rounded-t-md
+                        bg-purple-500/80
+                    ">
+                    </div>
+
+                    <div className="
+                        w-full
+                        h-[90%]
+                        rounded-t-md
+                        bg-cyan-400
+                        shadow-[0_0_15px_rgba(34,211,238,0.35)]
+                    ">
+                    </div>
+
+                </div>
+
+
+                <div className="
+                    flex
+                    justify-between
+                    text-[10px]
+                    text-gray-600
+                    mt-2
+                ">
+
+                    <span>Mon</span>
+                    <span>Tue</span>
+                    <span>Wed</span>
+                    <span>Thu</span>
+                    <span>Fri</span>
+                    <span>Sat</span>
+                    <span>Sun</span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {/* BUG STATUS */}
+
+        <div className="
+            bg-slate-800/80
+            border
+            border-slate-700
+            rounded-xl
+            p-5
+        ">
+
+            <div className="
+                flex
+                items-center
+                justify-between
+                mb-5
+            ">
+
+                <div>
+
+                    <h4 className="
+                        text-base
+                        font-bold
+                        text-white
+                    ">
+                        Bug Status
+                    </h4>
+
+                    <p className="
+                        text-xs
+                        text-gray-500
+                        mt-1
+                    ">
+                        Current defect distribution
+                    </p>
+
+                </div>
+
+
+                <span className="
+                    text-xs
+                    text-gray-400
+                ">
+                    24 Total
+                </span>
+
+            </div>
+
+
+            <div className="
+                flex
+                items-center
+                gap-6
+            ">
+
+
+                {/* DONUT GRAPH */}
+
+                <div className="
+                    relative
+                    w-32
+                    h-32
+                    rounded-full
+                    flex-shrink-0
+                    flex
+                    items-center
+                    justify-center
+                "
+                style={{
+                    background:
+                        "conic-gradient(#3b82f6 0deg 60deg, #a855f7 60deg 105deg, #f97316 105deg 180deg, #10b981 180deg 270deg, #06b6d4 270deg 330deg, #ec4899 330deg 360deg)"
+                }}
+                >
+
+                    <div className="
+                        w-20
+                        h-20
+                        rounded-full
+                        bg-[#0B1224]
+                        flex
+                        flex-col
+                        items-center
+                        justify-center
+                    ">
+
+                        <span className="
+                            text-xl
+                            font-bold
+                            text-white
+                        ">
+                            24
+                        </span>
+
+                        <span className="
+                            text-[10px]
+                            text-gray-500
+                        ">
+                            Total
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                {/* STATUS LEGEND */}
+
+                <div className="
+                    flex-1
+                    grid
+                    grid-cols-2
+                    gap-x-4
+                    gap-y-3
+                ">
+
+
+                    <div className="
+                        flex
+                        items-center
+                        gap-2
+                        text-xs
+                        text-gray-400
+                    ">
+
+                        <span className="
+                            w-2
+                            h-2
+                            rounded-full
+                            bg-blue-500
+                        ">
+                        </span>
+
+                        Reported
+
+                    </div>
+
+
+                    <div className="
+                        flex
+                        items-center
+                        gap-2
+                        text-xs
+                        text-gray-400
+                    ">
+
+                        <span className="
+                            w-2
+                            h-2
+                            rounded-full
+                            bg-purple-500
+                        ">
+                        </span>
+
+                        Assigned
+
+                    </div>
+
+
+                    <div className="
+                        flex
+                        items-center
+                        gap-2
+                        text-xs
+                        text-gray-400
+                    ">
+
+                        <span className="
+                            w-2
+                            h-2
+                            rounded-full
+                            bg-orange-500
+                        ">
+                        </span>
+
+                        In Progress
+
+                    </div>
+
+
+                    <div className="
+                        flex
+                        items-center
+                        gap-2
+                        text-xs
+                        text-gray-400
+                    ">
+
+                        <span className="
+                            w-2
+                            h-2
+                            rounded-full
+                            bg-emerald-500
+                        ">
+                        </span>
+
+                        Resolved
+
+                    </div>
+
+
+                    <div className="
+                        flex
+                        items-center
+                        gap-2
+                        text-xs
+                        text-gray-400
+                    ">
+
+                        <span className="
+                            w-2
+                            h-2
+                            rounded-full
+                            bg-cyan-500
+                        ">
+                        </span>
+
+                        Verified
+
+                    </div>
+
+
+                    <div className="
+                        flex
+                        items-center
+                        gap-2
+                        text-xs
+                        text-gray-400
+                    ">
+
+                        <span className="
+                            w-2
+                            h-2
+                            rounded-full
+                            bg-pink-500
+                        ">
+                        </span>
+
+                        Closed
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {/* RESOLUTION RATE */}
+
+        <div className="
+            mt-5
+            flex
+            items-center
+            justify-between
+            bg-gradient-to-r
+            from-cyan-500/10
+            to-purple-500/10
+            border
+            border-cyan-400/10
+            rounded-xl
+            px-5
+            py-4
+        ">
+
+            <div>
+
+                <p className="
+                    text-xs
+                    text-gray-400
+                ">
+                    Resolution Rate
+                </p>
+
+                <p className="
+                    text-2xl
+                    font-bold
+                    text-cyan-400
+                ">
+                    92%
+                </p>
+
+            </div>
+
+
+            <div className="
+                text-xs
+                text-emerald-400
+                font-semibold
+            ">
+                ↑ 6.4% this week
+            </div>
+
+        </div>
+
+    </div>
 
 </div>
-
-
-
-
-<div className="
-space-y-4
-">
-
-
-<div className="
-bg-slate-800
-p-4
-rounded-xl
-">
-
-🐞 Bugs Detected
-
-<h2 className="
-text-3xl
-font-bold
-">
-
-24
-
-</h2>
-
-</div>
-
-
-
-
-<div className="
-bg-slate-800
-p-4
-rounded-xl
-">
-
-🤖 AI Reports Generated
-
-<h2 className="
-text-3xl
-font-bold
-">
-
-18
-
-</h2>
-
-</div>
-
-
-
-
-<div className="
-bg-slate-800
-p-4
-rounded-xl
-">
-
-📊 Resolution Rate
-
-<h2 className="
-text-3xl
-font-bold
-text-cyan-400
-">
-
-92%
-
-</h2>
-
-</div>
-
-
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
 
 
 </div>
