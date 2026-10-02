@@ -2435,8 +2435,8 @@ text-gray-400
         relative
         py-24
         px-8
-        bg-white
-        dark:bg-[#0B1020]
+        
+        dark:bg-[#070B18]
         overflow-hidden
     "
 >
@@ -2500,11 +2500,9 @@ text-gray-400
             <div className="
                 group
                 relative
-                bg-gray-50
-                dark:bg-slate-900
-                border
-                border-gray-200
-                dark:border-slate-800
+                bg-slate-900/90
+border
+border-slate-800
                 rounded-2xl
                 p-7
                 transition-all
@@ -2554,8 +2552,8 @@ text-gray-400
                 <p className="
                     text-sm
                     leading-6
-                    text-gray-600
-                    dark:text-gray-400
+                    text-gray-400
+                   
                 ">
                     A tester reports a new software defect with
                     relevant details, priority and severity.
@@ -2613,8 +2611,7 @@ text-gray-400
                 <h3 className="
                     text-xl
                     font-bold
-                    text-gray-900
-                    dark:text-white
+                   text-white
                     mb-3
                 ">
                     Assigned
