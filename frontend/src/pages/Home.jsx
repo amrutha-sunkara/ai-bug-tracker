@@ -2428,6 +2428,541 @@ text-gray-400
     </div>
 
 </section>
+{/* DEFECT LIFECYCLE */}
+
+<section
+    className="
+        relative
+        py-24
+        px-8
+        bg-white
+        dark:bg-[#0B1020]
+        overflow-hidden
+    "
+>
+
+    <div className="max-w-7xl mx-auto">
+
+        {/* Heading */}
+
+        <div className="text-center mb-16">
+
+            <p className="
+                text-blue-600
+                dark:text-blue-400
+                font-semibold
+                text-sm
+                uppercase
+                tracking-[0.25em]
+                mb-4
+            ">
+                Defect Lifecycle
+            </p>
+
+            <h2 className="
+                text-4xl
+                md:text-5xl
+                font-bold
+                text-gray-900
+                dark:text-white
+            ">
+                From Report to Resolution
+            </h2>
+
+            <p className="
+                mt-5
+                text-gray-600
+                dark:text-gray-400
+                text-lg
+                max-w-2xl
+                mx-auto
+            ">
+                Track every defect through a structured workflow
+                until it is resolved, verified and closed.
+            </p>
+
+        </div>
+
+
+        {/* LIFECYCLE */}
+
+        <div className="
+            grid
+            grid-cols-1
+            md:grid-cols-2
+            lg:grid-cols-3
+            gap-6
+        ">
+
+
+            {/* REPORTED */}
+
+            <div className="
+                group
+                relative
+                bg-gray-50
+                dark:bg-slate-900
+                border
+                border-gray-200
+                dark:border-slate-800
+                rounded-2xl
+                p-7
+                transition-all
+                duration-300
+                hover:-translate-y-2
+                hover:shadow-xl
+                hover:border-blue-400
+            ">
+
+                <div className="
+                    w-12
+                    h-12
+                    rounded-xl
+                    bg-blue-100
+                    dark:bg-blue-500/10
+                    flex
+                    items-center
+                    justify-center
+                    text-xl
+                    mb-5
+                ">
+                    📝
+                </div>
+
+                <p className="
+                    text-xs
+                    font-bold
+                    text-blue-600
+                    dark:text-blue-400
+                    uppercase
+                    tracking-wider
+                    mb-2
+                ">
+                    Step 01
+                </p>
+
+                <h3 className="
+                    text-xl
+                    font-bold
+                    text-gray-900
+                    dark:text-white
+                    mb-3
+                ">
+                    Reported
+                </h3>
+
+                <p className="
+                    text-sm
+                    leading-6
+                    text-gray-600
+                    dark:text-gray-400
+                ">
+                    A tester reports a new software defect with
+                    relevant details, priority and severity.
+                </p>
+
+            </div>
+
+
+            {/* ASSIGNED */}
+
+            <div className="
+                group
+                relative
+                bg-gray-50
+                dark:bg-slate-900
+                border
+                border-gray-200
+                dark:border-slate-800
+                rounded-2xl
+                p-7
+                transition-all
+                duration-300
+                hover:-translate-y-2
+                hover:shadow-xl
+                hover:border-purple-400
+            ">
+
+                <div className="
+                    w-12
+                    h-12
+                    rounded-xl
+                    bg-purple-100
+                    dark:bg-purple-500/10
+                    flex
+                    items-center
+                    justify-center
+                    text-xl
+                    mb-5
+                ">
+                    👤
+                </div>
+
+                <p className="
+                    text-xs
+                    font-bold
+                    text-purple-600
+                    dark:text-purple-400
+                    uppercase
+                    tracking-wider
+                    mb-2
+                ">
+                    Step 02
+                </p>
+
+                <h3 className="
+                    text-xl
+                    font-bold
+                    text-gray-900
+                    dark:text-white
+                    mb-3
+                ">
+                    Assigned
+                </h3>
+
+                <p className="
+                    text-sm
+                    leading-6
+                    text-gray-600
+                    dark:text-gray-400
+                ">
+                    The defect is assigned to the appropriate
+                    developer for investigation and resolution.
+                </p>
+
+            </div>
+
+
+            {/* IN PROGRESS */}
+
+            <div className="
+                group
+                relative
+                bg-gray-50
+                dark:bg-slate-900
+                border
+                border-gray-200
+                dark:border-slate-800
+                rounded-2xl
+                p-7
+                transition-all
+                duration-300
+                hover:-translate-y-2
+                hover:shadow-xl
+                hover:border-orange-400
+            ">
+
+                <div className="
+                    w-12
+                    h-12
+                    rounded-xl
+                    bg-orange-100
+                    dark:bg-orange-500/10
+                    flex
+                    items-center
+                    justify-center
+                    text-xl
+                    mb-5
+                ">
+                    ⚙️
+                </div>
+
+                <p className="
+                    text-xs
+                    font-bold
+                    text-orange-600
+                    dark:text-orange-400
+                    uppercase
+                    tracking-wider
+                    mb-2
+                ">
+                    Step 03
+                </p>
+
+                <h3 className="
+                    text-xl
+                    font-bold
+                    text-gray-900
+                    dark:text-white
+                    mb-3
+                ">
+                    In Progress
+                </h3>
+
+                <p className="
+                    text-sm
+                    leading-6
+                    text-gray-600
+                    dark:text-gray-400
+                ">
+                    Developers investigate the issue, use AI
+                    assistance and work towards a solution.
+                </p>
+
+            </div>
+
+
+            {/* RESOLVED */}
+
+            <div className="
+                group
+                relative
+                bg-gray-50
+                dark:bg-slate-900
+                border
+                border-gray-200
+                dark:border-slate-800
+                rounded-2xl
+                p-7
+                transition-all
+                duration-300
+                hover:-translate-y-2
+                hover:shadow-xl
+                hover:border-emerald-400
+            ">
+
+                <div className="
+                    w-12
+                    h-12
+                    rounded-xl
+                    bg-emerald-100
+                    dark:bg-emerald-500/10
+                    flex
+                    items-center
+                    justify-center
+                    text-xl
+                    mb-5
+                ">
+                    🛠️
+                </div>
+
+                <p className="
+                    text-xs
+                    font-bold
+                    text-emerald-600
+                    dark:text-emerald-400
+                    uppercase
+                    tracking-wider
+                    mb-2
+                ">
+                    Step 04
+                </p>
+
+                <h3 className="
+                    text-xl
+                    font-bold
+                    text-gray-900
+                    dark:text-white
+                    mb-3
+                ">
+                    Resolved
+                </h3>
+
+                <p className="
+                    text-sm
+                    leading-6
+                    text-gray-600
+                    dark:text-gray-400
+                ">
+                    The developer applies a solution and marks
+                    the defect as resolved for validation.
+                </p>
+
+            </div>
+
+
+            {/* VERIFIED */}
+
+            <div className="
+                group
+                relative
+                bg-gray-50
+                dark:bg-slate-900
+                border
+                border-gray-200
+                dark:border-slate-800
+                rounded-2xl
+                p-7
+                transition-all
+                duration-300
+                hover:-translate-y-2
+                hover:shadow-xl
+                hover:border-cyan-400
+            ">
+
+                <div className="
+                    w-12
+                    h-12
+                    rounded-xl
+                    bg-cyan-100
+                    dark:bg-cyan-500/10
+                    flex
+                    items-center
+                    justify-center
+                    text-xl
+                    mb-5
+                ">
+                    🔍
+                </div>
+
+                <p className="
+                    text-xs
+                    font-bold
+                    text-cyan-600
+                    dark:text-cyan-400
+                    uppercase
+                    tracking-wider
+                    mb-2
+                ">
+                    Step 05
+                </p>
+
+                <h3 className="
+                    text-xl
+                    font-bold
+                    text-gray-900
+                    dark:text-white
+                    mb-3
+                ">
+                    Verified
+                </h3>
+
+                <p className="
+                    text-sm
+                    leading-6
+                    text-gray-600
+                    dark:text-gray-400
+                ">
+                    The tester validates the fix and confirms
+                    that the reported issue has been addressed.
+                </p>
+
+            </div>
+
+
+            {/* CLOSED */}
+
+            <div className="
+                group
+                relative
+                bg-gray-50
+                dark:bg-slate-900
+                border
+                border-gray-200
+                dark:border-slate-800
+                rounded-2xl
+                p-7
+                transition-all
+                duration-300
+                hover:-translate-y-2
+                hover:shadow-xl
+                hover:border-pink-400
+            ">
+
+                <div className="
+                    w-12
+                    h-12
+                    rounded-xl
+                    bg-pink-100
+                    dark:bg-pink-500/10
+                    flex
+                    items-center
+                    justify-center
+                    text-xl
+                    mb-5
+                ">
+                    ✅
+                </div>
+
+                <p className="
+                    text-xs
+                    font-bold
+                    text-pink-600
+                    dark:text-pink-400
+                    uppercase
+                    tracking-wider
+                    mb-2
+                ">
+                    Step 06
+                </p>
+
+                <h3 className="
+                    text-xl
+                    font-bold
+                    text-gray-900
+                    dark:text-white
+                    mb-3
+                ">
+                    Closed
+                </h3>
+
+                <p className="
+                    text-sm
+                    leading-6
+                    text-gray-600
+                    dark:text-gray-400
+                ">
+                    Once verification is successful, the defect
+                    is closed and the lifecycle is completed.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        {/* WORKFLOW LINE */}
+
+        <div className="
+            mt-14
+            flex
+            flex-wrap
+            items-center
+            justify-center
+            gap-3
+            text-sm
+            font-semibold
+        ">
+
+            <span className="text-blue-500">
+                Reported
+            </span>
+
+            <span className="text-gray-400">→</span>
+
+            <span className="text-purple-500">
+                Assigned
+            </span>
+
+            <span className="text-gray-400">→</span>
+
+            <span className="text-orange-500">
+                In Progress
+            </span>
+
+            <span className="text-gray-400">→</span>
+
+            <span className="text-emerald-500">
+                Resolved
+            </span>
+
+            <span className="text-gray-400">→</span>
+
+            <span className="text-cyan-500">
+                Verified
+            </span>
+
+            <span className="text-gray-400">→</span>
+
+            <span className="text-pink-500">
+                Closed
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
 <section className="
 text-center
 py-24
