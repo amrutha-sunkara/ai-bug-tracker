@@ -2963,6 +2963,783 @@ text-gray-400
     </div>
 
 </section>
+{/* DASHBOARD & ANALYTICS PREVIEW */}
+
+<section
+    className="
+        relative
+        py-24
+        px-8
+        bg-gray-50
+        dark:bg-[#070B18]
+        overflow-hidden
+    "
+>
+
+    <div className="max-w-7xl mx-auto">
+
+        {/* Heading */}
+
+        <div className="text-center mb-16">
+
+            <p className="
+                text-purple-600
+                dark:text-purple-400
+                font-semibold
+                text-sm
+                uppercase
+                tracking-[0.25em]
+                mb-4
+            ">
+                Dashboard & Analytics
+            </p>
+
+            <h2 className="
+                text-4xl
+                md:text-5xl
+                font-bold
+                text-gray-900
+                dark:text-white
+            ">
+                Understand Your Defects at a Glance
+            </h2>
+
+            <p className="
+                mt-5
+                text-gray-600
+                dark:text-gray-400
+                text-lg
+                max-w-2xl
+                mx-auto
+            ">
+                Monitor defect activity, priorities and resolution
+                progress through a centralized project dashboard.
+            </p>
+
+        </div>
+
+
+        {/* DASHBOARD PREVIEW */}
+
+        <div className="
+            relative
+            bg-white
+            dark:bg-slate-900
+            border
+            border-gray-200
+            dark:border-slate-800
+            rounded-3xl
+            shadow-2xl
+            p-6
+            md:p-8
+        ">
+
+            {/* Dashboard Header */}
+
+            <div className="
+                flex
+                flex-col
+                md:flex-row
+                md:items-center
+                md:justify-between
+                gap-4
+                mb-8
+            ">
+
+                <div>
+
+                    <p className="
+                        text-sm
+                        text-gray-500
+                        dark:text-gray-400
+                        mb-1
+                    ">
+                        Project Overview
+                    </p>
+
+                    <h3 className="
+                        text-2xl
+                        font-bold
+                        text-gray-900
+                        dark:text-white
+                    ">
+                        Defect Analytics
+                    </h3>
+
+                </div>
+
+
+                <div className="
+                    inline-flex
+                    items-center
+                    gap-2
+                    px-4
+                    py-2
+                    rounded-full
+                    bg-emerald-50
+                    dark:bg-emerald-500/10
+                    text-emerald-600
+                    dark:text-emerald-400
+                    text-sm
+                    font-semibold
+                ">
+
+                    <span className="
+                        w-2
+                        h-2
+                        rounded-full
+                        bg-emerald-500
+                    "></span>
+
+                    System Active
+
+                </div>
+
+            </div>
+
+
+            {/* STAT CARDS */}
+
+            <div className="
+                grid
+                grid-cols-1
+                sm:grid-cols-2
+                lg:grid-cols-4
+                gap-5
+                mb-8
+            ">
+
+                {/* TOTAL */}
+
+                <div className="
+                    rounded-2xl
+                    bg-blue-50
+                    dark:bg-blue-500/10
+                    border
+                    border-blue-100
+                    dark:border-blue-500/20
+                    p-5
+                ">
+
+                    <p className="
+                        text-sm
+                        text-gray-500
+                        dark:text-gray-400
+                    ">
+                        Total Bugs
+                    </p>
+
+                    <p className="
+                        text-3xl
+                        font-bold
+                        text-blue-600
+                        dark:text-blue-400
+                        mt-2
+                    ">
+                        24
+                    </p>
+
+                    <p className="
+                        text-xs
+                        text-gray-500
+                        dark:text-gray-400
+                        mt-2
+                    ">
+                        Across all projects
+                    </p>
+
+                </div>
+
+
+                {/* OPEN */}
+
+                <div className="
+                    rounded-2xl
+                    bg-orange-50
+                    dark:bg-orange-500/10
+                    border
+                    border-orange-100
+                    dark:border-orange-500/20
+                    p-5
+                ">
+
+                    <p className="
+                        text-sm
+                        text-gray-500
+                        dark:text-gray-400
+                    ">
+                        Open Bugs
+                    </p>
+
+                    <p className="
+                        text-3xl
+                        font-bold
+                        text-orange-600
+                        dark:text-orange-400
+                        mt-2
+                    ">
+                        8
+                    </p>
+
+                    <p className="
+                        text-xs
+                        text-gray-500
+                        dark:text-gray-400
+                        mt-2
+                    ">
+                        Need attention
+                    </p>
+
+                </div>
+
+
+                {/* RESOLVED */}
+
+                <div className="
+                    rounded-2xl
+                    bg-emerald-50
+                    dark:bg-emerald-500/10
+                    border
+                    border-emerald-100
+                    dark:border-emerald-500/20
+                    p-5
+                ">
+
+                    <p className="
+                        text-sm
+                        text-gray-500
+                        dark:text-gray-400
+                    ">
+                        Resolved
+                    </p>
+
+                    <p className="
+                        text-3xl
+                        font-bold
+                        text-emerald-600
+                        dark:text-emerald-400
+                        mt-2
+                    ">
+                        16
+                    </p>
+
+                    <p className="
+                        text-xs
+                        text-gray-500
+                        dark:text-gray-400
+                        mt-2
+                    ">
+                        Successfully resolved
+                    </p>
+
+                </div>
+
+
+                {/* CRITICAL */}
+
+                <div className="
+                    rounded-2xl
+                    bg-red-50
+                    dark:bg-red-500/10
+                    border
+                    border-red-100
+                    dark:border-red-500/20
+                    p-5
+                ">
+
+                    <p className="
+                        text-sm
+                        text-gray-500
+                        dark:text-gray-400
+                    ">
+                        High Priority
+                    </p>
+
+                    <p className="
+                        text-3xl
+                        font-bold
+                        text-red-600
+                        dark:text-red-400
+                        mt-2
+                    ">
+                        3
+                    </p>
+
+                    <p className="
+                        text-xs
+                        text-gray-500
+                        dark:text-gray-400
+                        mt-2
+                    ">
+                        Require attention
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {/* ANALYTICS AREA */}
+
+            <div className="
+                grid
+                grid-cols-1
+                lg:grid-cols-2
+                gap-6
+            ">
+
+                {/* STATUS DISTRIBUTION */}
+
+                <div className="
+                    rounded-2xl
+                    border
+                    border-gray-200
+                    dark:border-slate-800
+                    p-6
+                ">
+
+                    <div className="mb-6">
+
+                        <h4 className="
+                            text-lg
+                            font-bold
+                            text-gray-900
+                            dark:text-white
+                        ">
+                            Defect Status
+                        </h4>
+
+                        <p className="
+                            text-sm
+                            text-gray-500
+                            dark:text-gray-400
+                            mt-1
+                        ">
+                            Current distribution of reported defects
+                        </p>
+
+                    </div>
+
+
+                    <div className="space-y-5">
+
+                        {/* REPORTED */}
+
+                        <div>
+
+                            <div className="
+                                flex
+                                justify-between
+                                text-sm
+                                mb-2
+                            ">
+
+                                <span className="
+                                    text-gray-600
+                                    dark:text-gray-300
+                                ">
+                                    Reported
+                                </span>
+
+                                <span className="
+                                    font-semibold
+                                    text-gray-900
+                                    dark:text-white
+                                ">
+                                    4
+                                </span>
+
+                            </div>
+
+                            <div className="
+                                h-2
+                                bg-gray-100
+                                dark:bg-slate-800
+                                rounded-full
+                                overflow-hidden
+                            ">
+
+                                <div className="
+                                    h-full
+                                    w-[25%]
+                                    bg-blue-500
+                                    rounded-full
+                                "></div>
+
+                            </div>
+
+                        </div>
+
+
+                        {/* IN PROGRESS */}
+
+                        <div>
+
+                            <div className="
+                                flex
+                                justify-between
+                                text-sm
+                                mb-2
+                            ">
+
+                                <span className="
+                                    text-gray-600
+                                    dark:text-gray-300
+                                ">
+                                    In Progress
+                                </span>
+
+                                <span className="
+                                    font-semibold
+                                    text-gray-900
+                                    dark:text-white
+                                ">
+                                    5
+                                </span>
+
+                            </div>
+
+                            <div className="
+                                h-2
+                                bg-gray-100
+                                dark:bg-slate-800
+                                rounded-full
+                                overflow-hidden
+                            ">
+
+                                <div className="
+                                    h-full
+                                    w-[31%]
+                                    bg-orange-500
+                                    rounded-full
+                                "></div>
+
+                            </div>
+
+                        </div>
+
+
+                        {/* RESOLVED */}
+
+                        <div>
+
+                            <div className="
+                                flex
+                                justify-between
+                                text-sm
+                                mb-2
+                            ">
+
+                                <span className="
+                                    text-gray-600
+                                    dark:text-gray-300
+                                ">
+                                    Resolved
+                                </span>
+
+                                <span className="
+                                    font-semibold
+                                    text-gray-900
+                                    dark:text-white
+                                ">
+                                    7
+                                </span>
+
+                            </div>
+
+                            <div className="
+                                h-2
+                                bg-gray-100
+                                dark:bg-slate-800
+                                rounded-full
+                                overflow-hidden
+                            ">
+
+                                <div className="
+                                    h-full
+                                    w-[44%]
+                                    bg-emerald-500
+                                    rounded-full
+                                "></div>
+
+                            </div>
+
+                        </div>
+
+
+                        {/* VERIFIED */}
+
+                        <div>
+
+                            <div className="
+                                flex
+                                justify-between
+                                text-sm
+                                mb-2
+                            ">
+
+                                <span className="
+                                    text-gray-600
+                                    dark:text-gray-300
+                                ">
+                                    Verified
+                                </span>
+
+                                <span className="
+                                    font-semibold
+                                    text-gray-900
+                                    dark:text-white
+                                ">
+                                    8
+                                </span>
+
+                            </div>
+
+                            <div className="
+                                h-2
+                                bg-gray-100
+                                dark:bg-slate-800
+                                rounded-full
+                                overflow-hidden
+                            ">
+
+                                <div className="
+                                    h-full
+                                    w-[50%]
+                                    bg-cyan-500
+                                    rounded-full
+                                "></div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                {/* PRIORITY */}
+
+                <div className="
+                    rounded-2xl
+                    border
+                    border-gray-200
+                    dark:border-slate-800
+                    p-6
+                ">
+
+                    <div className="mb-6">
+
+                        <h4 className="
+                            text-lg
+                            font-bold
+                            text-gray-900
+                            dark:text-white
+                        ">
+                            Priority Overview
+                        </h4>
+
+                        <p className="
+                            text-sm
+                            text-gray-500
+                            dark:text-gray-400
+                            mt-1
+                        ">
+                            Identify defects requiring immediate focus
+                        </p>
+
+                    </div>
+
+
+                    <div className="
+                        grid
+                        grid-cols-2
+                        gap-4
+                    ">
+
+                        <div className="
+                            rounded-xl
+                            bg-red-50
+                            dark:bg-red-500/10
+                            p-5
+                            text-center
+                        ">
+
+                            <p className="
+                                text-2xl
+                                font-bold
+                                text-red-600
+                                dark:text-red-400
+                            ">
+                                3
+                            </p>
+
+                            <p className="
+                                text-sm
+                                text-gray-600
+                                dark:text-gray-400
+                                mt-1
+                            ">
+                                Critical
+                            </p>
+
+                        </div>
+
+
+                        <div className="
+                            rounded-xl
+                            bg-orange-50
+                            dark:bg-orange-500/10
+                            p-5
+                            text-center
+                        ">
+
+                            <p className="
+                                text-2xl
+                                font-bold
+                                text-orange-600
+                                dark:text-orange-400
+                            ">
+                                6
+                            </p>
+
+                            <p className="
+                                text-sm
+                                text-gray-600
+                                dark:text-gray-400
+                                mt-1
+                            ">
+                                High
+                            </p>
+
+                        </div>
+
+
+                        <div className="
+                            rounded-xl
+                            bg-yellow-50
+                            dark:bg-yellow-500/10
+                            p-5
+                            text-center
+                        ">
+
+                            <p className="
+                                text-2xl
+                                font-bold
+                                text-yellow-600
+                                dark:text-yellow-400
+                            ">
+                                9
+                            </p>
+
+                            <p className="
+                                text-sm
+                                text-gray-600
+                                dark:text-gray-400
+                                mt-1
+                            ">
+                                Medium
+                            </p>
+
+                        </div>
+
+
+                        <div className="
+                            rounded-xl
+                            bg-green-50
+                            dark:bg-green-500/10
+                            p-5
+                            text-center
+                        ">
+
+                            <p className="
+                                text-2xl
+                                font-bold
+                                text-green-600
+                                dark:text-green-400
+                            ">
+                                6
+                            </p>
+
+                            <p className="
+                                text-sm
+                                text-gray-600
+                                dark:text-gray-400
+                                mt-1
+                            ">
+                                Low
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            {/* DASHBOARD NOTE */}
+
+            <div className="
+                mt-8
+                flex
+                flex-col
+                md:flex-row
+                items-center
+                justify-between
+                gap-4
+                px-6
+                py-5
+                rounded-2xl
+                bg-gradient-to-r
+                from-blue-600
+                to-purple-600
+                text-white
+            ">
+
+                <div>
+
+                    <p className="
+                        font-semibold
+                    ">
+                        Centralized defect visibility
+                    </p>
+
+                    <p className="
+                        text-sm
+                        text-blue-100
+                        mt-1
+                    ">
+                        Track progress, monitor risk and understand
+                        project health from one dashboard.
+                    </p>
+
+                </div>
+
+
+                <div className="
+                    px-4
+                    py-2
+                    rounded-lg
+                    bg-white/15
+                    border
+                    border-white/20
+                    text-sm
+                    font-semibold
+                    whitespace-nowrap
+                ">
+                    Real-Time Insights
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
 <section className="
 text-center
 py-24
