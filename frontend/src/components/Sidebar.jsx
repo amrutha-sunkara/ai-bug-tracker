@@ -70,14 +70,16 @@ return(
 w-72
 min-h-screen
 bg-white
-dark:bg-[#0D1426]
+dark:bg-gradient-to-b
+dark:from-[#11152A]
+dark:to-[#17132F]
 border-r
 border-violet-100
-dark:border-slate-700/70
+dark:border-purple-500/20
 p-6
 transition
 shadow-[4px_0_20px_rgba(139,92,246,0.06)]
-dark:shadow-[4px_0_20px_rgba(0,0,0,0.18)]
+dark:shadow-[4px_0_25px_rgba(124,58,237,0.10)]
 ">
 
 
@@ -177,12 +179,10 @@ isActive
 
 ?
 
-"bg-blue-600 text-white shadow-lg"
-
+"bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-[0_6px_18px_rgba(99,102,241,0.25)]"
 :
 
-"text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800"
-
+"text-gray-700 dark:text-slate-300 hover:bg-violet-50 dark:hover:bg-purple-500/10"
 }
 
 
